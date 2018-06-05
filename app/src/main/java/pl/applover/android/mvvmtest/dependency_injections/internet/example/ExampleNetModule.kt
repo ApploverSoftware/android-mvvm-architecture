@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.dependency_injection.internet.main
+package pl.applover.android.mvvmtest.dependency_injections.internet.example
 
 import dagger.Module
 import dagger.Provides

@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.maps.android.clustering.algo
+package pl.applover.android.mvvmtest.util.ui.google_map
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.algo.Algorithm
+import com.google.maps.android.clustering.algo.StaticCluster
 import com.google.maps.android.geometry.Bounds
 import com.google.maps.android.geometry.Point
 import com.google.maps.android.projection.SphericalMercatorProjection

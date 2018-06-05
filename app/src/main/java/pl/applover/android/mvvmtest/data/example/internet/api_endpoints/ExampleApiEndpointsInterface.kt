@@ -1,7 +1,7 @@
-package pl.applover.enegivetest.data.example.internet.api_endpoints
+package pl.applover.android.mvvmtest.data.example.internet.api_endpoints
 
 import io.reactivex.Single
-import pl.applover.enegivetest.data.example.internet.response.ExampleResponse
+import pl.applover.android.mvvmtest.data.example.internet.response.ExampleResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui.google_map
+package pl.applover.android.mvvmtest.util.ui.google_map
 
 import android.annotation.SuppressLint
 import android.graphics.Rect

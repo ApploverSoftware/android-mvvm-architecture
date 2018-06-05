@@ -10,9 +10,9 @@ import android.os.Bundle
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import org.jetbrains.anko.locationManager
+import pl.applover.android.mvvmtest.util.extensions.DelegatesExt
+import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
 import pl.applover.enegivetest.dependency_injection.application.components.DaggerAppComponent
-import pl.applover.enegivetest.util.extensions.DelegatesExt
-import pl.applover.enegivetest.util.extensions.isGPSPermissionGranted
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Named

@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui
+package pl.applover.android.mvvmtest.util.ui
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

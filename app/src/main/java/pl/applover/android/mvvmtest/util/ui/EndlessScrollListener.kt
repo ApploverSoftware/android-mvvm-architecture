@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui
+package pl.applover.android.mvvmtest.util.ui
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView

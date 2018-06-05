@@ -1,4 +1,4 @@
-package pl.applover.dateanddrive.util
+package pl.applover.android.mvvmtest.util.ui
 
 import android.content.Context
 import android.util.AttributeSet

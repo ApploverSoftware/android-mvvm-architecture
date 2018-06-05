@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.language
+package pl.applover.android.mvvmtest.util.language
 
 import android.annotation.TargetApi
 import android.content.Context

@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui
+package pl.applover.android.mvvmtest.util.ui
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -21,7 +21,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.nihaskalam.progressbuttonlibrary.CircularProgressButton
-import pl.applover.enegivetest.util.extensions.delayed
+import pl.applover.android.mvvmtest.util.extensions.delayed
 import java.util.concurrent.TimeUnit
 
 

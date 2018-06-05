@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui
+package pl.applover.android.mvvmtest.util.ui
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment

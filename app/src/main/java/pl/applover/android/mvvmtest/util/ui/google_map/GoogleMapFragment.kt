@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui.google_map.google_map_fragment
+package pl.applover.android.mvvmtest.util.ui.google_map
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,16 +14,12 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.algo.CustomNonHierarchicalDistanceBasedAlgorithm
 import kotlinx.android.synthetic.main.fragment_google_map.*
 import org.greenrobot.eventbus.EventBus
-import pl.applover.enegivetest.util.extensions.isGPSPermissionGranted
-import pl.applover.enegivetest.util.ui.google_map.GoogleMapClusterRenderer
-import pl.applover.enegivetest.util.ui.google_map.GoogleMapPadding
-import pl.applover.enegivetest.util.ui.google_map.extensions.*
+import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
+
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
-import pl.applover.android.mvvmtest.util.ui.google_map.GoogleMapReadyEvent
 
 
 /**

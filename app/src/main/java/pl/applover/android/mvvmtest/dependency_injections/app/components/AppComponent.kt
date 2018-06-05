@@ -1,10 +1,10 @@
-package pl.applover.enegivetest.dependency_injection.application.components
+package pl.applover.android.mvvmtest.dependency_injections.app.components
 
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
-import pl.applover.enegivetest.dependency_injection.application.modules.AppModule
-import pl.applover.enegivetest.dependency_injection.internet.main.ExampleNetModule
+import pl.applover.android.mvvmtest.dependency_injections.app.modules.AppModule
+import pl.applover.android.mvvmtest.dependency_injections.internet.example.ExampleNetModule
 import pl.applover.android.mvvmtest.App
 import javax.inject.Singleton
 

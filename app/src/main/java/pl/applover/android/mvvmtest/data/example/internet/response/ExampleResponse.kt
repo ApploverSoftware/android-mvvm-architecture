@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.data.example.internet.response
+package pl.applover.android.mvvmtest.data.example.internet.response
 
 /**
  * Created by Janusz Hain on 2018-01-12.

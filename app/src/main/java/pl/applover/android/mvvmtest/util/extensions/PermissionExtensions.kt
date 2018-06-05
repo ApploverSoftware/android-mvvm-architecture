@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.extensions
+package pl.applover.android.mvvmtest.util.extensions
 
 import android.Manifest
 import android.app.Activity

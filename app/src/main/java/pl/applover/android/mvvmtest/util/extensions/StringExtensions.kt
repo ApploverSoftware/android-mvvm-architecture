@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.extensions
+package pl.applover.android.mvvmtest.util.extensions
 
 import android.text.SpannableString
 import android.text.Spanned

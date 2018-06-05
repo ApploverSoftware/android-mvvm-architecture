@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.dependency_injection.application.modules
+package pl.applover.android.mvvmtest.dependency_injections.app.modules
 
 import dagger.Module
 

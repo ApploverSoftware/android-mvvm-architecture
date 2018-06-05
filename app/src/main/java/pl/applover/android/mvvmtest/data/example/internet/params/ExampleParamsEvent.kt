@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.data.example.internet.params
+package pl.applover.android.mvvmtest.data.example.internet.params
 
 import com.squareup.moshi.Json
 

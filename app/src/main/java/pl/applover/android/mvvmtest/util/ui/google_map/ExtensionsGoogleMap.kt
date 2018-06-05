@@ -1,4 +1,4 @@
-package pl.applover.enegivetest.util.ui.google_map.extensions
+package pl.applover.android.mvvmtest.util.ui.google_map
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -9,7 +9,7 @@ import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import pl.applover.enegivetest.util.extensions.printError
+import pl.applover.android.mvvmtest.util.extensions.printError
 import pl.applover.android.mvvmtest.App
 import java.lang.Exception
 
