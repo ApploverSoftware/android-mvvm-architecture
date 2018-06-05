@@ -1,4 +1,4 @@
-package pl.janusz.hain.mvvmtest.util.ui.google_map
+package pl.applover.android.mvvmtest.util.ui.google_map
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.maps.android.clustering.ClusterManager

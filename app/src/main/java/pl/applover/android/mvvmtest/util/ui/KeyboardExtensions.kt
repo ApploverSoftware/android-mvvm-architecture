@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.view.inputmethod.InputMethodManager
-import pl.janusz.hain.mvvmtest.App
+import pl.applover.android.mvvmtest.App
 
 
 /**

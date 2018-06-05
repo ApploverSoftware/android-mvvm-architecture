@@ -10,7 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import pl.applover.enegivetest.util.extensions.printError
-import pl.janusz.hain.mvvmtest.App
+import pl.applover.android.mvvmtest.App
 import java.lang.Exception
 
 /**

@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
-import pl.janusz.hain.mvvmtest.App
+import pl.applover.android.mvvmtest.App
 
 /**
  * Created by Janusz Hain on 2017-08-28.

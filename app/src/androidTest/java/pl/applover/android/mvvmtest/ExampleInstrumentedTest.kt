@@ -1,4 +1,4 @@
-package pl.janusz.hain.mvvmtest
+package pl.applover.android.mvvmtest
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

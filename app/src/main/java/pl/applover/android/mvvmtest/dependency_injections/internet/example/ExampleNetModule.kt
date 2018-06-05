@@ -5,7 +5,7 @@ import dagger.Provides
 import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.janusz.hain.mvvmtest.BuildConfig
+import pl.applover.android.mvvmtest.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory

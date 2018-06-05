@@ -1,4 +1,4 @@
-package pl.janusz.hain.mvvmtest
+package pl.applover.android.mvvmtest
 
 import org.junit.Test
 

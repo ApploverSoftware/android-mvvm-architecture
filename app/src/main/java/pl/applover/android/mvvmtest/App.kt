@@ -1,4 +1,4 @@
-package pl.janusz.hain.mvvmtest
+package pl.applover.android.mvvmtest
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,7 +8,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasDispatchingActivityInjector
+import dagger.android.HasActivityInjector
 import org.jetbrains.anko.locationManager
 import pl.applover.enegivetest.dependency_injection.application.components.DaggerAppComponent
 import pl.applover.enegivetest.util.extensions.DelegatesExt
@@ -21,7 +21,7 @@ import javax.inject.Named
 /**
  * Created by Janusz Hain on 2018-01-08.
  */
-class App : Application(), HasDispatchingActivityInjector {
+class App : Application(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>

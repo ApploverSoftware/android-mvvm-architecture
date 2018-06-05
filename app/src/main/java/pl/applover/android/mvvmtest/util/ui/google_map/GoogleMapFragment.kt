@@ -21,9 +21,9 @@ import pl.applover.enegivetest.util.extensions.isGPSPermissionGranted
 import pl.applover.enegivetest.util.ui.google_map.GoogleMapClusterRenderer
 import pl.applover.enegivetest.util.ui.google_map.GoogleMapPadding
 import pl.applover.enegivetest.util.ui.google_map.extensions.*
-import pl.janusz.hain.mvvmtest.App
-import pl.janusz.hain.mvvmtest.R
-import pl.janusz.hain.mvvmtest.util.ui.google_map.GoogleMapReadyEvent
+import pl.applover.android.mvvmtest.App
+import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.util.ui.google_map.GoogleMapReadyEvent
 
 
 /**

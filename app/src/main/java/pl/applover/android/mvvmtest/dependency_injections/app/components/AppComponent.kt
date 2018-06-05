@@ -5,7 +5,7 @@ import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import pl.applover.enegivetest.dependency_injection.application.modules.AppModule
 import pl.applover.enegivetest.dependency_injection.internet.main.ExampleNetModule
-import pl.janusz.hain.mvvmtest.App
+import pl.applover.android.mvvmtest.App
 import javax.inject.Singleton
 
 /**

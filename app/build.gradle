@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "pl.janusz.hain.mvvmtest"
+        applicationId "pl.applover.android.mvvmtest"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
@@ -28,7 +28,7 @@ apply plugin: 'kotlin-android-extensions'
 
 dependencies {
 
-    def daggerVersion = "2.10"
+    def daggerVersion = "2.16"
     def retrofitVersion = "2.3.0"
     def okhttpVersion = "3.9.0"
     def anko_version = '0.10.4'

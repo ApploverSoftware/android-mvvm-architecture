@@ -1,4 +1,4 @@
-package pl.janusz.hain.mvvmtest
+package pl.applover.android.mvvmtest
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

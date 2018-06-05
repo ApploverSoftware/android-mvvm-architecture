@@ -13,8 +13,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
-import pl.janusz.hain.mvvmtest.App
-import pl.janusz.hain.mvvmtest.R
+import pl.applover.android.mvvmtest.App
+import pl.applover.android.mvvmtest.R
 import java.util.concurrent.TimeUnit
 
 
