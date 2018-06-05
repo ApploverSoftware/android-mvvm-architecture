@@ -88,7 +88,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     implementation 'de.adorsys.android:securestoragelibrary:1.0.2'
-    implementation 'com.google.guava:guava:24.0-android'
+    implementation 'com.google.guava:guava:25.1-android'
 
     implementation 'com.nihaskalam.android:progress-button:1.0.1'
 
