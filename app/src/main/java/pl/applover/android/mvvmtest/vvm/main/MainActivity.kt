@@ -1,7 +1,8 @@
-package pl.applover.android.mvvmtest
+package pl.applover.android.mvvmtest.vvm.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import pl.applover.android.mvvmtest.R
 
 class MainActivity : AppCompatActivity() {
 

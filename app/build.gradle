@@ -27,36 +27,34 @@ apply plugin: "io.mironov.smuggler"
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
-
-    def daggerVersion = "2.16"
-    def retrofitVersion = "2.3.0"
-    def okhttpVersion = "3.9.0"
-    def anko_version = '0.10.4'
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //anko
+    def anko_version = '0.10.4'
     implementation "org.jetbrains.anko:anko:$anko_version"
 
-    //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:design:27.1.1'
+    //Android support
+    def android_support_version = '27.1.1'
+    def android_support_constraint_version = '1.1.1'
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
+    implementation "com.android.support:cardview-v7:$android_support_version"
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support.constraint:constraint-layout:$android_support_constraint_version"
 
     //Google map
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
     //RETROFIT and RxJava
+    def retrofitVersion = "2.3.0"
+    def okhttpVersion = "3.9.0"
+
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -66,6 +64,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
     //Dagger
+
+    def daggerVersion = "2.16"
+
     //noinspection GradleDependency
     implementation "com.google.dagger:dagger:$daggerVersion"
 
@@ -85,12 +86,26 @@ dependencies {
     kapt "com.google.dagger:dagger-android-support:$daggerVersion"
 
 
+    //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    //Secure Storage
     implementation 'de.adorsys.android:securestoragelibrary:1.0.2'
+
+    //Guava
     implementation 'com.google.guava:guava:25.1-android'
 
+    //ProgressButton
     implementation 'com.nihaskalam.android:progress-button:1.0.1'
 
 
+
+    // ViewModel and LiveData
+    def lifecycle_version = "1.1.1"
+
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation "android.arch.lifecycle:runtime:$lifecycle_version"
+    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
+    testImplementation "android.arch.core:core-testing:$lifecycle_version"
 }
