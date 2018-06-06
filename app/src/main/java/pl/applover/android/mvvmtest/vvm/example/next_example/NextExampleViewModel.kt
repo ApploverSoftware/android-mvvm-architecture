@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example
+package pl.applover.android.mvvmtest.vvm.example.next_example
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import pl.applover.android.mvvmtest.util.other.Event
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleMainViewModel : ViewModel() {
+class NextExampleViewModel : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -17,8 +17,8 @@ class ExampleMainViewModel : ViewModel() {
     val title = MutableLiveData<String>()
 
     fun activityOnResume(){
-        someEvent.value = Event("Activity on Resume!")
-        title.value = "Activity resumed"
+        someEvent.value = Event("Next Activity on Resume!")
+        title.value = "Next Activity resumed"
     }
 
     override fun onCleared() {
