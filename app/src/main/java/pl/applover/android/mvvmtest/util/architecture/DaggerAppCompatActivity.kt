@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.util.other
+package pl.applover.android.mvvmtest.util.architecture
 
 import android.app.Fragment
 import android.os.Bundle

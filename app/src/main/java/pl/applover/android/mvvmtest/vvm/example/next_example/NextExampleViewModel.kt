@@ -1,10 +1,9 @@
 package pl.applover.android.mvvmtest.vvm.example.next_example
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
-import pl.applover.android.mvvmtest.util.other.Event
+import pl.applover.android.mvvmtest.util.architecture.Event
 
 /**
  * Created by Janusz Hain on 2018-06-06.

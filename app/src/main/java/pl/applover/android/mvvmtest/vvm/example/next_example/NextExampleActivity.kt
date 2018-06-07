@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import kotlinx.android.synthetic.main.example_activity_main.*
 import pl.applover.android.mvvmtest.R
-import pl.applover.android.mvvmtest.util.other.DaggerAppCompatActivity
+import pl.applover.android.mvvmtest.util.architecture.DaggerAppCompatActivity
 import javax.inject.Inject
 
 
