@@ -29,6 +29,7 @@ apply plugin: 'kotlin-android-extensions'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -85,7 +86,6 @@ dependencies {
     //noinspection GradleDependency
     kapt "com.google.dagger:dagger-android-support:$daggerVersion"
 
-
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
@@ -97,8 +97,6 @@ dependencies {
 
     //ProgressButton
     implementation 'com.nihaskalam.android:progress-button:1.0.1'
-
-
 
     // ViewModel and LiveData
     def lifecycle_version = "1.1.1"

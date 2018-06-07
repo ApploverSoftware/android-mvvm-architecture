@@ -2,7 +2,7 @@ package pl.applover.android.mvvmtest.dependency_injections.app.modules
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import pl.applover.android.mvvmtest.dependency_injections.activities.modules.MainActivityModule
+import pl.applover.android.mvvmtest.dependency_injections.activities.modules.ExampleMainActivityModule
 import pl.applover.android.mvvmtest.dependency_injections.activities.modules.NextExampleActivityModule
 import pl.applover.android.mvvmtest.vvm.example.ExampleMainActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
@@ -13,8 +13,8 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 @Module
 abstract class ActivityBuilder {
 
-    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class))
-    abstract fun bindMainActivity(): ExampleMainActivity
+    @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class))
+    abstract fun bindExampleMainActivity(): ExampleMainActivity
 
     @ContributesAndroidInjector(modules = arrayOf(NextExampleActivityModule::class))
     abstract fun bindNextExampleActivity(): NextExampleActivity

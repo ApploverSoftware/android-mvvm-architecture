@@ -3,10 +3,10 @@ package pl.applover.android.mvvmtest.vvm.example
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.example_activity_main.*
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.goToActivity
-import pl.applover.android.mvvmtest.util.architecture.DaggerAppCompatActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 import javax.inject.Inject
 
