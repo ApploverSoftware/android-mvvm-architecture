@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.dependency_injections.activities.modules
+package pl.applover.android.mvvmtest.dependency_injections.activities.example_main
 
 import dagger.Module
 import dagger.Provides

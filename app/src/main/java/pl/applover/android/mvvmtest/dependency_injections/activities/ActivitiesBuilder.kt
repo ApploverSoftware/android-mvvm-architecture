@@ -2,8 +2,10 @@ package pl.applover.android.mvvmtest.dependency_injections.activities
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import pl.applover.android.mvvmtest.dependency_injections.activities.modules.ExampleMainActivityModule
-import pl.applover.android.mvvmtest.dependency_injections.activities.modules.NextExampleActivityModule
+import pl.applover.android.mvvmtest.dependency_injections.activities.example_main.ExampleMainActivityModule
+import pl.applover.android.mvvmtest.dependency_injections.activities.example_main.ExampleMainFragmentsBuilder
+import pl.applover.android.mvvmtest.dependency_injections.activities.next_example.NextExampleActivityModule
+import pl.applover.android.mvvmtest.dependency_injections.activities.next_example.NextExampleFragmentsBuilder
 import pl.applover.android.mvvmtest.vvm.example.ExampleMainActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 
@@ -13,9 +15,9 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 @Module
 abstract class ActivitiesBuilder {
 
-    @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class, ExampleMainFragmentsBuilder::class))
     abstract fun bindExampleMainActivity(): ExampleMainActivity
 
-    @ContributesAndroidInjector(modules = arrayOf(NextExampleActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(NextExampleActivityModule::class, NextExampleFragmentsBuilder::class))
     abstract fun bindNextExampleActivity(): NextExampleActivity
 }

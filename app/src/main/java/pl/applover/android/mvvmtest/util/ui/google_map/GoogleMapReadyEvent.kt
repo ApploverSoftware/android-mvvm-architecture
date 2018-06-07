@@ -6,4 +6,4 @@ import com.google.maps.android.clustering.ClusterManager
 /**
  * Created by Janusz Hain on 2018-06-05.
  */
-class GoogleMapReadyEvent(googleMap: GoogleMap, googleMapClusterManager: ClusterManager<GoogleMapClusterRenderer.ClusterMarker>)
+class GoogleMapReadyEvent(val googleMap: GoogleMap, val googleMapClusterManager: ClusterManager<GoogleMapClusterRenderer.ClusterMarker>)
