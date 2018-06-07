@@ -2,7 +2,7 @@ package pl.applover.android.mvvmtest.dependency_injections.activities.modules
 
 import dagger.Module
 import dagger.Provides
-import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewModel
+import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewModelFactory
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -11,5 +11,5 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewMode
 class NextExampleActivityModule {
 
     @Provides
-    fun provideViewModel() = NextExampleViewModel()
+    fun provideViewModelFactory() = NextExampleViewModelFactory()
 }

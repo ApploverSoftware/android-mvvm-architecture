@@ -8,17 +8,20 @@ import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.goToActivity
 import pl.applover.android.mvvmtest.util.other.DaggerAppCompatActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
+import javax.inject.Inject
 
 
 class ExampleMainActivity : DaggerAppCompatActivity() {
 
 
-    internal lateinit var viewModel: ExampleMainViewModel
+    @Inject
+    internal lateinit var viewModelFactory: ExampleMainViewModelFactory
+    private lateinit var viewModel: ExampleMainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.example_activity_main)
-        viewModel = ViewModelProviders.of(this).get(ExampleMainViewModel()::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleMainViewModel()::class.java)
         viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled()) })
         viewModel.title.observe(this, Observer { title -> textViewHelloWorld.text = title })
 

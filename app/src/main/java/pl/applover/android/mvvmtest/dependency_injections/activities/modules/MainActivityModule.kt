@@ -2,7 +2,7 @@ package pl.applover.android.mvvmtest.dependency_injections.activities.modules
 
 import dagger.Module
 import dagger.Provides
-import pl.applover.android.mvvmtest.vvm.example.ExampleMainViewModel
+import pl.applover.android.mvvmtest.vvm.example.ExampleMainViewModelFactory
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -11,6 +11,5 @@ import pl.applover.android.mvvmtest.vvm.example.ExampleMainViewModel
 class MainActivityModule {
 
     @Provides
-    fun provideViewModel()
-            = ExampleMainViewModel()
+    fun provideViewModelFactory() = ExampleMainViewModelFactory()
 }
