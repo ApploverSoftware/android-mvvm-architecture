@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.dependency_injections.app.modules
+package pl.applover.android.mvvmtest.dependency_injections.activities
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -11,7 +11,7 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
  * Created by Janusz Hain on 2018-06-06.
  */
 @Module
-abstract class ActivityBuilder {
+abstract class ActivitiesBuilder {
 
     @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class))
     abstract fun bindExampleMainActivity(): ExampleMainActivity
