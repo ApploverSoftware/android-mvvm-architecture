@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.example_activity_main.*
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showFragment
 import pl.applover.android.mvvmtest.vvm.example.next_example.list.ExampleListFragment
@@ -21,7 +20,7 @@ class NextExampleActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.example_next_activity_main)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NextExampleViewModel()::class.java)
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             showFragment(ExampleListFragment.newInstance(), R.id.frameLayoutExample, false, null, null)
         }
 
