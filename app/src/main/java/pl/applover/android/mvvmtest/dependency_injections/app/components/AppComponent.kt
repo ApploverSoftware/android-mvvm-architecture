@@ -6,7 +6,6 @@ import dagger.android.support.AndroidSupportInjectionModule
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.dependency_injections.activities.ActivitiesBuilder
 import pl.applover.android.mvvmtest.dependency_injections.app.modules.AppModule
-import pl.applover.android.mvvmtest.dependency_injections.fragments.FragmentsBuilder
 import pl.applover.android.mvvmtest.dependency_injections.internet.example.ExampleNetModule
 import javax.inject.Singleton
 
