@@ -8,7 +8,7 @@ import pl.applover.android.mvvmtest.util.architecture.Event
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class NextExampleViewModel : ViewModel() {
+class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 

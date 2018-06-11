@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example.list
+package pl.applover.android.mvvmtest.vvm.example.next_example.example_list
 
 
 import android.arch.lifecycle.Observer
@@ -20,7 +20,7 @@ class ExampleListFragment : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleListViewModel()::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
