@@ -6,6 +6,7 @@ import pl.applover.android.mvvmtest.dependency_injections.activities.example_mai
 import pl.applover.android.mvvmtest.dependency_injections.activities.example_main.ExampleMainFragmentsBuilder
 import pl.applover.android.mvvmtest.dependency_injections.activities.next_example.NextExampleActivityModule
 import pl.applover.android.mvvmtest.dependency_injections.activities.next_example.NextExampleFragmentsBuilder
+import pl.applover.android.mvvmtest.util.architecture.dependency_injection.ActivityScope
 import pl.applover.android.mvvmtest.vvm.example.main_example.ExampleMainActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 
@@ -16,8 +17,10 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 abstract class ActivitiesBuilder {
 
     @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class, ExampleMainFragmentsBuilder::class))
+    @ActivityScope
     abstract fun bindExampleMainActivity(): ExampleMainActivity
 
     @ContributesAndroidInjector(modules = arrayOf(NextExampleActivityModule::class, NextExampleFragmentsBuilder::class))
+    @ActivityScope
     abstract fun bindNextExampleActivity(): NextExampleActivity
 }

@@ -1,7 +1,7 @@
 package pl.applover.android.mvvmtest.vvm.example.next_example
 
 import android.arch.lifecycle.MutableLiveData
-import pl.applover.android.mvvmtest.util.architecture.SingleEvent
+import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragmentNavigator
 
 /**
