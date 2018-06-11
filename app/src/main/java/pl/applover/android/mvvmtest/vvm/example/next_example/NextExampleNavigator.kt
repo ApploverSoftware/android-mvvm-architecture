@@ -1,6 +1,5 @@
 package pl.applover.android.mvvmtest.vvm.example.next_example
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import pl.applover.android.mvvmtest.util.architecture.SingleEvent
 import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragmentNavigator
@@ -10,7 +9,7 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.Exampl
  */
 class NextExampleNavigator : ExampleListFragmentNavigator {
 
-    val fragmentClickedLiveData: LiveData<SingleEvent<String>> = MutableLiveData()
+    private val fragmentClickedLiveData: MutableLiveData<SingleEvent<String>> = MutableLiveData()
 
-    override fun fragmentClickedLiveData(): LiveData<SingleEvent<String>> = fragmentClickedLiveData
+    override fun fragmentClickedLiveData(): MutableLiveData<SingleEvent<String>> = fragmentClickedLiveData
 }

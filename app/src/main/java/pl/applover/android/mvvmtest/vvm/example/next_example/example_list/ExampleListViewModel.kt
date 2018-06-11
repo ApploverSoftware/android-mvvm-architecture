@@ -14,6 +14,10 @@ class ExampleListViewModel(val navigator: ExampleListFragmentNavigator) : ViewMo
 
     val someToast = MutableLiveData<Event<String>>()
 
+    init {
+        println("Navigator: $navigator")
+    }
+
     fun showSomeToast() {
         someToast.value = Event("someToast")
     }

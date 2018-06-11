@@ -1,5 +1,6 @@
 package pl.applover.android.mvvmtest.dependency_injections.fragments.modules
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleNavigator
@@ -9,11 +10,13 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.Exampl
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-@Module
+@Module(includes = [ExampleListFragmentModule.Navigators::class])
 class ExampleListFragmentModule {
-
-    @Provides
-    fun provideNavigator(nextExampleNavigator: NextExampleNavigator) = nextExampleNavigator as ExampleListFragmentNavigator
+    @Module
+    interface Navigators {
+        @Binds
+        fun provideNavigator(nextExampleNavigator: NextExampleNavigator): ExampleListFragmentNavigator
+    }
 
     @Provides
     fun provideViewModelFactory(exampleListFragmentNavigator: ExampleListFragmentNavigator) = ExampleListViewModelFactory(exampleListFragmentNavigator)

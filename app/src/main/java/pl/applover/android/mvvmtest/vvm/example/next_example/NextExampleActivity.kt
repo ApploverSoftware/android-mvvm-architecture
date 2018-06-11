@@ -29,6 +29,9 @@ class NextExampleActivity : DaggerAppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled()) })
+        viewModel.navigator.fragmentClickedLiveData().observe(this, Observer {
+            t ->  println("Something: $t")
+        })
         viewModel.activityOnResume()
     }
 }
