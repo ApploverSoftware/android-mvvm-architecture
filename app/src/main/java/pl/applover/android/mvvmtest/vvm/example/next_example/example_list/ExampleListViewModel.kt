@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.util.architecture.live_data.Event
-import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleNavigator
 
 /**
  * Created by Janusz Hain on 2018-06-06.

@@ -48,7 +48,6 @@ dependencies {
     implementation "com.android.support:design:$android_support_version"
     implementation "com.android.support.constraint:constraint-layout:$android_support_constraint_version"
 
-
     //RETROFIT and RxJava - Required by architecture
     def retrofitVersion = "2.3.0"
     def okhttpVersion = "3.9.0"
@@ -82,7 +81,6 @@ dependencies {
 
     //noinspection GradleDependency
     kapt "com.google.dagger:dagger-android-support:$daggerVersion"
-
 
     // ViewModel and LiveData - Required by architecture
     def lifecycle_version = "1.1.1"

@@ -16,10 +16,9 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_google_map.*
 import org.greenrobot.eventbus.EventBus
-import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
-
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
 
 
 /**

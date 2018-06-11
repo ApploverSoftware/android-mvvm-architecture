@@ -2,7 +2,6 @@ package pl.applover.android.mvvmtest.vvm.example.next_example.example_list
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleNavigator
 import javax.inject.Inject
 
 /**
