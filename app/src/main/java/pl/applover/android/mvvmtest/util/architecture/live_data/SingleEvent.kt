@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.util.architecture
+package pl.applover.android.mvvmtest.util.architecture.live_data
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

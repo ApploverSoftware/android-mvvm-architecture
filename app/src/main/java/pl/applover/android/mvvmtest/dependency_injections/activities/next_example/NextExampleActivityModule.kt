@@ -2,6 +2,8 @@ package pl.applover.android.mvvmtest.dependency_injections.activities.next_examp
 
 import dagger.Module
 import dagger.Provides
+import pl.applover.android.mvvmtest.util.architecture.dependency_injection.ActivityScope
+import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleNavigator
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewModelFactory
 
 /**
@@ -11,5 +13,12 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewMode
 class NextExampleActivityModule {
 
     @Provides
-    fun provideViewModelFactory() = NextExampleViewModelFactory()
+    @ActivityScope
+    fun provideNavigator() = NextExampleNavigator()
+
+
+    @Provides
+    @ActivityScope
+    fun provideViewModelFactory(nextExampleNavigator: NextExampleNavigator) = NextExampleViewModelFactory(nextExampleNavigator)
+
 }

@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example
+package pl.applover.android.mvvmtest.vvm.example.main_example
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders

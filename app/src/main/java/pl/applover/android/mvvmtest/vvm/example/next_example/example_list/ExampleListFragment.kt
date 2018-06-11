@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example.list
+package pl.applover.android.mvvmtest.vvm.example.next_example.example_list
 
 
 import android.arch.lifecycle.Observer
@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.example_fragment_list.*
 import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 import pl.applover.android.mvvmtest.util.extensions.showToast
 import javax.inject.Inject
 
@@ -20,7 +22,7 @@ class ExampleListFragment : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleListViewModel()::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -30,12 +32,29 @@ class ExampleListFragment : DaggerFragment() {
         return inflater.inflate(R.layout.example_fragment_list, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setViewListeners()
+    }
+
     private fun setViewModelListeners() {
         viewModel.someToast.observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 showToast(it)
             }
         })
+
+        viewModel.navigator.fragmentClickedLiveData().observe(this, Observer {
+            it?.getContentIfNotHandled(this)?.let {
+                showToast(it)
+            }
+        })
+    }
+
+    private fun setViewListeners() {
+        buttonNavigatorTest.setOnClickListener {
+            viewModel.navigator.fragmentClickedLiveData().value = SingleEvent("Test")
+        }
     }
 
     override fun onResume() {
