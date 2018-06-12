@@ -8,7 +8,7 @@ import pl.applover.android.mvvmtest.util.architecture.live_data.Event
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class NextExampleViewModel(private val router: NextExampleRouter, private val navigator: NextExampleActivityNavigator) : ViewModel() {
+class NextExampleViewModel(private val router: NextExampleActivityRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -16,12 +16,12 @@ class NextExampleViewModel(private val router: NextExampleRouter, private val na
     val title = MutableLiveData<String>()
 
     init {
-        println("Navigator in activity: $navigator")
+        println("Navigator in activity: $router")
         setNavigatorObservers()
     }
 
     private fun setNavigatorObservers() {
-        compositeDisposable.add(navigator.receiver.fragmentClicked.subscribe({ println("Navigator clicked event") }))
+        compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ println("Navigator clicked event") }))
     }
 
     fun activityOnResume() {

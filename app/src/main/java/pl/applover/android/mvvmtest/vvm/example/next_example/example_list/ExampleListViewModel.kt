@@ -8,14 +8,14 @@ import pl.applover.android.mvvmtest.util.architecture.live_data.Event
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleListViewModel(val navigator: ExampleListFragmentNavigator) : ViewModel() {
+class ExampleListViewModel(val router: ExampleListFragmentRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     val someToast = MutableLiveData<Event<String>>()
 
     init {
-        println("Navigator: $navigator")
+        println("Navigator: $router")
     }
 
     fun showSomeToast() {
