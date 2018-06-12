@@ -24,6 +24,7 @@ class ExampleListViewModel(val navigator: ExampleListFragmentNavigator) : ViewMo
 
     override fun onCleared() {
         super.onCleared()
+        compositeDisposable.dispose()
         compositeDisposable.clear()
     }
 }

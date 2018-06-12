@@ -34,7 +34,7 @@ class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        println("OnCleared")
+        compositeDisposable.dispose()
         compositeDisposable.clear()
     }
 }
