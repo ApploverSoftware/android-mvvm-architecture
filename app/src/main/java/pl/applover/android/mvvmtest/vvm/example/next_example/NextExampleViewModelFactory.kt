@@ -7,10 +7,10 @@ import javax.inject.Inject
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class NextExampleViewModelFactory @Inject constructor(val navigator: NextExampleNavigator) : ViewModelProvider.Factory {
+class NextExampleViewModelFactory @Inject constructor(val router: NextExampleRouter) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return NextExampleViewModel(navigator) as T
+        return NextExampleViewModel(router) as T
     }
 }

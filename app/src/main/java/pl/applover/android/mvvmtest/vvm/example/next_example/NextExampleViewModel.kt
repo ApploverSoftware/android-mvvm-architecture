@@ -9,7 +9,7 @@ import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
+class NextExampleViewModel(val router: NextExampleRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -17,12 +17,12 @@ class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
     val title = MutableLiveData<String>()
 
     init {
-        println("Navigator in activity: $navigator")
+        println("Navigator in activity: $router")
         setNavigatorObservers()
     }
 
     private fun setNavigatorObservers() {
-        navigator.fragmentClickedLiveData().observeForever { someClick: SingleEvent<String>? ->
+        router.exampleListFragmentNavigator.sender.fragmentClickedLiveData.observeForever { someClick: SingleEvent<String>? ->
             someClick?.getContentIfNotHandled(this)?.let { println("Navigator clicked event: " + it) }
         }
     }
