@@ -6,6 +6,8 @@ import javax.inject.Inject
 /**
  * Created by Janusz Hain on 2018-06-11.
  */
-class NextExampleRouter @Inject constructor(val exampleListFragmentNavigator: ExampleListFragmentNavigator) {
-
+class NextExampleRouter @Inject constructor(nextExampleActivityNavigator: NextExampleActivityNavigator, exampleListFragmentNavigator: ExampleListFragmentNavigator) {
+    init {
+        exampleListFragmentNavigator.sender.fragmentClicked.subscribe(nextExampleActivityNavigator.receiver.fragmentClicked)
+    }
 }

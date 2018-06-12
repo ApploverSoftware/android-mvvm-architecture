@@ -3,6 +3,7 @@ package pl.applover.android.mvvmtest.dependency_injections.activities.next_examp
 import dagger.Module
 import dagger.Provides
 import pl.applover.android.mvvmtest.util.architecture.dependency_injection.ActivityScope
+import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivityNavigator
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleRouter
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleViewModelFactory
 import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragmentNavigator
@@ -17,16 +18,20 @@ class NextExampleActivityModule {
     class NavigatorsModule {
         @Provides
         @ActivityScope
+        fun provideNextExampleActivityNavigator() = NextExampleActivityNavigator()
+
+        @Provides
+        @ActivityScope
         fun provideExampleListFragmentNavigator() = ExampleListFragmentNavigator()
     }
 
     @Provides
     @ActivityScope
-    fun provideRouter(exampleListFragmentNavigator: ExampleListFragmentNavigator) = NextExampleRouter(exampleListFragmentNavigator)
+    fun provideRouter(nextExampleActivityNavigator: NextExampleActivityNavigator, exampleListFragmentNavigator: ExampleListFragmentNavigator) = NextExampleRouter(nextExampleActivityNavigator, exampleListFragmentNavigator)
 
 
     @Provides
     @ActivityScope
-    fun provideViewModelFactory(nextExampleRouter: NextExampleRouter) = NextExampleViewModelFactory(nextExampleRouter)
+    fun provideViewModelFactory(nextExampleRouter: NextExampleRouter, nextExampleActivityNavigator: NextExampleActivityNavigator) = NextExampleViewModelFactory(nextExampleRouter, nextExampleActivityNavigator)
 
 }

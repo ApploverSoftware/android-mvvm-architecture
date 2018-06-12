@@ -43,17 +43,11 @@ class ExampleListFragment : DaggerFragment() {
                 showToast(it)
             }
         })
-
-        viewModel.navigator.sender.fragmentClickedLiveData.observe(this, Observer {
-            it?.getContentIfNotHandled(this)?.let {
-                showToast(it)
-            }
-        })
     }
 
     private fun setViewListeners() {
         buttonNavigatorTest.setOnClickListener {
-            viewModel.navigator.sender.fragmentClickedLiveData.value = SingleEvent("Test")
+            viewModel.navigator.sender.fragmentClicked.onNext("")
         }
     }
 
