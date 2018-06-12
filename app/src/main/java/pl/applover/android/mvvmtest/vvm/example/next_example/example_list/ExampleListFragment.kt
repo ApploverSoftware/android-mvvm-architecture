@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.example_fragment_list.*
 import pl.applover.android.mvvmtest.R
-import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 import pl.applover.android.mvvmtest.util.extensions.showToast
 import javax.inject.Inject
 
@@ -43,17 +42,11 @@ class ExampleListFragment : DaggerFragment() {
                 showToast(it)
             }
         })
-
-        viewModel.navigator.fragmentClickedLiveData().observe(this, Observer {
-            it?.getContentIfNotHandled(this)?.let {
-                showToast(it)
-            }
-        })
     }
 
     private fun setViewListeners() {
         buttonNavigatorTest.setOnClickListener {
-            viewModel.navigator.fragmentClickedLiveData().value = SingleEvent("Test")
+            viewModel.router.sender.fragmentClicked.onNext("")
         }
     }
 

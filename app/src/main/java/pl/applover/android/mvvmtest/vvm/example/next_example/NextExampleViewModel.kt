@@ -4,12 +4,11 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.util.architecture.live_data.Event
-import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
+class NextExampleViewModel(private val router: NextExampleActivityRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -17,14 +16,12 @@ class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
     val title = MutableLiveData<String>()
 
     init {
-        println("Navigator in activity: $navigator")
+        println("Navigator in activity: $router")
         setNavigatorObservers()
     }
 
     private fun setNavigatorObservers() {
-        navigator.fragmentClickedLiveData().observeForever { someClick: SingleEvent<String>? ->
-            someClick?.getContentIfNotHandled(this)?.let { println("Navigator clicked event: " + it) }
-        }
+        compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ println("Navigator clicked event") }))
     }
 
     fun activityOnResume() {
@@ -34,7 +31,7 @@ class NextExampleViewModel(val navigator: NextExampleNavigator) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        println("OnCleared")
+        compositeDisposable.dispose()
         compositeDisposable.clear()
     }
 }

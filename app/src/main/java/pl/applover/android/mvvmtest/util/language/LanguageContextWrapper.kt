@@ -39,19 +39,19 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
          * todo Not working, any solution found on the internet doesn't work. this is for api less than 24
 
         private fun updateResourcesLegacy(context: Context, locale: Locale): Context {
-            Locale.setDefault(locale)
+        Locale.setDefault(locale)
 
-            val resources = context.getResources()
+        val resources = context.getResources()
 
-            val configuration = resources.getConfiguration()
-            configuration.locale = locale
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                configuration.setLayoutDirection(locale)
-            }
+        val configuration = resources.getConfiguration()
+        configuration.locale = locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        configuration.setLayoutDirection(locale)
+        }
 
-            resources.updateConfiguration(configuration, resources.getDisplayMetrics())
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics())
 
-            return context
+        return context
         }
          */
     }

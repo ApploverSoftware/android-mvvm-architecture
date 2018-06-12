@@ -9,8 +9,8 @@ import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import pl.applover.android.mvvmtest.util.extensions.printError
 import pl.applover.android.mvvmtest.App
+import pl.applover.android.mvvmtest.util.extensions.printError
 import java.lang.Exception
 
 /**

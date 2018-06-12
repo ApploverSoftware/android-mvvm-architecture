@@ -22,6 +22,7 @@ class ExampleMainViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        compositeDisposable.dispose()
         compositeDisposable.clear()
     }
 }

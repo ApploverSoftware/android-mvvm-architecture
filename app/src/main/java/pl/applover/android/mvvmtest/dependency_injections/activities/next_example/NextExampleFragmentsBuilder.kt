@@ -12,7 +12,7 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.Exampl
 @Module
 abstract class NextExampleFragmentsBuilder {
 
-    @ContributesAndroidInjector(modules = arrayOf(ExampleListFragmentModule::class))
+    @ContributesAndroidInjector(modules = [ExampleListFragmentModule::class])
     @FragmentScope
     abstract fun bindExampleListFragment(): ExampleListFragment
 }

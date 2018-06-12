@@ -44,6 +44,6 @@ fun createUnderlineText(text: String, textColorRid: Int, clickCallback: (() -> U
     return spannableString
 }
 
-fun doubleToTwoDigitsFormat(value: Double?) = if(value != null) "%.2f".format(value) else null
+fun doubleToTwoDigitsFormat(value: Double?) = if (value != null) "%.2f".format(value) else null
 
-fun doubleToOneDigitFormat(value: Double?) = if(value != null) "%.1f".format(value) else null
+fun doubleToOneDigitFormat(value: Double?) = if (value != null) "%.1f".format(value) else null

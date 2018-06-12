@@ -1,6 +1,6 @@
 package pl.applover.android.mvvmtest.util.extensions
 
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by Janusz Hain on 2018-01-08.
@@ -28,7 +28,7 @@ fun <T : Any> MutableIterator<T>.removeAll(condition: (value: T) -> Boolean) {
 /**
  * @return Object [V] under [key] if exists or null if put successful
  */
-fun <K: Any, V: Any> HashMap<K, V>.putIfNotExists(key: K, value: V): V? {
+fun <K : Any, V : Any> HashMap<K, V>.putIfNotExists(key: K, value: V): V? {
     val valueUnderKey = get(key)
     if (valueUnderKey == null) {
         put(key, value)

@@ -16,11 +16,11 @@ import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
 @Module
 abstract class ActivitiesBuilder {
 
-    @ContributesAndroidInjector(modules = arrayOf(ExampleMainActivityModule::class, ExampleMainFragmentsBuilder::class))
+    @ContributesAndroidInjector(modules = [ExampleMainActivityModule::class, ExampleMainFragmentsBuilder::class])
     @ActivityScope
     abstract fun bindExampleMainActivity(): ExampleMainActivity
 
-    @ContributesAndroidInjector(modules = arrayOf(NextExampleActivityModule::class, NextExampleFragmentsBuilder::class))
+    @ContributesAndroidInjector(modules = [NextExampleActivityModule::class, NextExampleFragmentsBuilder::class])
     @ActivityScope
     abstract fun bindNextExampleActivity(): NextExampleActivity
 }
