@@ -32,7 +32,6 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter) : View
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.dispose()
         compositeDisposable.clear()
         watchForLeaks()
     }
