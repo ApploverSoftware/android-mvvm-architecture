@@ -29,7 +29,7 @@ class ExampleMainViewModel : ViewModel() {
     }
 
     private fun watchForLeaks() {
-        App.refWatcher.watch(this)
+        App.refWatcher.watch(compositeDisposable)
         App.refWatcher.watch(someEvent)
         App.refWatcher.watch(title)
     }

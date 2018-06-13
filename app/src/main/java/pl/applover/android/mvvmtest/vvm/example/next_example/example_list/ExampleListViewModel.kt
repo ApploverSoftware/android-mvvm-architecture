@@ -32,8 +32,8 @@ class ExampleListViewModel(val router: ExampleListFragmentRouter) : ViewModel() 
 
 
     private fun watchForLeaks() {
-        App.refWatcher.watch(this)
         App.refWatcher.watch(someToast)
+        App.refWatcher.watch(compositeDisposable)
         //we don't watch for router leak, as router has to stay alive, as it is router for activity scope
     }
 }

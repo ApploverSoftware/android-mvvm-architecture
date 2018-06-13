@@ -38,7 +38,6 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter) : View
     }
 
     private fun watchForLeaks() {
-        App.refWatcher.watch(this)
         App.refWatcher.watch(someEvent)
         App.refWatcher.watch(title)
         App.refWatcher.watch(router)
