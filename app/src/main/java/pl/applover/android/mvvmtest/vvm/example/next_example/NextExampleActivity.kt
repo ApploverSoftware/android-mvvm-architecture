@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
+import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showFragment
 import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragment
@@ -30,5 +31,16 @@ class NextExampleActivity : DaggerAppCompatActivity() {
         super.onResume()
         viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled()) })
         viewModel.activityOnResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        watchLeaks()
+    }
+
+    private fun watchLeaks() {
+        App.refWatcher.watch(this)
+        App.refWatcher.watch(viewModelFactory)
+        App.refWatcher.watch(viewModel)
     }
 }

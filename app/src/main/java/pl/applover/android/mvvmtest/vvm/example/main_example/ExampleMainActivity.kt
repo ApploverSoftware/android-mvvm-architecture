@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.example_activity_main.*
+import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.goToActivity
 import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
@@ -38,6 +39,17 @@ class ExampleMainActivity : DaggerAppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.activityOnResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        watchLeaks()
+    }
+
+    private fun watchLeaks() {
+        App.refWatcher.watch(this)
+        App.refWatcher.watch(viewModelFactory)
+        App.refWatcher.watch(viewModel)
     }
 
 }

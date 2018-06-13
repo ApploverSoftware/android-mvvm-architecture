@@ -93,6 +93,12 @@ dependencies {
     //Guava - Required by architecture
     implementation 'com.google.guava:guava:25.1-android'
 
+    //LeakCanary - Required by architecture
+    dependencies {
+        debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+        releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    }
+
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
 

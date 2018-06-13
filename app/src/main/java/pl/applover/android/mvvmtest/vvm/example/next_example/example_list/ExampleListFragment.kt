@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.example_fragment_list.*
+import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showToast
 import javax.inject.Inject
@@ -53,6 +54,17 @@ class ExampleListFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.showSomeToast()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        watchLeaks()
+    }
+
+    private fun watchLeaks() {
+        App.refWatcher.watch(this)
+        App.refWatcher.watch(viewModelFactory)
+        App.refWatcher.watch(viewModel)
     }
 
     companion object {
