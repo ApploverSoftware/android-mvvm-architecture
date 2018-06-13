@@ -25,7 +25,6 @@ class ExampleListViewModel(val router: ExampleListFragmentRouter) : ViewModel() 
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.dispose()
         compositeDisposable.clear()
         watchForLeaks()
     }
