@@ -17,7 +17,6 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter) : View
     val title = MutableLiveData<String>()
 
     init {
-        println("Navigator in activity: $router")
         setNavigatorObservers()
     }
 

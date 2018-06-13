@@ -16,10 +16,6 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter) : View
 
     val someToast = MutableLiveData<Event<String>>()
 
-    init {
-        println("Navigator: $router")
-    }
-
     fun showSomeToast() {
         someToast.value = Event("someToast")
     }
