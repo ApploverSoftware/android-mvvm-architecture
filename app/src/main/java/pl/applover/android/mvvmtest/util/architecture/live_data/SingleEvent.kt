@@ -11,6 +11,7 @@ open class SingleEvent<out T>(private val content: T) {
 
     /**
      * Returns the content and prevents its use again from the given class.
+     * CanonicalName of class is retrieved and stored in hashset to check if given class have used event already
      */
     fun getContentIfNotHandled(classThatWantToUseEvent: Any): T? {
         val canonicalName = classThatWantToUseEvent::javaClass.get().canonicalName
@@ -23,5 +24,18 @@ open class SingleEvent<out T>(private val content: T) {
                 null
             }
         } ?: return null
+    }
+
+    /**
+     * Returns the content and prevents its use again with the given tag.
+     * Tag is stored in hashset to check if given tag have used event already
+     */
+    fun getContentIfNotHandled(tag: String): T? {
+            return if (!classesThatHandledTheEvent.contains(tag)) {
+                classesThatHandledTheEvent.add(tag)
+                content
+            } else {
+                null
+            }
     }
 }
