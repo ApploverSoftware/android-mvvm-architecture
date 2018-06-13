@@ -49,7 +49,6 @@ class ExampleMainActivity : DaggerAppCompatActivity() {
     private fun watchLeaks() {
         App.refWatcher.watch(this)
         App.refWatcher.watch(viewModelFactory)
-        App.refWatcher.watch(viewModel)
     }
 
 }

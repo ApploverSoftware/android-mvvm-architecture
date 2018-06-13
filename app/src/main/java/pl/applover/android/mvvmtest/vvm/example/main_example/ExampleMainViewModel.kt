@@ -32,5 +32,6 @@ class ExampleMainViewModel : ViewModel() {
         App.refWatcher.watch(compositeDisposable)
         App.refWatcher.watch(someEvent)
         App.refWatcher.watch(title)
+        App.refWatcher.watch(this)
     }
 }
