@@ -47,7 +47,7 @@ class ExampleListFragment : DaggerFragment() {
 
     private fun setViewListeners() {
         buttonNavigatorTest.setOnClickListener {
-            viewModel.router.sender.fragmentClicked.onNext("")
+            viewModel.fragmentClicked()
         }
     }
 

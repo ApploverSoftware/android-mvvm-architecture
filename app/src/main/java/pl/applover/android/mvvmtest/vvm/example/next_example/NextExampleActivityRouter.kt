@@ -1,6 +1,7 @@
 package pl.applover.android.mvvmtest.vvm.example.next_example
 
 import io.reactivex.subjects.PublishSubject
+import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragmentRouter
 import javax.inject.Inject
 
@@ -20,6 +21,6 @@ class NextExampleActivityRouter @Inject constructor(exampleListFragmentRouter: E
     }
 
     class Receiver {
-        val fragmentClicked: PublishSubject<String> = PublishSubject.create()
+        val fragmentClicked: PublishSubject<EmptyEvent> = PublishSubject.create()
     }
 }

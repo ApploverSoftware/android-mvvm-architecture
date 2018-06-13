@@ -5,11 +5,12 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.util.architecture.live_data.Event
+import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleListViewModel(val router: ExampleListFragmentRouter) : ViewModel() {
+class ExampleListViewModel(private val router: ExampleListFragmentRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -21,6 +22,10 @@ class ExampleListViewModel(val router: ExampleListFragmentRouter) : ViewModel() 
 
     fun showSomeToast() {
         someToast.value = Event("someToast")
+    }
+
+    fun fragmentClicked(){
+        router.sender.fragmentClicked.onNext(EmptyEvent())
     }
 
     override fun onCleared() {
