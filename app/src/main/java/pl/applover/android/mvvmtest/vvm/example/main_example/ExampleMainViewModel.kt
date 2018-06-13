@@ -3,6 +3,7 @@ package pl.applover.android.mvvmtest.vvm.example.main_example
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.util.architecture.live_data.SingleEvent
 
 /**
@@ -24,5 +25,13 @@ class ExampleMainViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.dispose()
         compositeDisposable.clear()
+        watchForLeaks()
+    }
+
+    private fun watchForLeaks() {
+        App.refWatcher.watch(compositeDisposable)
+        App.refWatcher.watch(someEvent)
+        App.refWatcher.watch(title)
+        App.refWatcher.watch(this)
     }
 }

@@ -7,15 +7,15 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import com.squareup.leakcanary.LeakCanary
+import com.squareup.leakcanary.RefWatcher
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import org.jetbrains.anko.locationManager
 import pl.applover.android.mvvmtest.dependency_injections.app.components.DaggerAppComponent
 import pl.applover.android.mvvmtest.util.extensions.DelegatesExt
 import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
-import retrofit2.Retrofit
 import javax.inject.Inject
-import javax.inject.Named
 
 
 /**
@@ -25,10 +25,6 @@ class App : Application(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    @Inject
-    @field:Named("example")
-    lateinit var exampleRetrofit: Retrofit
 
     private val locationListeners = ArrayList<LocationListener>()
 
@@ -40,6 +36,9 @@ class App : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        initCanaryLeak()
+
         instance = this
 
         DaggerAppComponent
@@ -47,6 +46,15 @@ class App : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
+    }
+
+    private fun initCanaryLeak() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
     }
 
 
@@ -116,7 +124,6 @@ class App : Application(), HasActivityInjector {
 
     companion object {
         var instance: App by DelegatesExt.notNullSingleValue()
-
-        fun getExampleRetrofit() = instance.exampleRetrofit
+        var refWatcher: RefWatcher by DelegatesExt.notNullSingleValue()
     }
 }
