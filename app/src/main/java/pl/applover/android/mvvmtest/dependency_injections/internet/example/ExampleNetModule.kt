@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 class ExampleNetModule {
-    private var webServiceUrl = "https://jsonplaceholder.typicode.com/"
+    private var webServiceUrl = "http://my-json-server.typicode.com/" //JanuszHain/MyJsonServerCities/cities/
     private val timeoutInSec = 20
 
 
@@ -32,7 +32,7 @@ class ExampleNetModule {
 
 
         val certificatePinner = CertificatePinner.Builder()
-                //.add("jsonplaceholder.typicode.com", "sha256/Vuy2zjFSPqF5Hz18k88DpUViKGbABaF3vZx5Raghplc=")
+                //.add("my-json-server.typicode.com", "sha256/Vuy2zjFSPqF5Hz18k88DpUViKGbABaF3vZx5Raghplc=")
                 .build()
 
 
