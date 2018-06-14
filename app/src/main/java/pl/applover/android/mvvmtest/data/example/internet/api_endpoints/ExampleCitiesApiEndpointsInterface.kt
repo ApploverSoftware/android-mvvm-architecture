@@ -10,7 +10,7 @@ import retrofit2.http.Header
  * Created by Janusz Hain on 2018-01-12.
  */
 
-interface ExampleApiEndpointsInterface {
+interface ExampleCitiesApiEndpointsInterface {
 
     /*
     @POST("/api/v1/events")

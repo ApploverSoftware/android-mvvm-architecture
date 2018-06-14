@@ -1,14 +1,11 @@
 package pl.applover.android.mvvmtest.util.ui.google_map
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
-import io.mironov.smuggler.AutoParcelable
 
 /**
  * Created by Janusz Hain on 2018-02-02.
  */
-@SuppressLint("ParcelCreator")
-class GoogleMapPadding(private val rect: Rect, private val enum: DirectionsEnum? = null, private val bonusPadding: Int = 0) : AutoParcelable {
+class GoogleMapPadding(private val rect: Rect, private val enum: DirectionsEnum? = null, private val bonusPadding: Int = 0) {
 
     var rectPadding: Rect
 
