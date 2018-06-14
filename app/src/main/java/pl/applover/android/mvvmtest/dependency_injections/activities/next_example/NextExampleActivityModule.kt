@@ -18,7 +18,7 @@ class NextExampleActivityModule {
 
         @Provides
         @ActivityScope
-        fun provideExampleListFragmentNavigator() = ExampleListFragmentRouter()
+        fun provideExampleListFragmentRouter() = ExampleListFragmentRouter()
     }
 
     @Provides

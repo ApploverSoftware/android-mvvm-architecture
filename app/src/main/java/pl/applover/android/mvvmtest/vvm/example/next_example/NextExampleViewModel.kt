@@ -17,11 +17,10 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter) : View
     val title = MutableLiveData<String>()
 
     init {
-        println("Navigator in activity: $router")
-        setNavigatorObservers()
+        setRouterObservers()
     }
 
-    private fun setNavigatorObservers() {
+    private fun setRouterObservers() {
         compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ println("Navigator clicked event") }))
     }
 
