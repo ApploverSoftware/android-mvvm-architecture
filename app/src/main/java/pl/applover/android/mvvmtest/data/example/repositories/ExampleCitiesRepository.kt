@@ -1,5 +1,9 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
@@ -25,7 +29,24 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun citiesFromDatabase() = daoCities.citiesById().map { it.map { ExampleCityModel(it) } }
 
-    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) = daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) })
+    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) {
+        launch(UI) {
+            val query = async(CommonPool) {
+                daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) })
+            }
+            query.await()
+        }
 
-    fun deleteAllCitiesFromDatabase() = daoCities.deleteAll()
+    }
+
+    fun deleteAllCitiesFromDatabase() {
+        launch(UI) {
+            val query = async(CommonPool) {
+                daoCities.deleteAll()
+            }
+            query.await()
+        }
+    }
+
+
 }
