@@ -1,15 +1,13 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import io.reactivex.Observable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.data.example.internet.paging.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -29,24 +27,9 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun citiesFromDatabase() = daoCities.citiesById().map { it.map { ExampleCityModel(it) } }
 
-    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) {
-        launch(UI) {
-            val query = async(CommonPool) {
-                daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) })
-            }
-            query.await()
-        }
+    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) = Observable.fromCallable { daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) }) }
 
-    }
-
-    fun deleteAllCitiesFromDatabase() {
-        launch(UI) {
-            val query = async(CommonPool) {
-                daoCities.deleteAll()
-            }
-            query.await()
-        }
-    }
+    fun deleteAllCitiesFromDatabase() = Observable.fromCallable { daoCities.deleteAll() }
 
 
 }
