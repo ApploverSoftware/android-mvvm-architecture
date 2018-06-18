@@ -1,5 +1,6 @@
 package pl.applover.android.mvvmtest.models.example
 
+import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
 
 
@@ -11,11 +12,20 @@ class ExampleCityModel(
         val country: String
 ) {
 
-    constructor(exampleCityResponse: ExampleCityResponse) : this(id = exampleCityResponse.id,
-            name = exampleCityResponse.name,
-            lat = exampleCityResponse.lat,
-            lng = exampleCityResponse.lng,
-            country = exampleCityResponse.country)
+    constructor(exampleCityResponse: ExampleCityResponse) : this(
+            exampleCityResponse.id,
+            exampleCityResponse.name,
+            exampleCityResponse.lat,
+            exampleCityResponse.lng,
+            exampleCityResponse.country)
+
+    constructor(exampleCityDbModel: ExampleCityDbModel) : this(
+            exampleCityDbModel.id,
+            exampleCityDbModel.name,
+            exampleCityDbModel.lat,
+            exampleCityDbModel.lng,
+            exampleCityDbModel.country
+    )
 
     fun getInfoAboutCity() = "City $name in country $country with coordinates: $lat lat and $lng lng"
 

@@ -14,14 +14,14 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
                                                   private val daoCities: ExampleCityDao) {
 
     fun citiesFromNetwork() =
-            apiCities.getCitiesList().map { t -> MappedResponse(t.raw(), t.body()?.map { exampleCityResponse -> ExampleCityModel(exampleCityResponse) }, t.errorBody()) }
+            apiCities.getCitiesList().map { t -> MappedResponse(t.raw(), t.body()?.map { ExampleCityModel(it) }, t.errorBody()) }
 
 
-    fun citiesFromDatabase() = daoCities.citiesById()
+    fun citiesFromDatabase() = daoCities.citiesById().map { it.map { ExampleCityModel(it) } }
 
-    fun pagedCitiesFromDatabase() = daoCities.citiesPagedById()
+    fun pagedCitiesFromDatabase() = daoCities.citiesPagedById().map { ExampleCityModel(it) }
 
-    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityDbModel>) = daoCities.insertOrReplaceAll(cities)
+    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) = daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) })
 
     fun deleteAllCitiesFromDatabase() = daoCities.deleteAll()
 }
