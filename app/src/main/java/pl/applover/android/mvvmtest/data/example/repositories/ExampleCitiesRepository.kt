@@ -14,7 +14,7 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
                                                   private val daoCities: ExampleCityDao) {
 
     fun citiesFromNetwork() =
-            apiCities.getCitiesList().map { t -> MappedResponse(t.raw(), t.body()?.map { ExampleCityModel(it) }, t.errorBody()) }
+            apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
 
     fun citiesFromDatabase() = daoCities.citiesById().map { it.map { ExampleCityModel(it) } }
