@@ -7,7 +7,7 @@ import okhttp3.ResponseBody
  * Created by Janusz Hain on 2018-06-18.
  */
 
-class MappedResponse<T>(private val rawResponse: okhttp3.Response,
+open class MappedResponse<T>(private val rawResponse: okhttp3.Response,
                              private val body: T?,
                              private val errorBody: ResponseBody?) {
 

@@ -5,6 +5,7 @@ import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityRe
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 
 /**
  * Created by Janusz Hain on 2018-01-12.
@@ -43,6 +44,12 @@ interface ExampleCitiesApiEndpointsInterface {
 
     @GET("/JanuszHain/MyJsonServerCities/cities/")
     fun getCitiesList(
+            @Header("Content-Type") contentType: String = "application/json"
+    ): Single<Response<List<ExampleCityResponse>>>
+
+    @GET("/JanuszHain/MyJsonServerCities/cities/lastId/{lastId}")
+    fun getPagedCitiesList(
+            @Path("lastId") lastId: Int?,
             @Header("Content-Type") contentType: String = "application/json"
     ): Single<Response<List<ExampleCityResponse>>>
 }

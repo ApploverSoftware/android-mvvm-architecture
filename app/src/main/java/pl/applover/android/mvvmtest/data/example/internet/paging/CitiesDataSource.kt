@@ -1,29 +1,46 @@
 package pl.applover.android.mvvmtest.data.example.internet.paging
 
 import android.arch.paging.ItemKeyedDataSource
-import io.reactivex.Single
-import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
+import io.reactivex.subjects.BehaviorSubject
+import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import retrofit2.Response
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 
 /**
  * Created by Janusz Hain on 2018-06-18.
  */
-class CitiesDataSource(private val initialCitiesLoad: Single<Response<List<ExampleCityResponse>>>) : ItemKeyedDataSource<Int, ExampleCityModel>() {
+class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface) : ItemKeyedDataSource<Int, ExampleCityModel>() {
+
+    val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
+
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<ExampleCityModel>) {
-        initialCitiesLoad.subscribe({ response: Response<List<ExampleCityResponse>> ->
+        networkStateSubject.onNext(NetworkState.LOADING)
+        initialPagedCitiesFromNetwork().subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
             response.body()?.let {
-                val cities = it.map { exampleCityResponse -> ExampleCityModel(exampleCityResponse) }
-                callback.onResult(cities)
+                callback.onResult(it)
+                networkStateSubject.onNext(NetworkState.LOADED)
             }
         }, { throwable: Throwable ->
-
+            networkStateSubject.onNext(NetworkState.error())
         })
     }
 
+    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList(null).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<ExampleCityModel>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        networkStateSubject.onNext(NetworkState.LOADING)
+        afterPagedCitiesFromNetwork(params.key).subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+            response.body()?.let {
+                callback.onResult(it)
+                networkStateSubject.onNext(NetworkState.LOADED)
+            }
+        }, { throwable: Throwable ->
+            networkStateSubject.onNext(NetworkState.error())
+        })
     }
+
+    private fun afterPagedCitiesFromNetwork(lastId: Int) = apiCities.getPagedCitiesList(lastId).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<ExampleCityModel>) {
         //in this example we will do paging list only for "loadAfter"
