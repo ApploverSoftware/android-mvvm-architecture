@@ -20,9 +20,11 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
             response.body()?.let {
                 callback.onResult(it)
                 networkStateSubject.onNext(NetworkState.LOADED)
+            } ?: let {
+                networkStateSubject.onNext(NetworkState.error(response.code(), response.errorBody()))
             }
         }, { throwable: Throwable ->
-            networkStateSubject.onNext(NetworkState.error())
+            networkStateSubject.onNext(NetworkState.throwable(throwable))
         })
     }
 
@@ -34,9 +36,11 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
             response.body()?.let {
                 callback.onResult(it)
                 networkStateSubject.onNext(NetworkState.LOADED)
+            } ?: let {
+                networkStateSubject.onNext(NetworkState.error(response.code(), response.errorBody()))
             }
         }, { throwable: Throwable ->
-            networkStateSubject.onNext(NetworkState.error())
+            networkStateSubject.onNext(NetworkState.throwable(throwable))
         })
     }
 
