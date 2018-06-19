@@ -54,6 +54,7 @@ class ExampleListFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.showSomeToast()
+        viewModel.loadCities()
     }
 
     override fun onDestroy() {

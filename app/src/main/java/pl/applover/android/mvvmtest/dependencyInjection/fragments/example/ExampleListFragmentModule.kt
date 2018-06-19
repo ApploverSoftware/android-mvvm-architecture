@@ -2,6 +2,7 @@ package pl.applover.android.mvvmtest.dependencyInjection.fragments.example
 
 import dagger.Module
 import dagger.Provides
+import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListViewModelFactory
 
@@ -11,5 +12,5 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleL
 @Module
 class ExampleListFragmentModule {
     @Provides
-    fun provideViewModelFactory(exampleListFragmentRouter: ExampleListFragmentRouter) = ExampleListViewModelFactory(exampleListFragmentRouter)
+    fun provideViewModelFactory(router: ExampleListFragmentRouter, repository: ExampleCitiesRepository) = ExampleListViewModelFactory(router, repository)
 }

@@ -4,13 +4,17 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
+import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
+import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.liveData.Event
+import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
+import pl.applover.android.mvvmtest.util.other.MyScheduler
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleListViewModel(private val router: ExampleListFragmentRouter) : ViewModel() {
+class ExampleListViewModel(private val router: ExampleListFragmentRouter, private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -20,8 +24,17 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter) : View
         someToast.value = Event("someToast")
     }
 
-    fun fragmentClicked(){
+    fun fragmentClicked() {
         router.sender.fragmentClicked.onNext(EmptyEvent())
+    }
+
+    fun loadCities() {
+        citiesRepository.citiesFromNetwork()
+                .subscribeOn(MyScheduler.getScheduler())
+                .observeOn(MyScheduler.getMainThreadScheduler())
+                .subscribe { response: MappedResponse<List<ExampleCityModel>>?, throwable: Throwable? ->
+
+                }
     }
 
     override fun onCleared() {
