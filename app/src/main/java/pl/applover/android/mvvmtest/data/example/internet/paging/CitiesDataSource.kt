@@ -1,14 +1,10 @@
 package pl.applover.android.mvvmtest.data.example.internet.paging
 
-import android.arch.paging.ItemKeyedDataSource
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
+import pl.applover.android.mvvmtest.util.architecture.data_source.ItemKeyedDataSourceWithState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import timber.log.Timber
@@ -16,25 +12,7 @@ import timber.log.Timber
 /**
  * Created by Janusz Hain on 2018-06-18.
  */
-class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSource<Int, ExampleCityModel>() {
-
-    val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
-    val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
-
-    /**
-     * Keep Completable reference for the retry event
-     */
-    private var retryCompletable: Completable? = null
-
-
-    fun retry() {
-        if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable!!
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ }, { throwable -> Timber.e(throwable.message) }))
-        }
-    }
+class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSourceWithState<Int, ExampleCityModel>(compositeDisposable) {
 
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<ExampleCityModel>) {
@@ -90,13 +68,5 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
     }
 
     override fun getKey(item: ExampleCityModel): Int = item.id
-
-    private fun setRetry(action: Action?) {
-        if (action == null) {
-            this.retryCompletable = null
-        } else {
-            this.retryCompletable = Completable.fromAction(action)
-        }
-    }
 
 }
