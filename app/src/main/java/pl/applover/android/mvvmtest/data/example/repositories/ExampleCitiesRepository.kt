@@ -21,6 +21,8 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun citiesNetworkStateBehaviorSubject(citiesDataSourceFactory: CitiesDataSourceFactory) = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.networkStateSubject }
 
+    fun citiesInitialStateBehaviourSubject(citiesDataSourceFactory: CitiesDataSourceFactory) = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.initialStateSubject }
+
     fun citiesFromNetwork() =
             apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 

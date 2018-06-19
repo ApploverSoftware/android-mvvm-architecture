@@ -19,6 +19,7 @@ import timber.log.Timber
 class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSource<Int, ExampleCityModel>() {
 
     val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
+    val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
 
     /**
      * Keep Completable reference for the retry event
@@ -38,20 +39,24 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<ExampleCityModel>) {
         networkStateSubject.onNext(NetworkState.LOADING)
+        initialStateSubject.onNext(NetworkState.LOADING)
         compositeDisposable.add(
                 initialPagedCitiesFromNetwork().subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
                     response.body()?.let {
                         setRetry(null)
                         callback.onResult(it)
                         networkStateSubject.onNext(NetworkState.LOADED)
+                        initialStateSubject.onNext(NetworkState.LOADED)
                     } ?: let {
                         setRetry(Action { loadInitial(params, callback) })
                         networkStateSubject.onNext(NetworkState.error(response.code(), response.errorBody()))
+                        initialStateSubject.onNext(NetworkState.error(response.code(), response.errorBody()))
                     }
                 }, { throwable: Throwable ->
                     Timber.e(throwable.message)
                     setRetry(Action { loadInitial(params, callback) })
                     networkStateSubject.onNext(NetworkState.throwable(throwable))
+                    initialStateSubject.onNext(NetworkState.throwable(throwable))
                 })
         )
     }
