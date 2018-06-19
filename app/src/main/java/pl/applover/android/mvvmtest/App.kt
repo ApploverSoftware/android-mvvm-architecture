@@ -12,7 +12,7 @@ import com.squareup.leakcanary.RefWatcher
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import org.jetbrains.anko.locationManager
-import pl.applover.android.mvvmtest.dependency_injections.app.components.DaggerAppComponent
+import pl.applover.android.mvvmtest.dependencyInjection.app.components.DaggerAppComponent
 import pl.applover.android.mvvmtest.util.extensions.DelegatesExt
 import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
 import javax.inject.Inject

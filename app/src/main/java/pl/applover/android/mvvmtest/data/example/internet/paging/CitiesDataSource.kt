@@ -4,7 +4,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import pl.applover.android.mvvmtest.util.architecture.data_source.ItemKeyedDataSourceWithState
+import pl.applover.android.mvvmtest.util.architecture.dataSource.ItemKeyedDataSourceWithState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import timber.log.Timber

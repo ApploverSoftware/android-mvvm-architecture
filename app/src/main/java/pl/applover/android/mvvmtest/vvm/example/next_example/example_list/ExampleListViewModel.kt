@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
-import pl.applover.android.mvvmtest.util.architecture.live_data.Event
+import pl.applover.android.mvvmtest.util.architecture.liveData.Event
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 
 /**

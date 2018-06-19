@@ -12,7 +12,7 @@ import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbMo
 @Dao
 interface ExampleCityDao {
     @Query("SELECT * FROM example_cities ORDER BY id")
-    fun citiesById(): Single<ArrayList<ExampleCityDbModel>>
+    fun citiesById(): Single<List<ExampleCityDbModel>>
 
     @Query("SELECT * FROM example_cities ORDER BY id")
     fun citiesPagedById(): DataSource.Factory<Int, ExampleCityDbModel>
