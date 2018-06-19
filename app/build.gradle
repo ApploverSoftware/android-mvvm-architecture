@@ -122,4 +122,7 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
 }

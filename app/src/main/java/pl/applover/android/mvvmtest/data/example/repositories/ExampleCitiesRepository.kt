@@ -1,6 +1,7 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
@@ -16,12 +17,12 @@ import javax.inject.Inject
 class ExampleCitiesRepository @Inject constructor(private val apiCities: ExampleCitiesApiEndpointsInterface,
                                                   private val daoCities: ExampleCityDao) {
 
-    val citiesDataSourceFactory: CitiesDataSourceFactory = CitiesDataSourceFactory(apiCities)
+    fun citiesDataSourceFactory(compositeDisposable: CompositeDisposable): CitiesDataSourceFactory = CitiesDataSourceFactory(apiCities, compositeDisposable)
+
+    fun citiesNetworkStateBehaviorSubject(citiesDataSourceFactory: CitiesDataSourceFactory) = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.networkStateSubject }
 
     fun citiesFromNetwork() =
             apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
-
-    fun citiesNetworkStateBehaviorSubject() = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.networkStateSubject }
 
     fun pagedCitiesFromDatabase() = daoCities.citiesPagedById().map { ExampleCityModel(it) }
 
