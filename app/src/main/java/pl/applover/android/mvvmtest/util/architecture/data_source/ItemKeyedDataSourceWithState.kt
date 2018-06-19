@@ -33,6 +33,10 @@ abstract class ItemKeyedDataSourceWithState<Key, Value>(private val compositeDis
         }
     }
 
+    fun resetData() {
+        invalidate()
+    }
+
     protected fun setRetry(action: Action?) {
         if (action == null) {
             this.retryCompletable = null
