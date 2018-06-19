@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example.example_list
+package pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList
 
 
 import android.arch.lifecycle.Observer

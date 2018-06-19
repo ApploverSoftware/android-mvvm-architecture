@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example.example_list
+package pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList
 
 import io.reactivex.subjects.PublishSubject
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent

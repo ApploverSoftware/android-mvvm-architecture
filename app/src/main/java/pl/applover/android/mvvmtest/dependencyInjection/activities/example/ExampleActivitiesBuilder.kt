@@ -7,8 +7,8 @@ import pl.applover.android.mvvmtest.dependencyInjection.activities.example.examp
 import pl.applover.android.mvvmtest.dependencyInjection.activities.example.nextExample.NextExampleActivityModule
 import pl.applover.android.mvvmtest.dependencyInjection.activities.example.nextExample.NextExampleFragmentsBuilder
 import pl.applover.android.mvvmtest.util.architecture.dependencyInjection.ActivityScope
-import pl.applover.android.mvvmtest.vvm.example.main_example.ExampleMainActivity
-import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
+import pl.applover.android.mvvmtest.vvm.example.mainExample.ExampleMainActivity
+import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivity
 
 /**
  * Created by Janusz Hain on 2018-06-06.

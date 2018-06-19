@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example
+package pl.applover.android.mvvmtest.vvm.example.nextExample
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

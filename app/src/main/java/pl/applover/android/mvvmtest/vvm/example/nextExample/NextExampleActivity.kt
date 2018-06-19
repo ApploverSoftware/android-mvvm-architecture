@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.next_example
+package pl.applover.android.mvvmtest.vvm.example.nextExample
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -7,7 +7,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showFragment
-import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragment
+import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragment
 import javax.inject.Inject
 
 

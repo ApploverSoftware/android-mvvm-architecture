@@ -2,8 +2,8 @@ package pl.applover.android.mvvmtest.dependencyInjection.fragments.example
 
 import dagger.Module
 import dagger.Provides
-import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListFragmentRouter
-import pl.applover.android.mvvmtest.vvm.example.next_example.example_list.ExampleListViewModelFactory
+import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
+import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListViewModelFactory
 
 /**
  * Created by Janusz Hain on 2018-06-06.

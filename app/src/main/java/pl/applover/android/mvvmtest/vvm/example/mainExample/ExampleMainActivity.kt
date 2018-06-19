@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vvm.example.main_example
+package pl.applover.android.mvvmtest.vvm.example.mainExample
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.example_activity_main.*
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.goToActivity
-import pl.applover.android.mvvmtest.vvm.example.next_example.NextExampleActivity
+import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivity
 import javax.inject.Inject
 
 
