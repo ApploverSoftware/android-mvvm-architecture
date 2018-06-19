@@ -2,6 +2,8 @@ package pl.applover.android.mvvmtest.dependencyInjection.activities.example.exam
 
 import dagger.Module
 import dagger.Provides
+import pl.applover.android.mvvmtest.util.architecture.dependencyInjection.ActivityScope
+import pl.applover.android.mvvmtest.vvm.example.mainExample.ExampleActivityRouter
 import pl.applover.android.mvvmtest.vvm.example.mainExample.ExampleMainViewModelFactory
 
 /**
@@ -10,6 +12,16 @@ import pl.applover.android.mvvmtest.vvm.example.mainExample.ExampleMainViewModel
 @Module
 class ExampleMainActivityModule {
 
+    @Module
+    class NavigatorsModule {
+
+    }
+
     @Provides
-    fun provideViewModelFactory() = ExampleMainViewModelFactory()
+    @ActivityScope
+    fun provideRouter() = ExampleActivityRouter()
+
+    @Provides
+    fun provideViewModelFactory(router: ExampleActivityRouter) = ExampleMainViewModelFactory(router)
+
 }

@@ -22,7 +22,7 @@ class ExampleMainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.example_activity_main)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleMainViewModel()::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ExampleMainViewModel::class.java)
         viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled(this)) })
         viewModel.title.observe(this, Observer { title -> textViewHelloWorld.text = title })
 

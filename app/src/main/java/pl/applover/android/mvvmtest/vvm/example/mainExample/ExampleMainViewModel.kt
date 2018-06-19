@@ -9,7 +9,7 @@ import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleMainViewModel : ViewModel() {
+class ExampleMainViewModel(private val router: ExampleActivityRouter) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
