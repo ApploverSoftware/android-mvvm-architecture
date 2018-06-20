@@ -7,6 +7,7 @@ import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.liveData.Event
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.MyScheduler
@@ -20,6 +21,9 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
 
     val someToast = MutableLiveData<Event<String>>()
 
+    val mldNetworkState = MutableLiveData<NetworkState>()
+
+
     fun showSomeToast() {
         someToast.value = Event("someToast")
     }
@@ -29,12 +33,20 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
     }
 
     fun loadCities() {
+        mldNetworkState.value = NetworkState.LOADING
+
         citiesRepository.citiesFromNetwork()
                 .subscribeOn(MyScheduler.getScheduler())
                 .observeOn(MyScheduler.getMainThreadScheduler())
-                .subscribe { response: MappedResponse<List<ExampleCityModel>>?, throwable: Throwable? ->
-
-                }
+                .subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+                    if (response.isSuccessful()) {
+                        mldNetworkState.value = NetworkState.LOADED
+                    } else {
+                        mldNetworkState.value = NetworkState.error(response.code(), response.errorBody())
+                    }
+                }, { throwable: Throwable ->
+                    mldNetworkState.value = NetworkState.throwable(throwable)
+                })
     }
 
     override fun onCleared() {

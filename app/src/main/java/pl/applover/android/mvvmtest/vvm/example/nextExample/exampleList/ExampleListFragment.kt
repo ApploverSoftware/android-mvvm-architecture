@@ -35,6 +35,11 @@ class ExampleListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewListeners()
+        viewModel.mldNetworkState.observe(this, Observer {
+            it?.let {
+                //todo
+            }
+        })
     }
 
     private fun setViewModelListeners() {
