@@ -1,5 +1,6 @@
 package pl.applover.android.mvvmtest.models.example
 
+import android.databinding.BaseObservable
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
 
@@ -10,7 +11,7 @@ class ExampleCityModel(
         val lat: Double,
         val lng: Double,
         val country: String
-) {
+): BaseObservable() {
 
     constructor(exampleCityResponse: ExampleCityResponse) : this(
             exampleCityResponse.id,

@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.example_fragment_list.*
 import kotlinx.android.synthetic.main.example_item_network_state.*
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.adapters.cities.ExampleCityAdapter
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.extensions.showToast
@@ -24,6 +25,8 @@ class ExampleListFragment : DaggerFragment() {
     @Inject
     internal lateinit var viewModelFactory: ExampleListViewModelFactory
     private lateinit var viewModel: ExampleListViewModel
+
+    private val adapter = ExampleCityAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,7 @@ class ExampleListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recyclerViewCities.adapter = adapter
         setViewListeners()
         setViewModelObservers()
     }
@@ -47,6 +51,12 @@ class ExampleListFragment : DaggerFragment() {
         viewModel.mldNetworkState.observe(this, Observer {
             it?.let {
                 manageNetworkStateView(it)
+            }
+        })
+
+        viewModel.mldCitiesLiveData.observe(this, Observer {
+            it?.let {
+                adapter.replaceCities(it)
             }
         })
     }
@@ -72,7 +82,7 @@ class ExampleListFragment : DaggerFragment() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.someToast.observe(this, Observer {
+        viewModel.mldSomeToast.observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 showToast(it)
             }
