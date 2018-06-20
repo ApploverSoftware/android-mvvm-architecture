@@ -13,13 +13,9 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 class ExampleNetworkStateViewHolder(override val containerView: View, private val retryCallback: () -> Unit) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(networkState: NetworkState) {
-        textViewHelloWorld.text = networkState.networkStatus.name
-        if (networkState.networkStatus == NetworkStatus.FAILED) {
-            textViewHelloWorld.setOnClickListener {
-                retryCallback()
-            }
-        } else {
-            textViewHelloWorld.setOnClickListener(null)
+        textViewNetworkState.text = networkState.networkStatus.name
+        buttonRetry.setOnClickListener {
+            retryCallback()
         }
     }
 

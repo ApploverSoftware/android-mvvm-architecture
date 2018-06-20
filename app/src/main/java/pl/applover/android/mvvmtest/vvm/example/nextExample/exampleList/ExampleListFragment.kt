@@ -9,9 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.example_fragment_list.*
+import kotlinx.android.synthetic.main.example_item_network_state.*
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.extensions.showToast
+import pl.applover.android.mvvmtest.util.ui.hide
+import pl.applover.android.mvvmtest.util.ui.show
 import javax.inject.Inject
 
 class ExampleListFragment : DaggerFragment() {
@@ -35,11 +40,35 @@ class ExampleListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewListeners()
+        setViewModelObservers()
+    }
+
+    private fun setViewModelObservers() {
         viewModel.mldNetworkState.observe(this, Observer {
             it?.let {
-                //todo
+                manageNetworkStateView(it)
             }
         })
+    }
+
+    private fun manageNetworkStateView(networkState: NetworkState) {
+        textViewNetworkState.text = networkState.networkStatus.name
+
+        when (networkState.networkStatus) {
+            NetworkStatus.FAILED -> {
+                layoutExampleItemNetworkState.show()
+                progressBarNetwork.hide()
+                buttonRetry.show()
+            }
+            NetworkStatus.RUNNING -> {
+                layoutExampleItemNetworkState.show()
+                progressBarNetwork.show()
+                buttonRetry.hide()
+            }
+            NetworkStatus.SUCCESS -> {
+                layoutExampleItemNetworkState.hide()
+            }
+        }
     }
 
     private fun setViewModelListeners() {
@@ -53,6 +82,10 @@ class ExampleListFragment : DaggerFragment() {
     private fun setViewListeners() {
         buttonNavigatorTest.setOnClickListener {
             viewModel.fragmentClicked()
+        }
+
+        buttonRetry.setOnClickListener {
+            viewModel.loadCities()
         }
     }
 

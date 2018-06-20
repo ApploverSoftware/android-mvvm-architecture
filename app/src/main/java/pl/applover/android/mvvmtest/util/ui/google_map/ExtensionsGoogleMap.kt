@@ -10,7 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import pl.applover.android.mvvmtest.App
-import pl.applover.android.mvvmtest.util.extensions.printError
+import timber.log.Timber
 import java.lang.Exception
 
 /**
@@ -112,7 +112,7 @@ fun getAddress(latLng: LatLng, context: Context = App.instance): Address? {
         val geocoder: Geocoder = Geocoder(context)
         addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
     } catch (t: Throwable) {
-        printError(Any(), t)
+        Timber.e(t)
     }
 
     if (addresses == null || addresses.isEmpty()) {
