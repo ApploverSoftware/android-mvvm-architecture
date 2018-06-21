@@ -13,6 +13,10 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivity
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
+
+/**
+ * Binding for all example activities
+ */
 @Module
 abstract class ExampleActivitiesBuilder {
 

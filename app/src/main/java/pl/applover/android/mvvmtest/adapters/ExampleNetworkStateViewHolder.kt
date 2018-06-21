@@ -10,6 +10,10 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 /**
  * Created by Janusz Hain on 2018-06-20.
  */
+
+/**
+ * ViewHolder for showing progressBar and retry button in case of failed loading
+ */
 class ExampleNetworkStateViewHolder(override val containerView: View, private val retryCallback: () -> Unit) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(networkState: NetworkState) {

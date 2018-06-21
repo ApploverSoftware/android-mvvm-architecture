@@ -14,6 +14,10 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 /**
  * Created by Janusz Hain on 2018-06-20.
  */
+
+/**
+ * Adapter with paging library
+ */
 class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedListAdapter<ExampleCityModel, RecyclerView.ViewHolder>(
         object : DiffUtil.ItemCallback<ExampleCityModel>() {
             override fun areItemsTheSame(oldItem: ExampleCityModel?, newItem: ExampleCityModel?): Boolean {

@@ -9,11 +9,14 @@ import pl.applover.android.mvvmtest.vvm.example.mainExample.ExampleMainViewModel
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-@Module
+@Module(includes = [ExampleMainActivityModule.RoutersModule::class])
 class ExampleMainActivityModule {
 
+    /**
+     * Module with all routers that belong to activity router
+     */
     @Module
-    class NavigatorsModule {
+    class RoutersModule {
 
     }
 

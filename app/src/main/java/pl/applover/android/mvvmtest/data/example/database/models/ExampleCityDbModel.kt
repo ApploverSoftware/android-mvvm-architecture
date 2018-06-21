@@ -4,6 +4,10 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 
+/**
+ * DataModel is different than original model as those models could look or work differently. After changing data model it can be much
+ * less work to refactor other models and vice versa
+ */
 @Entity(tableName = "example_cities", primaryKeys = ["id"])
 data class ExampleCityDbModel(
         @ColumnInfo(name = "id") val id: Int,

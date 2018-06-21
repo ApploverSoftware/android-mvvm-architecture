@@ -12,6 +12,10 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 /**
  * Created by Janusz Hain on 2018-06-20.
  */
+
+/**
+ * Adapter with pagining
+ */
 class ExamplePagedCityAdapter(private val cities: ArrayList<ExampleCityModel>, private val retryCallback: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 

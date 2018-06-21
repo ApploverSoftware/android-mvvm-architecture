@@ -10,11 +10,14 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleL
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-@Module(includes = [NextExampleActivityModule.NavigatorsModule::class])
+@Module(includes = [NextExampleActivityModule.RoutersModule::class])
 class NextExampleActivityModule {
 
+    /**
+     * Module with all routers that belong to activity router
+     */
     @Module
-    class NavigatorsModule {
+    class RoutersModule {
 
         @Provides
         @ActivityScope

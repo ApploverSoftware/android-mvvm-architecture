@@ -7,6 +7,10 @@ import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbMo
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
 
 
+/**
+ * Model for DataBinding
+ * Notice that vars have to be built differently as var's set will have to notify about property being changed
+ */
 class ExampleCityModel(
         @get:Bindable
         val id: Int,

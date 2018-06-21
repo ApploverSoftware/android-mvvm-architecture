@@ -14,6 +14,11 @@ import javax.inject.Inject
 /**
  * Created by Janusz Hain on 2018-06-14.
  */
+
+/**
+ * Repository that exposes DataSources and Observables for loading data from local/network sources
+ * Repository also exposes Subjects that inform about state of the calls
+ */
 class ExampleCitiesRepository @Inject constructor(private val apiCities: ExampleCitiesApiEndpointsInterface,
                                                   private val daoCities: ExampleCityDao) {
 

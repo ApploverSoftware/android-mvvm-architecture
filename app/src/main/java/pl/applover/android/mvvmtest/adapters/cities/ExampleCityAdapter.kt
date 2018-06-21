@@ -10,6 +10,10 @@ import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 /**
  * Created by Janusz Hain on 2018-06-20.
  */
+
+/**
+ * Adapter without pagining
+ */
 class ExampleCityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val cities: ArrayList<ExampleCityModel> = ArrayList()

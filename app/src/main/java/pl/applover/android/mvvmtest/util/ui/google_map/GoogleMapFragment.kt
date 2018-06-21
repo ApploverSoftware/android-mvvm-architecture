@@ -167,10 +167,6 @@ open class GoogleMapFragment : Fragment() {
         return googleMap.setRangeCircle(circleOptions)
     }
 
-    fun getLastGpsPosition(): LatLng? {
-        return getLastLocation()
-    }
-
     fun drawRoute(latLngs: ArrayList<LatLng>, colorRid: Int, width: Float, context: Context): Polyline {
         return googleMap.drawPolyline(latLngs, colorRid, width, context)
     }

@@ -15,6 +15,9 @@ import timber.log.Timber
 class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSourceWithState<Int, ExampleCityModel>(compositeDisposable) {
 
 
+    /**
+     * Loading for first time for paged list
+     */
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<ExampleCityModel>) {
         networkStateSubject.onNext(NetworkState.LOADING)
         initialStateSubject.onNext(NetworkState.LOADING)
@@ -41,6 +44,9 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
 
     private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList(null).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
+    /**
+     * Loading next pages after the first load
+     */
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<ExampleCityModel>) {
         networkStateSubject.onNext(NetworkState.LOADING)
         compositeDisposable.add(
@@ -63,6 +69,9 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
 
     private fun afterPagedCitiesFromNetwork(lastId: Int) = apiCities.getPagedCitiesList(lastId).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
+    /**
+     * Loading previous pages after the first load
+     */
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<ExampleCityModel>) {
         //in this example we will do paging list only for "loadAfter"
     }

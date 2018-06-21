@@ -122,15 +122,6 @@ fun getAddress(latLng: LatLng, context: Context = App.instance): Address? {
     }
 }
 
-fun getLastLocation(): LatLng? {
-    val location = App.instance.getLastLocation()
-    location?.let {
-        return LatLng(location.latitude, location.longitude)
-    } ?: run {
-        return null
-    }
-}
-
 /**
  * @return distance between points or null if calculate failed
  */
