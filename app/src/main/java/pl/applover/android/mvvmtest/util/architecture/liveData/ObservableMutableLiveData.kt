@@ -16,7 +16,7 @@ class ObservableMutableLiveData<T : BaseObservable> : MutableLiveData<T>() {
         value!!.addOnPropertyChangedCallback(callback)
     }
 
-    var callback: Observable.OnPropertyChangedCallback = object : Observable.OnPropertyChangedCallback() {
+    private var callback: Observable.OnPropertyChangedCallback = object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable, propertyId: Int) {
 
             //Trigger LiveData observer on change of any property in object

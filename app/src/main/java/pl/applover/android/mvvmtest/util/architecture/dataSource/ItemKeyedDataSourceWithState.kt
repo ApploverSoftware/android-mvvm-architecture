@@ -13,6 +13,11 @@ import timber.log.Timber
 /**
  * Created by Janusz Hain on 2018-06-19.
  */
+
+/**
+ * [ItemKeyedDataSource] with [NetworkState], [CompositeDisposable], retry and resetData support.
+ * After failed load use [setRetry] passing function to be repeated when calling [retry]
+ */
 abstract class ItemKeyedDataSourceWithState<Key, Value>(private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSource<Key, Value>() {
 
     val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()

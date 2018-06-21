@@ -1,14 +1,13 @@
 package pl.applover.android.mvvmtest.util.architecture.liveData
 
 import android.arch.lifecycle.MutableLiveData
-import android.databinding.Observable
 import android.databinding.ObservableList
 
 
 /**
- * MutableLiveData for observing changes in given object
+ * [MutableLiveData] for observing changes in [ObservableList]
  */
-class ObservableListMutableLiveData<T : Observable> : MutableLiveData<ObservableList<T>>() {
+class ObservableListMutableLiveData<T : Any> : MutableLiveData<ObservableList<T>>() {
 
     override fun setValue(value: ObservableList<T>?) {
         super.setValue(value)
@@ -17,7 +16,7 @@ class ObservableListMutableLiveData<T : Observable> : MutableLiveData<Observable
         value!!.addOnListChangedCallback(callback)
     }
 
-    var callback = object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
+    private var callback = object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
         override fun onItemRangeMoved(sender: ObservableList<T>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
             value = value
         }
