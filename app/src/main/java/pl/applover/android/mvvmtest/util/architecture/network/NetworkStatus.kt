@@ -3,15 +3,17 @@ package pl.applover.android.mvvmtest.util.architecture.network
 import okhttp3.ResponseBody
 
 /**
- * Created by Ahmed Abd-Elmeged on 2/20/2018.
+ * Enum with Network statuses
  */
-
 enum class NetworkStatus {
     RUNNING,
     SUCCESS,
     FAILED
 }
 
+/**
+ * NetworkState with network statuses and other info
+ */
 @Suppress("DataClassPrivateConstructor")
 data class NetworkState private constructor(
         val networkStatus: NetworkStatus,

@@ -7,6 +7,9 @@ import okhttp3.ResponseBody
  * Created by Janusz Hain on 2018-06-18.
  */
 
+/**
+ * [okhttp3.Response] has private constructor, so to do mapping for Response, we have to use this custom class
+ */
 open class MappedResponse<T>(private val rawResponse: okhttp3.Response,
                              private val body: T?,
                              private val errorBody: ResponseBody?) {
