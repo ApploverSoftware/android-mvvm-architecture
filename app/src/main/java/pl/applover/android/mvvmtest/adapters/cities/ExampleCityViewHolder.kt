@@ -9,8 +9,17 @@ import pl.applover.android.mvvmtest.models.example.ExampleCityModel
  */
 class ExampleCityViewHolder(private val binding: ExampleItemCityBinding) : RecyclerView.ViewHolder(binding.root) {
 
+    init {
+        binding.holder = this
+    }
+
     fun bind(city: ExampleCityModel) {
         binding.city = city
+    }
+
+    fun onClick(city: ExampleCityModel
+    ) {
+        city.numberOfClicks++
     }
 
 }

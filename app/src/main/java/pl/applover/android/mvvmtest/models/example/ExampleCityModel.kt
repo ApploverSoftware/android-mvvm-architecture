@@ -24,7 +24,7 @@ class ExampleCityModel(
     var numberOfClicks: Int
         @Bindable get() = _numberOfClicks
         set(value) {
-            _numberOfClicks = numberOfClicks
+            _numberOfClicks = value
             notifyPropertyChanged(BR.numberOfClicks)
         }
 

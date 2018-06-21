@@ -16,6 +16,9 @@ import pl.applover.android.mvvmtest.dependencyInjection.app.components.DaggerApp
 import pl.applover.android.mvvmtest.util.extensions.DelegatesExt
 import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
 import javax.inject.Inject
+import timber.log.Timber
+
+
 
 
 /**
@@ -46,6 +49,10 @@ class App : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun initCanaryLeak() {
