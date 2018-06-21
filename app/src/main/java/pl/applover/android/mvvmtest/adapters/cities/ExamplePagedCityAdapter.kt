@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.adapters.ExampleNetworkStateViewHolder
+import pl.applover.android.mvvmtest.databinding.ExampleItemCityBinding
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 
@@ -17,10 +18,18 @@ class ExamplePagedCityAdapter(private val cities: ArrayList<ExampleCityModel>, p
     private var networkState: NetworkState? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+
         return when (viewType) {
-            R.layout.example_item_city -> ExampleCityViewHolder(view)
-            R.layout.example_item_network_state -> ExampleNetworkStateViewHolder(view, retryCallback)
+            R.layout.example_item_city -> {
+                val binding: ExampleItemCityBinding = ExampleItemCityBinding.inflate(inflater)
+                ExampleCityViewHolder(binding)
+
+            }
+            R.layout.example_item_network_state -> {
+                val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+                ExampleNetworkStateViewHolder(view, retryCallback)
+            }
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }

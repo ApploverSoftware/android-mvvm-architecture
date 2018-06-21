@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.applover.android.mvvmtest.R
+import pl.applover.android.mvvmtest.databinding.ExampleItemCityBinding
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 
 /**
@@ -20,8 +21,9 @@ class ExampleCityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-        return ExampleCityViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: ExampleItemCityBinding = ExampleItemCityBinding.inflate(inflater, parent, false)
+        return ExampleCityViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

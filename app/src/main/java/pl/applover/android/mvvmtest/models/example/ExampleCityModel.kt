@@ -8,15 +8,20 @@ import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityRe
 
 
 class ExampleCityModel(
+        @get:Bindable
         val id: Int,
+        @get:Bindable
         val name: String,
+        @get:Bindable
         val lat: Double,
+        @get:Bindable
         val lng: Double,
+        @get:Bindable
         val country: String,
-        private var _numberOfClicks: Int? = null
+        private var _numberOfClicks: Int = 0
 ) : BaseObservable() {
 
-    var numberOfClicks: Int?
+    var numberOfClicks: Int
         @Bindable get() = _numberOfClicks
         set(value) {
             _numberOfClicks = numberOfClicks
