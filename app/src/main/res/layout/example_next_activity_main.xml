@@ -28,7 +28,7 @@
         android:id="@+id/buttonCitiesWithPagingLib"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cities without paging library"
+        android:text="Cities with paging library"
         />
 
 </LinearLayout>
