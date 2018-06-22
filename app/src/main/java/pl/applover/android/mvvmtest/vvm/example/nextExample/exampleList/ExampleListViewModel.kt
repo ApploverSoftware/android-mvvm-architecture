@@ -60,11 +60,11 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                 .subscribeOn(MyScheduler.getScheduler())
                 .observeOn(MyScheduler.getMainThreadScheduler())
                 .subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+                    mldCitiesFromLocal.value = false
                     if (response.isSuccessful()) {
                         response.body()?.let {
                             cities.addAll(it)
                             mldNetworkState.value = NetworkState.LOADED
-                            mldCitiesFromLocal.value = false
                         } ?: run {
                             mldNetworkState.value = NetworkState.error(response.code())
                         }
@@ -72,6 +72,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                         mldNetworkState.value = NetworkState.error(response.code(), response.errorBody())
                     }
                 }, { throwable: Throwable ->
+                    mldCitiesFromLocal.value = false
                     mldNetworkState.value = NetworkState.throwable(throwable)
                 })
 
@@ -94,6 +95,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                 }, {
                     mldNetworkState.value = NetworkState.throwable(it)
                     Timber.e(it)
+                    mldCitiesFromLocal.value = true
                 })
 
         citiesLoadDisposable = disposable
