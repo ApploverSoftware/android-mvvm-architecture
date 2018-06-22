@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.example_next_activity_main.*
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showFragment
@@ -20,11 +21,22 @@ class NextExampleActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.example_next_activity_main)
+        setViewListeners()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NextExampleViewModel::class.java)
-        if (savedInstanceState == null) {
+    }
+
+    private fun setViewListeners(){
+        buttonCitiesWithoutPaging.setOnClickListener {
             showFragment(ExampleListFragment.newInstance(), R.id.frameLayoutExample, false, null, null)
         }
 
+        buttonCitiesWithPaging.setOnClickListener {
+
+        }
+
+        buttonCitiesWithPagingLib.setOnClickListener {
+
+        }
     }
 
     override fun onResume() {

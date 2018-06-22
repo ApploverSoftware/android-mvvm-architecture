@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/frameLayoutExample"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/buttonCitiesWithoutPaging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cities without pagining"
+        />
+
+    <Button
+        android:id="@+id/buttonCitiesWithPaging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cities with paging"
+        />
+
+    <Button
+        android:id="@+id/buttonCitiesWithPagingLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cities without paging library"
+        />
+
+</LinearLayout>
