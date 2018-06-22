@@ -42,7 +42,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         )
     }
 
-    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList(null).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList(0).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
     /**
      * Loading next pages after the first load
