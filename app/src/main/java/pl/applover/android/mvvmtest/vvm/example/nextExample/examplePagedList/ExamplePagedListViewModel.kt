@@ -1,0 +1,81 @@
+package pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList
+
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
+import io.reactivex.disposables.CompositeDisposable
+import pl.applover.android.mvvmtest.App
+import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.other.MyScheduler
+
+/**
+ * Created by Janusz Hain on 2018-06-06.
+ */
+class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRouter, private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
+
+    private val compositeDisposable by lazy { CompositeDisposable() }
+
+    val mldNetworkState = MutableLiveData<NetworkState>()
+    val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
+
+    private val myPagingConfig = PagedList.Config.Builder()
+            .setPageSize(10)
+            .setPrefetchDistance(5)
+            .build()
+
+    private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
+
+    val pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+
+    init {
+
+        compositeDisposable.add(citiesRepository.citiesInitialStateBehaviourSubject(dataSourceFactory)
+                .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
+                    mldNetworkState.value = it
+                })
+        compositeDisposable.add(citiesRepository.citiesNetworkStateBehaviorSubject(dataSourceFactory)
+                .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
+
+                })
+    }
+
+    fun retry() {
+        dataSourceFactory.subjectCitiesDataSource.value.retry()
+    }
+
+    fun refresh() {
+        dataSourceFactory.subjectCitiesDataSource.value.resetData()
+    }
+
+    fun loadCities() {
+
+    }
+
+    fun loadCitiesFromDb() {
+
+    }
+
+    fun saveCitiesToDb() {
+        pagedList.value?.let {
+            citiesRepository.saveAllCitiesToDatabase(it)
+                    .subscribeOn(MyScheduler.getScheduler())
+                    .observeOn(MyScheduler.getMainThreadScheduler())
+                    .subscribe()
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+        watchForLeaks()
+    }
+
+
+    private fun watchForLeaks() {
+        App.refWatcher.watch(compositeDisposable)
+        App.refWatcher.watch(this)
+        //we don't watch for router leak, as router has to stay alive, as it is router for activity scope
+    }
+}

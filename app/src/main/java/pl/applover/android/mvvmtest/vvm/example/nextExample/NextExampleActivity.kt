@@ -9,6 +9,7 @@ import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.util.extensions.showFragment
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragment
+import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragment
 import javax.inject.Inject
 
 
@@ -25,13 +26,13 @@ class NextExampleActivity : DaggerAppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NextExampleViewModel::class.java)
     }
 
-    private fun setViewListeners(){
+    private fun setViewListeners() {
         buttonCitiesWithoutPaging.setOnClickListener {
             showFragment(ExampleListFragment.newInstance(), R.id.frameLayoutExample, false, null, null)
         }
 
         buttonCitiesWithPagingLib.setOnClickListener {
-
+            showFragment(ExamplePagedListFragment.newInstance(), R.id.frameLayoutExample, false, null, null)
         }
     }
 

@@ -6,6 +6,7 @@ import pl.applover.android.mvvmtest.util.architecture.dependencyInjection.Activi
 import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivityRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleViewModelFactory
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
+import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -22,11 +23,17 @@ class NextExampleActivityModule {
         @Provides
         @ActivityScope
         fun provideExampleListFragmentRouter() = ExampleListFragmentRouter()
+
+        @Provides
+        @ActivityScope
+        fun provideExamplePagedListFragmentRouter() = ExamplePagedListFragmentRouter()
     }
 
     @Provides
     @ActivityScope
-    fun provideRouter(exampleListFragmentRouter: ExampleListFragmentRouter) = NextExampleActivityRouter(exampleListFragmentRouter)
+    fun provideRouter(exampleListFragmentRouter: ExampleListFragmentRouter,
+                      examplePagedListFragmentRouter: ExamplePagedListFragmentRouter) =
+            NextExampleActivityRouter(exampleListFragmentRouter, examplePagedListFragmentRouter)
 
 
     @Provides

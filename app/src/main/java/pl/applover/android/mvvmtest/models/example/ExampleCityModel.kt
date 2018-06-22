@@ -13,7 +13,7 @@ import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityRe
  */
 class ExampleCityModel(
         @get:Bindable
-        val id: Int,
+        val id: String,
         @get:Bindable
         val name: String,
         @get:Bindable

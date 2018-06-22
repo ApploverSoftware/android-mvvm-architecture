@@ -1,12 +1,9 @@
-package pl.applover.android.mvvmtest.vvm.example.nextExample
+package pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList
 
 import io.reactivex.subjects.PublishSubject
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
-import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivityRouter.Receiver
-import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivityRouter.Sender
-import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
-import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
-import javax.inject.Inject
+import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Receiver
+import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Sender
 
 /**
  * Created by Janusz Hain on 2018-06-11.
@@ -21,20 +18,16 @@ import javax.inject.Inject
  * Router has to subscribe [Sender] setting [Receiver] of another router as subject who listens to [Sender].
  * [Receiver] can be subscribed in router's ViewModel in order to receive data
  */
-class NextExampleActivityRouter @Inject constructor(exampleListFragmentRouter: ExampleListFragmentRouter,
-                                                    examplePagedListFragmentRouter: ExamplePagedListFragmentRouter) {
+class ExamplePagedListFragmentRouter {
+
     val sender = Sender()
     val receiver = Receiver()
-
-    init {
-        exampleListFragmentRouter.sender.fragmentClicked.subscribe(receiver.fragmentClicked)
-    }
 
     class Sender {
 
     }
 
     class Receiver {
-        val fragmentClicked: PublishSubject<EmptyEvent> = PublishSubject.create()
+
     }
 }

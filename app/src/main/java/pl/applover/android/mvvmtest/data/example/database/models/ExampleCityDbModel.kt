@@ -10,7 +10,7 @@ import pl.applover.android.mvvmtest.models.example.ExampleCityModel
  */
 @Entity(tableName = "example_cities", primaryKeys = ["id"])
 data class ExampleCityDbModel(
-        @ColumnInfo(name = "id") val id: Int,
+        @ColumnInfo(name = "id") val id: String,
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "lat") val lat: Double,
         @ColumnInfo(name = "lng") val lng: Double,

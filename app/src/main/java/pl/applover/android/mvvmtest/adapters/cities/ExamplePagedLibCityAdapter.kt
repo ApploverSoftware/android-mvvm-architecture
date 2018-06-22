@@ -37,7 +37,7 @@ class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedL
 
         return when (viewType) {
             R.layout.example_item_city -> {
-                val binding: ExampleItemCityBinding = ExampleItemCityBinding.inflate(inflater)
+                val binding: ExampleItemCityBinding = ExampleItemCityBinding.inflate(inflater, parent, false)
                 ExampleCityViewHolder(binding)
 
             }

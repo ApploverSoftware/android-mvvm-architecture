@@ -47,9 +47,9 @@ interface ExampleCitiesApiEndpointsInterface {
             @Header("Content-Type") contentType: String = "application/json"
     ): Single<Response<List<ExampleCityResponse>>>
 
-    @GET("/JanuszHain/MyJsonServerCities/citiesByLastId/{lastId}")
+    @GET("/JanuszHain/MyJsonServerCities/{lastId}")
     fun getPagedCitiesList(
-            @Path("lastId") lastId: Int?,
+            @Path("lastId") lastId: String,
             @Header("Content-Type") contentType: String = "application/json"
     ): Single<Response<List<ExampleCityResponse>>>
 }

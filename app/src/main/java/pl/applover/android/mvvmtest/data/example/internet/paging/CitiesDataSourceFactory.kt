@@ -15,14 +15,14 @@ import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 /**
  * @param compositeDisposable - disposable for all calls in DataSource, if disposed, data source will be stopped
  */
-class CitiesDataSourceFactory(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : DataSource.Factory<Int, ExampleCityModel>() {
+class CitiesDataSourceFactory(private val apiCities: ExampleCitiesApiEndpointsInterface, private val compositeDisposable: CompositeDisposable) : DataSource.Factory<String, ExampleCityModel>() {
 
     /**
      * Keeps reference to the latest subjectCitiesDataSource
      */
     val subjectCitiesDataSource: BehaviorSubject<CitiesDataSource> = BehaviorSubject.create()
 
-    override fun create(): DataSource<Int, ExampleCityModel> {
+    override fun create(): DataSource<String, ExampleCityModel> {
         val citiesDataSource = CitiesDataSource(apiCities, compositeDisposable)
         subjectCitiesDataSource.onNext(citiesDataSource)
         return citiesDataSource
