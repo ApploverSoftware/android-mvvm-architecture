@@ -7,6 +7,7 @@ import android.arch.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
+import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.other.MyScheduler
 
@@ -21,8 +22,9 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
 
     private val myPagingConfig = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
             .setPageSize(10)
-            .setPrefetchDistance(5)
+            .setPrefetchDistance(10)
             .build()
 
     private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
@@ -37,7 +39,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
                 })
         compositeDisposable.add(citiesRepository.citiesNetworkStateBehaviorSubject(dataSourceFactory)
                 .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
-
+                    mldNetworkState.value = it
                 })
     }
 
