@@ -92,10 +92,15 @@ class ExampleListFragment : DaggerFragment() {
     private fun setViewListeners() {
         buttonNavigatorTest.setOnClickListener {
             viewModel.fragmentClicked()
+            viewModel.saveCitiesToDb()
         }
 
         buttonRetry.setOnClickListener {
             viewModel.loadCities()
+        }
+
+        buttonDataFromDb.setOnClickListener {
+            viewModel.loadCitiesFromDb()
         }
     }
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.util.architecture.liveData.Event
+import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -21,7 +22,7 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter) : View
     }
 
     private fun setRouterObservers() {
-        compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ println("Navigator clicked event") }))
+        compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ Timber.i("Router sent event about click in some fragment!")}))
     }
 
     fun activityOnResume() {

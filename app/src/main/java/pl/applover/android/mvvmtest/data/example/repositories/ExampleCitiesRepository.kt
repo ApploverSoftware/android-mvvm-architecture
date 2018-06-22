@@ -1,6 +1,7 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
@@ -35,7 +36,7 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun citiesFromDatabase() = daoCities.citiesById().map { it.map { ExampleCityModel(it) } }
 
-    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) = Observable.fromCallable { daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) }) }
+    fun saveAllCitiesToDatabase(cities: ArrayList<ExampleCityModel>) = Single.fromCallable { daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) }) }
 
     fun deleteAllCitiesFromDatabase() = Observable.fromCallable { daoCities.deleteAll() }
 

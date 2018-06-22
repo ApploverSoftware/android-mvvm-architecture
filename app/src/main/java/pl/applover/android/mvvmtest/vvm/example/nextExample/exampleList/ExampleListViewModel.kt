@@ -14,6 +14,7 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.MyScheduler
+import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -73,6 +74,33 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
 
         citiesLoadDisposable = disposable
         compositeDisposable.add(disposable)
+    }
+
+    fun loadCitiesFromDb() {
+        citiesLoadDisposable?.dispose()
+        cities.clear()
+        mldNetworkState.value = NetworkState.LOADING
+
+        val disposable = citiesRepository.citiesFromDatabase()
+                .subscribeOn(MyScheduler.getScheduler())
+                .observeOn(MyScheduler.getMainThreadScheduler())
+                .subscribe({
+                    cities.addAll(it)
+                    mldNetworkState.value = NetworkState.LOADED
+                }, {
+                    mldNetworkState.value = NetworkState.throwable(it)
+                    Timber.e(it)
+                })
+
+        citiesLoadDisposable = disposable
+        compositeDisposable.add(disposable)
+    }
+
+    fun saveCitiesToDb() {
+        citiesRepository.saveAllCitiesToDatabase(cities)
+                .subscribeOn(MyScheduler.getScheduler())
+                .observeOn(MyScheduler.getMainThreadScheduler())
+                .subscribe()
     }
 
     override fun onCleared() {
