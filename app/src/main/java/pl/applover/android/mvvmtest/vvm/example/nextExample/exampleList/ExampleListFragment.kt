@@ -102,7 +102,8 @@ class ExampleListFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.showSomeToast()
-        viewModel.loadCities()
+        if (viewModel.mldCitiesLiveData.value!!.size == 0)
+            viewModel.loadCities()
     }
 
     override fun onDestroy() {

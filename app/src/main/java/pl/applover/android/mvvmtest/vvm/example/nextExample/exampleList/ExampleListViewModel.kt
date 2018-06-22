@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableArrayList
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
@@ -33,6 +34,8 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
 
     private val cities = ObservableArrayList<ExampleCityModel>()
 
+    private var citiesLoadDisposable: Disposable? = null
+
     init {
         mldCitiesLiveData.value = cities
     }
@@ -46,10 +49,11 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
     }
 
     fun loadCities() {
+        citiesLoadDisposable?.dispose()
         cities.clear()
         mldNetworkState.value = NetworkState.LOADING
 
-        compositeDisposable.add(citiesRepository.citiesFromNetwork()
+        val disposable = citiesRepository.citiesFromNetwork()
                 .subscribeOn(MyScheduler.getScheduler())
                 .observeOn(MyScheduler.getMainThreadScheduler())
                 .subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
@@ -65,7 +69,10 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                     }
                 }, { throwable: Throwable ->
                     mldNetworkState.value = NetworkState.throwable(throwable)
-                }))
+                })
+
+        citiesLoadDisposable = disposable
+        compositeDisposable.add(disposable)
     }
 
     override fun onCleared() {

@@ -42,12 +42,12 @@ interface ExampleCitiesApiEndpointsInterface {
     */
 
 
-    @GET("/JanuszHain/MyJsonServerCities/cities/")
+    @GET("/JanuszHain/MyJsonServerCities/cities")
     fun getCitiesList(
             @Header("Content-Type") contentType: String = "application/json"
     ): Single<Response<List<ExampleCityResponse>>>
 
-    @GET("/JanuszHain/MyJsonServerCities/cities/lastId/{lastId}")
+    @GET("/JanuszHain/MyJsonServerCities/citiesByLastId/{lastId}")
     fun getPagedCitiesList(
             @Path("lastId") lastId: Int?,
             @Header("Content-Type") contentType: String = "application/json"
