@@ -18,13 +18,6 @@
         />
 
     <Button
-        android:id="@+id/buttonCitiesWithPaging"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cities with paging"
-        />
-
-    <Button
         android:id="@+id/buttonCitiesWithPagingLib"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

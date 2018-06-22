@@ -30,10 +30,6 @@ class NextExampleActivity : DaggerAppCompatActivity() {
             showFragment(ExampleListFragment.newInstance(), R.id.frameLayoutExample, false, null, null)
         }
 
-        buttonCitiesWithPaging.setOnClickListener {
-
-        }
-
         buttonCitiesWithPagingLib.setOnClickListener {
 
         }

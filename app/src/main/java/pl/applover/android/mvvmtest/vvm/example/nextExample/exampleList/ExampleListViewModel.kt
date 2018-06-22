@@ -37,6 +37,8 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
 
     private var citiesLoadDisposable: Disposable? = null
 
+    val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
+
     init {
         mldCitiesLiveData.value = cities
     }
@@ -62,6 +64,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                         response.body()?.let {
                             cities.addAll(it)
                             mldNetworkState.value = NetworkState.LOADED
+                            mldCitiesFromLocal.value = false
                         } ?: run {
                             mldNetworkState.value = NetworkState.error(response.code())
                         }
@@ -87,6 +90,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
                 .subscribe({
                     cities.addAll(it)
                     mldNetworkState.value = NetworkState.LOADED
+                    mldCitiesFromLocal.value = true
                 }, {
                     mldNetworkState.value = NetworkState.throwable(it)
                     Timber.e(it)

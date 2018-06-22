@@ -87,6 +87,21 @@ class ExampleListFragment : DaggerFragment() {
                 showToast(it)
             }
         })
+
+        viewModel.mldCitiesFromLocal.observe(this, Observer {
+            if(it == true){
+                buttonDataFromDb.text = "Show online data"
+                buttonDataFromDb.setOnClickListener {
+                    viewModel.loadCities()
+                }
+            }
+            else{
+                buttonDataFromDb.text = "Show db data"
+                buttonDataFromDb.setOnClickListener {
+                    viewModel.loadCitiesFromDb()
+                }
+            }
+        })
     }
 
     private fun setViewListeners() {
@@ -97,10 +112,6 @@ class ExampleListFragment : DaggerFragment() {
 
         buttonRetry.setOnClickListener {
             viewModel.loadCities()
-        }
-
-        buttonDataFromDb.setOnClickListener {
-            viewModel.loadCitiesFromDb()
         }
     }
 
