@@ -57,7 +57,7 @@ class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedL
     }
 
     override fun getItemCount(): Int {
-        return currentList?.size ?: 0+if (hasExtraRow()) 1 else 0
+        return super.getItemCount() +if (hasExtraRow()) 1 else 0
     }
 
 
