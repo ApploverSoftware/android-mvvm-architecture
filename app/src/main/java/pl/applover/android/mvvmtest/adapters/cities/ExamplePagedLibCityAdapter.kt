@@ -10,6 +10,7 @@ import pl.applover.android.mvvmtest.adapters.ExampleNetworkStateViewHolder
 import pl.applover.android.mvvmtest.databinding.ExampleItemCityBinding
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-20.
@@ -51,7 +52,7 @@ class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedL
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.example_item_city -> currentList?.get(position)?.let { (holder as ExampleCityViewHolder).bind(it) }
+            R.layout.example_item_city -> getItem(position)?.let { (holder as ExampleCityViewHolder).bind(it) }
             R.layout.example_item_network_state -> (holder as ExampleNetworkStateViewHolder).bind(networkState!!)
         }
     }
