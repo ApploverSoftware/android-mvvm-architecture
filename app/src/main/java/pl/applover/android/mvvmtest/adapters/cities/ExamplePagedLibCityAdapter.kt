@@ -20,8 +20,8 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
  *
  * Important: [PagedListAdapter]s doesn't support active filtering.
  * To filter with paging you have to 2 options:
- * - create new DataSource that sends params for filtering and invalidate adapter - data source requires methods that sends filtered data
- * - create new adapter with last item that allows getting more data regardless of returned list size (can be 0 and last item will be shown anyway)
+ * - set filter param in DataSource (or create new one) that does filtering and invalidate adapter - data source requires source with filtering params support
+ * - create new adapter class without PagedListAdapter with permanent last item that allows getting more data regardless of returned list size
  */
 class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedListAdapter<ExampleCityModel, RecyclerView.ViewHolder>(
         object : DiffUtil.ItemCallback<ExampleCityModel>() {
