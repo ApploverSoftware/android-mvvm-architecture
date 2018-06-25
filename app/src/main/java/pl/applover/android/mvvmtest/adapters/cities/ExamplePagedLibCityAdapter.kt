@@ -10,7 +10,6 @@ import pl.applover.android.mvvmtest.adapters.ExampleNetworkStateViewHolder
 import pl.applover.android.mvvmtest.databinding.ExampleItemCityBinding
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-20.
@@ -58,7 +57,7 @@ class ExamplePagedLibCityAdapter(private val retryCallback: () -> Unit) : PagedL
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() +if (hasExtraRow()) 1 else 0
+        return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
 

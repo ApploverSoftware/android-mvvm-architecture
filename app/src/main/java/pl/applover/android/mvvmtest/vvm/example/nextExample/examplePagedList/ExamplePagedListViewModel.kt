@@ -19,12 +19,13 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     val mldNetworkState = MutableLiveData<NetworkState>()
+    val mldInitialNetworkState = MutableLiveData<NetworkState>()
     val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
 
     private val myPagingConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(10)
-            .setPrefetchDistance(10)
+            .setPrefetchDistance(2)
             .build()
 
     private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
@@ -35,7 +36,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
         compositeDisposable.add(citiesRepository.citiesInitialStateBehaviourSubject(dataSourceFactory)
                 .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
-                    mldNetworkState.value = it
+                    mldInitialNetworkState.value = it
                 })
         compositeDisposable.add(citiesRepository.citiesNetworkStateBehaviorSubject(dataSourceFactory)
                 .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
@@ -49,10 +50,6 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     fun refresh() {
         dataSourceFactory.subjectCitiesDataSource.value.resetData()
-    }
-
-    fun loadCities() {
-
     }
 
     fun loadCitiesFromDb() {

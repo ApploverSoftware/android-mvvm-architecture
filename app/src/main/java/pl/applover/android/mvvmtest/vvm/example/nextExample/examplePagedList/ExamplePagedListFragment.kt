@@ -50,9 +50,15 @@ class ExamplePagedListFragment : DaggerFragment() {
     }
 
     private fun setViewModelObservers() {
-        viewModel.mldNetworkState.observe(this, Observer {
+        viewModel.mldInitialNetworkState.observe(this, Observer {
             it?.let {
                 manageNetworkStateView(it)
+            }
+        })
+
+        viewModel.mldNetworkState.observe(this, Observer {
+            it?.let {
+                adapter.setNetworkState(it)
             }
         })
     }
@@ -82,12 +88,12 @@ class ExamplePagedListFragment : DaggerFragment() {
             if (it == true) {
                 buttonDataFromDb.text = "Show online data"
                 buttonDataFromDb.setOnClickListener {
-                    viewModel.loadCities()
+                    //todo
                 }
             } else {
                 buttonDataFromDb.text = "Show db data"
                 buttonDataFromDb.setOnClickListener {
-                    viewModel.loadCitiesFromDb()
+                    //todo
                 }
             }
         })
@@ -99,7 +105,7 @@ class ExamplePagedListFragment : DaggerFragment() {
         }
 
         buttonRetry.setOnClickListener {
-            viewModel.loadCities()
+            viewModel.retry()
         }
     }
 

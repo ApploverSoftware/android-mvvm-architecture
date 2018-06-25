@@ -6,6 +6,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.example_item_network_state.*
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
+import pl.applover.android.mvvmtest.util.ui.hide
+import pl.applover.android.mvvmtest.util.ui.show
+import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-20.
@@ -20,6 +23,19 @@ class ExampleNetworkStateViewHolder(override val containerView: View, private va
         textViewNetworkState.text = networkState.networkStatus.name
         buttonRetry.setOnClickListener {
             retryCallback()
+        }
+
+        when (networkState.networkStatus) {
+            NetworkStatus.RUNNING -> {
+                progressBarNetwork.show()
+                buttonRetry.hide()
+            }
+            NetworkStatus.FAILED -> {
+                progressBarNetwork.hide()
+                buttonRetry.show()
+            }
+            else -> {
+            }
         }
     }
 
