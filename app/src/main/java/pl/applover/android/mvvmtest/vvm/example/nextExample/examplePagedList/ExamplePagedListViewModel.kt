@@ -1,5 +1,6 @@
 package pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
@@ -7,7 +8,6 @@ import android.arch.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
-import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.other.MyScheduler
 
@@ -29,8 +29,9 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
             .build()
 
     private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
+    private val databaseDataSourceFactory = citiesRepository.pagedCitiesFromDatabase()
 
-    val pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+    var pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     init {
 
@@ -52,8 +53,14 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
         dataSourceFactory.subjectCitiesDataSource.value.resetData()
     }
 
-    fun loadCitiesFromDb() {
+    fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
+        pagedList.removeObservers(lifecycleOwner)
+        pagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
+    }
 
+    fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
+        pagedList.removeObservers(lifecycleOwner)
+        pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
     }
 
     fun saveCitiesToDb() {
