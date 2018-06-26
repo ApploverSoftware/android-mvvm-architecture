@@ -103,10 +103,16 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
     }
 
     fun saveCitiesToDb() {
-        citiesRepository.saveAllCitiesToDatabase(cities)
+        citiesRepository.deleteAllCitiesFromDatabase()
                 .subscribeOn(MyScheduler.getScheduler())
-                .observeOn(MyScheduler.getMainThreadScheduler())
-                .subscribe()
+                .subscribe({
+                    citiesRepository.saveAllCitiesToDatabase(cities)
+                            .subscribeOn(MyScheduler.getScheduler())
+                            .observeOn(MyScheduler.getMainThreadScheduler())
+                            .subscribe()
+                }, {
+                    Timber.e(it)
+                })
     }
 
     override fun onCleared() {

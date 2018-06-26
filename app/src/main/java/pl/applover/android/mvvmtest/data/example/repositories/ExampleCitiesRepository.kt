@@ -37,7 +37,7 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun saveAllCitiesToDatabase(cities: Collection<ExampleCityModel>) = Single.fromCallable { daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) }) }
 
-    fun deleteAllCitiesFromDatabase() = Observable.fromCallable { daoCities.deleteAll() }
+    fun deleteAllCitiesFromDatabase() = Single.fromCallable { daoCities.deleteAll() }
 
 
 }

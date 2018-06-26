@@ -10,6 +10,7 @@ import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.other.MyScheduler
+import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-06.
@@ -70,11 +71,17 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun saveCitiesToDb() {
-        pagedList.value?.let {
-            citiesRepository.saveAllCitiesToDatabase(it)
+        pagedList.value?.let { cities ->
+            citiesRepository.deleteAllCitiesFromDatabase()
                     .subscribeOn(MyScheduler.getScheduler())
-                    .observeOn(MyScheduler.getMainThreadScheduler())
-                    .subscribe()
+                    .subscribe({
+                        citiesRepository.saveAllCitiesToDatabase(cities)
+                                .subscribeOn(MyScheduler.getScheduler())
+                                .observeOn(MyScheduler.getMainThreadScheduler())
+                                .subscribe()
+                    }, {
+                        Timber.e(it)
+                    })
         }
     }
 
