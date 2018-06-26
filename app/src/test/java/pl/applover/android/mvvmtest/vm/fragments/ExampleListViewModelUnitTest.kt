@@ -8,9 +8,9 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
-import pl.applover.android.mvvmtest.util.extensions.toPublicVar
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListViewModel
 
@@ -31,7 +31,11 @@ class ExampleListViewModelUnitTest {
 
     private lateinit var exampleListViewModel: ExampleListViewModel
 
-    private val router = ExampleListFragmentRouter()
+    @Spy
+    val router: ExampleListFragmentRouter = ExampleListFragmentRouter()
+
+    @Mock
+    lateinit var sender: ExampleListFragmentRouter.Sender
 
     @Mock
     private lateinit var mockedPublishSubject: PublishSubject<EmptyEvent>
@@ -41,15 +45,10 @@ class ExampleListViewModelUnitTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        setMockedPublishSubject()
+        Mockito.`when`(router.sender).thenReturn(sender)
+        Mockito.`when`(sender.fragmentClicked).thenReturn(mockedPublishSubject)
 
         exampleListViewModel = ExampleListViewModel(router, mockRepository)
-    }
-
-    private fun setMockedPublishSubject() {
-        val field = ExampleListFragmentRouter.Sender::class.java.getDeclaredField("fragmentClicked")
-        field.toPublicVar()
-        field.set(router.sender, mockedPublishSubject)
     }
 
     @Test
