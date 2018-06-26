@@ -1,20 +1,14 @@
 package pl.applover.android.mvvmtest
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import org.jetbrains.anko.locationManager
-import pl.applover.android.mvvmtest.dependency_injections.app.components.DaggerAppComponent
+import pl.applover.android.mvvmtest.dependencyInjection.app.components.DaggerAppComponent
 import pl.applover.android.mvvmtest.util.extensions.DelegatesExt
-import pl.applover.android.mvvmtest.util.extensions.isGPSPermissionGranted
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -25,10 +19,6 @@ class App : Application(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    private val locationListeners = ArrayList<LocationListener>()
-
-    private var lastLocation: Location? = null
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
         return dispatchingAndroidInjector
@@ -46,80 +36,19 @@ class App : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun initCanaryLeak() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
-            return;
-        }
-        refWatcher = LeakCanary.install(this);
-    }
-
-
-    @SuppressLint("MissingPermission")
-    fun startLocationUpdates() {
-        if (!isGPSPermissionGranted()) return
-
-        val providers = locationManager.getProviders(true)
-        for (provider in providers) {
-
-            val locationListener = object : LocationListener {
-                override fun onLocationChanged(location: Location?) {
-                    if (location != null)
-                        lastLocation = location
-                }
-
-                override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-                }
-
-                override fun onProviderEnabled(p0: String?) {
-                }
-
-                override fun onProviderDisabled(p0: String?) {
-                }
-            }
-
-            locationListeners.add(locationListener)
-
-            locationManager.requestLocationUpdates(provider, 10000, 100f,
-                    locationListener)
-        }
-    }
-
-    fun removeLocationUpdates() {
-        if (!isGPSPermissionGranted(applicationContext)) {
             return
         }
-
-        locationListeners.forEach {
-            locationManager.removeUpdates(it)
-        }
-
-        locationListeners.clear()
-    }
-
-    @SuppressLint("MissingPermission")
-    fun getLastLocation(): Location? {
-
-        if (!isGPSPermissionGranted(applicationContext)) {
-            return null
-        }
-
-        var location: Location?
-
-        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-        location ?: kotlin.run {
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        }
-
-        location ?: kotlin.run {
-            location = lastLocation
-        }
-
-        return location
+        refWatcher = LeakCanary.install(this);
     }
 
     companion object {

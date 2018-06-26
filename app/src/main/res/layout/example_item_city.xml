@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="city"
+            type="pl.applover.android.mvvmtest.models.example.ExampleCityModel" />
+
+        <variable
+            name="holder"
+            type="pl.applover.android.mvvmtest.adapters.cities.ExampleCityViewHolder" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> holder.onClick(city)}"
+            android:text="Click" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@{`City name: ` + city.name}"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="@{`Number of clicks: ` + String.valueOf(city.numberOfClicks)}"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+</layout>
