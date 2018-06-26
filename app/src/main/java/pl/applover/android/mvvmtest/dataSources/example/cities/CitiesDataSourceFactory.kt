@@ -1,12 +1,10 @@
-package pl.applover.android.mvvmtest.data.example.internet.paging
+package pl.applover.android.mvvmtest.dataSources.example.cities
 
 import android.arch.paging.DataSource
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 
 /**
  * Created by Janusz Hain on 2018-06-18.

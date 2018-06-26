@@ -88,12 +88,15 @@ class ExamplePagedListFragment : DaggerFragment() {
             if (it == true) {
                 buttonDataFromDb.text = "Show online data"
                 buttonDataFromDb.setOnClickListener {
-                    //todo
+                    viewModel.loadCitiesFromOnlineSource(this)
+                    viewModel.pagedList.observe(this, Observer {
+                        adapter.submitList(it)
+                    })
                 }
             } else {
                 buttonDataFromDb.text = "Show db data"
                 buttonDataFromDb.setOnClickListener {
-                    //todo
+                    setOnCitiesDbClicked()
                 }
             }
         })
@@ -107,6 +110,17 @@ class ExamplePagedListFragment : DaggerFragment() {
         buttonRetry.setOnClickListener {
             viewModel.retry()
         }
+
+        buttonDataFromDb.setOnClickListener {
+            setOnCitiesDbClicked()
+        }
+    }
+
+    private fun setOnCitiesDbClicked() {
+        viewModel.loadCitiesFromDb(this)
+        viewModel.pagedList.observe(this, Observer {
+            adapter.submitList(it)
+        })
     }
 
     override fun onResume() {

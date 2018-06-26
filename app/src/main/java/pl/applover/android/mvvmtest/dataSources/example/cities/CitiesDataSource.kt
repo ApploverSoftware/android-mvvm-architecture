@@ -1,8 +1,7 @@
-package pl.applover.android.mvvmtest.data.example.internet.paging
+package pl.applover.android.mvvmtest.dataSources.example.cities
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
-import kotlinx.coroutines.experimental.android.UI
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.dataSource.ItemKeyedDataSourceWithState
@@ -49,8 +48,6 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
      * Loading next pages after the first load
      */
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<ExampleCityModel>) {
-        println("Load after")
-        Timber.e("Load after")
         networkStateSubject.onNext(NetworkState.LOADING)
         compositeDisposable.add(
                 afterPagedCitiesFromNetwork(params.key).subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
@@ -76,8 +73,6 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
      * Loading previous pages after the first load
      */
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<ExampleCityModel>) {
-        println("Load before")
-        Timber.e("Load before")
         //in this example we will do paging list only for "loadAfter"
     }
 

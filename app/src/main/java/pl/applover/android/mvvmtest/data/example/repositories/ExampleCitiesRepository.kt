@@ -6,10 +6,9 @@ import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbModel
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
-import pl.applover.android.mvvmtest.data.example.internet.paging.CitiesDataSourceFactory
+import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
-import java.util.*
 import javax.inject.Inject
 
 /**

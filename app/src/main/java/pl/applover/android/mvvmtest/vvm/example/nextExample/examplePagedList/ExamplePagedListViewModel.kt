@@ -24,7 +24,8 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     private val myPagingConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setPageSize(10)
+            .setPageSize(5)
+            .setInitialLoadSizeHint(5)
             .setPrefetchDistance(2)
             .build()
 
@@ -46,21 +47,26 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun retry() {
-        dataSourceFactory.subjectCitiesDataSource.value.retry()
+        if (mldCitiesFromLocal.value == false)
+            dataSourceFactory.subjectCitiesDataSource.value.retry()
     }
 
     fun refresh() {
-        dataSourceFactory.subjectCitiesDataSource.value.resetData()
+        if (mldCitiesFromLocal.value == false)
+            dataSourceFactory.subjectCitiesDataSource.value.resetData()
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
         pagedList.removeObservers(lifecycleOwner)
+        mldCitiesFromLocal.value = true
         pagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
         pagedList.removeObservers(lifecycleOwner)
+        mldCitiesFromLocal.value = false
         pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+
     }
 
     fun saveCitiesToDb() {
