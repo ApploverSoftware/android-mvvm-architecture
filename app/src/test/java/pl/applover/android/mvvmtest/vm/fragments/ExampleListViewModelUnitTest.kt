@@ -10,10 +10,9 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
+import pl.applover.android.mvvmtest.util.extensions.toPublicVar
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListViewModel
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 
 /**
@@ -41,16 +40,16 @@ class ExampleListViewModelUnitTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        val field = ExampleListFragmentRouter.Sender::class.java.getDeclaredField("fragmentClicked")
-        field.isAccessible = true
-        val modifiersField = Field::class.java.getDeclaredField("modifiers")
-        modifiersField.isAccessible = true
-        modifiersField.setInt(field, field.modifiers and Modifier.FINAL.inv())
 
-        field.set(router.sender, mockedPublishSubject)
+        setMockedPublishSubject()
 
-        println(router.sender.fragmentClicked)
         exampleListViewModel = ExampleListViewModel(router, mockRepository)
+    }
+
+    private fun setMockedPublishSubject() {
+        val field = ExampleListFragmentRouter.Sender::class.java.getDeclaredField("fragmentClicked")
+        field.toPublicVar()
+        field.set(router.sender, mockedPublishSubject)
     }
 
     @Test
