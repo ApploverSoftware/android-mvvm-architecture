@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vm.activities
+package pl.applover.android.mvvmtest.vm.fragments.example
 
 import org.junit.Test
 
@@ -9,7 +9,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleMainViewModelUnitTest {
+class ExamplePagedListViewModelUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)

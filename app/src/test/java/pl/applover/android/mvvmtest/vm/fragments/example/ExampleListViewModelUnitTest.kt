@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vm.fragments
+package pl.applover.android.mvvmtest.vm.fragments.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Lifecycle

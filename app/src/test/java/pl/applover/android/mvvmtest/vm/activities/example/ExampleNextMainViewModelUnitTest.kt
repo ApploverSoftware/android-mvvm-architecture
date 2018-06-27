@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.vm.activities
+package pl.applover.android.mvvmtest.vm.activities.example
 
 import org.junit.Test
 
