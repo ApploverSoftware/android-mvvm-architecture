@@ -1,6 +1,5 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
@@ -8,7 +7,7 @@ import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbMo
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
+import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponse
 import javax.inject.Inject
 
 /**
@@ -28,8 +27,12 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun citiesInitialStateBehaviourSubject(citiesDataSourceFactory: CitiesDataSourceFactory) = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.initialStateSubject }
 
-    fun citiesFromNetwork() =
-            apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+    //fun citiesFromNetwork() =
+     //       apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+
+
+    fun citiesFromNetwork()=
+            apiCities.getCitiesList().mapResponse(mapper = { ExampleCityModel(it) })
 
     fun pagedCitiesFromDatabase() = daoCities.citiesPagedById().map { ExampleCityModel(it) }
 

@@ -6,7 +6,8 @@ import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleC
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.dataSource.ItemKeyedDataSourceWithState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
+import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponse
+import retrofit2.Response
 import timber.log.Timber
 
 /**
@@ -22,7 +23,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         networkStateSubject.onNext(NetworkState.LOADING)
         initialStateSubject.onNext(NetworkState.LOADING)
         compositeDisposable.add(
-                initialPagedCitiesFromNetwork().subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+                initialPagedCitiesFromNetwork().subscribe({ response: Response<List<ExampleCityModel>> ->
                     response.body()?.let {
                         setRetry(null)
                         callback.onResult(it)
@@ -42,7 +43,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         )
     }
 
-    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList("null").map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList("null").mapResponse({ ExampleCityModel(it) })
 
     /**
      * Loading next pages after the first load
@@ -50,7 +51,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<ExampleCityModel>) {
         networkStateSubject.onNext(NetworkState.LOADING)
         compositeDisposable.add(
-                afterPagedCitiesFromNetwork(params.key).subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+                afterPagedCitiesFromNetwork(params.key).subscribe({ response: Response<List<ExampleCityModel>> ->
                     response.body()?.let {
                         setRetry(null)
                         callback.onResult(it)
@@ -67,7 +68,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         )
     }
 
-    private fun afterPagedCitiesFromNetwork(lastId: String) = apiCities.getPagedCitiesList(lastId).map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+    private fun afterPagedCitiesFromNetwork(lastId: String) = apiCities.getPagedCitiesList(lastId).mapResponse({ ExampleCityModel(it) })
 
     /**
      * Loading previous pages after the first load

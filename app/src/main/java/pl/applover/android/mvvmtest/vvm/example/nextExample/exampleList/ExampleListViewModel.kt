@@ -11,9 +11,9 @@ import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.liveData.Event
 import pl.applover.android.mvvmtest.util.architecture.liveData.ObservableListMutableLiveData
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.retrofit.MappedResponse
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.MyScheduler
+import retrofit2.Response
 import timber.log.Timber
 
 /**
@@ -59,9 +59,9 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
         val disposable = citiesRepository.citiesFromNetwork()
                 .subscribeOn(MyScheduler.getScheduler())
                 .observeOn(MyScheduler.getMainThreadScheduler())
-                .subscribe({ response: MappedResponse<List<ExampleCityModel>> ->
+                .subscribe({ response: Response<List<ExampleCityModel>> ->
                     mldCitiesFromLocal.value = false
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful) {
                         response.body()?.let {
                             cities.addAll(it)
                             mldNetworkState.value = NetworkState.LOADED
