@@ -8,6 +8,7 @@ import pl.applover.android.mvvmtest.dependencyInjection.activities.example.Examp
 import pl.applover.android.mvvmtest.dependencyInjection.app.modules.AppModule
 import pl.applover.android.mvvmtest.dependencyInjection.database.ExampleRoomDatabaseModule
 import pl.applover.android.mvvmtest.dependencyInjection.internet.example.ExampleNetModule
+import pl.applover.android.mvvmtest.dependencyInjection.other.SchedulerProviderModule
 import pl.applover.android.mvvmtest.dependencyInjection.repositories.example.ExampleRepositoriesModule
 import javax.inject.Singleton
 
@@ -15,7 +16,7 @@ import javax.inject.Singleton
  * Created by Janusz Hain on 2018-01-08.
  */
 @Singleton
-@Component(modules = [AndroidSupportInjectionModule::class, AppModule::class,
+@Component(modules = [AndroidSupportInjectionModule::class, AppModule::class, SchedulerProviderModule::class, //those models are required
     ExampleActivitiesBuilder::class, ExampleNetModule::class,
     ExampleRoomDatabaseModule::class, ExampleRepositoriesModule::class])
 interface AppComponent {
