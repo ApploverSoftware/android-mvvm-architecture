@@ -69,12 +69,19 @@ class ExampleListViewModelUnitTest {
         whenever(mockedSender.fragmentClicked).thenReturn(mockedFragmentClickedSubject)
     }
 
+    /**
+     * Is sender's subject in router getting info about click from fragment
+     */
     @Test
     fun testFragmentClicked() {
         exampleListViewModel.fragmentClicked()
         verify(spiedRouter.sender.fragmentClicked, times(1)).onNext(any())
     }
 
+
+    /**
+     * Is Event correctly set in LiveData
+     */
     @Test
     fun testShowSomeToast() {
         exampleListViewModel.showSomeToast()
@@ -82,7 +89,7 @@ class ExampleListViewModelUnitTest {
     }
 
     /**
-     * Test for LiveData event for paused Fragment
+     * How does LiveData event behave for paused Fragment
      */
     @Test
     fun testShowSomeToastForFragmentPaused() {
@@ -104,6 +111,7 @@ class ExampleListViewModelUnitTest {
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
             observer(it)
+            it?.getContentIfNotHandled()
         }
 
         verify(observer, times(1)).invoke(any())
@@ -124,7 +132,7 @@ class ExampleListViewModelUnitTest {
 
 
     /**
-     * Test for LiveData event for recreated Fragment
+     * How does LiveData event behave for restarted Fragment
      */
     @Test
     fun testShowSomeToastForFragmentRecreated() {
@@ -178,6 +186,9 @@ class ExampleListViewModelUnitTest {
         verify(liveDataUnit, times(2)).invoke(any())
     }
 
+    /**
+     * Are cities loaded into live data
+     */
     @Test
     fun testLoadCities() {
         whenever(mockRepository.citiesFromNetwork()).thenReturn(Single.just(Response.success(
