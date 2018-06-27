@@ -32,29 +32,33 @@ class ExampleListViewModelUnitTest {
     private lateinit var exampleListViewModel: ExampleListViewModel
 
     @Spy
-    val router: ExampleListFragmentRouter = ExampleListFragmentRouter()
+    private val spiedRouter: ExampleListFragmentRouter = ExampleListFragmentRouter()
 
     @Mock
-    lateinit var sender: ExampleListFragmentRouter.Sender
+    private lateinit var mockedSender: ExampleListFragmentRouter.Sender
 
     @Mock
-    private lateinit var mockedPublishSubject: PublishSubject<EmptyEvent>
+    private lateinit var mockedFragmentClickedSubject: PublishSubject<EmptyEvent>
 
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        Mockito.`when`(router.sender).thenReturn(sender)
-        Mockito.`when`(sender.fragmentClicked).thenReturn(mockedPublishSubject)
+        setUpMocksForRouter()
 
-        exampleListViewModel = ExampleListViewModel(router, mockRepository)
+        exampleListViewModel = ExampleListViewModel(spiedRouter, mockRepository)
+    }
+
+    private fun setUpMocksForRouter() {
+        Mockito.`when`(spiedRouter.sender).thenReturn(mockedSender)
+        Mockito.`when`(mockedSender.fragmentClicked).thenReturn(mockedFragmentClickedSubject)
     }
 
     @Test
     fun testRouterSender() {
         exampleListViewModel.fragmentClicked()
-        Mockito.verify(router.sender.fragmentClicked, Mockito.times(1)).onNext(Mockito.any())
+        Mockito.verify(spiedRouter.sender.fragmentClicked, Mockito.times(1)).onNext(Mockito.any())
     }
 
 
