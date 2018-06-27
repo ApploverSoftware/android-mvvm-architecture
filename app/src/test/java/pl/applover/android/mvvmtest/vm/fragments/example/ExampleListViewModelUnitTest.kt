@@ -121,44 +121,44 @@ class ExampleListViewModelUnitTest {
     @Test
     fun testShowSomeToastForFragmentRecreated() {
         val lifecycle = LifecycleRegistry(mock<LifecycleOwner>())
-        val observer = lambdaMock<(Event<String>?) -> Unit>()
+        val liveDataUnit = lambdaMock<(Event<String>?) -> Unit>()
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         exampleListViewModel.showSomeToast()
 
         //Verify that no liveData event is sent when Fragment is created
-        verify(observer, times(0)).invoke(any())
+        verify(liveDataUnit, times(0)).invoke(any())
 
         //Verify that liveData event is sent after Fragment can manipulate UI
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
-            observer(it)
+            liveDataUnit(it)
 
             //Assert that event is not null and content wasn't handled
             assertNotNull(it?.getContentIfNotHandled())
         }
 
-        verify(observer, times(1)).invoke(any())
+        verify(liveDataUnit, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
         //Verify that no new event wasn't sent after onStop in Fragment
-        verify(observer, times(1)).invoke(any())
+        verify(liveDataUnit, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
 
         //Verify that new event wasn't sent again after onStop Fragment
-        verify(observer, times(1)).invoke(any())
+        verify(liveDataUnit, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         //Verify that new event wasn't sent again after onStart in Fragment without subscribing again
-        verify(observer, times(1)).invoke(any())
+        verify(liveDataUnit, times(1)).invoke(any())
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
-            observer(it)
+            liveDataUnit(it)
 
             //Assert that event is not null
             assertNotNull(it)
@@ -167,6 +167,6 @@ class ExampleListViewModelUnitTest {
         }
 
         //Verify that new event was sent again after onStart in Fragment after subscribing livedata again
-        verify(observer, times(2)).invoke(any())
+        verify(liveDataUnit, times(2)).invoke(any())
     }
 }
