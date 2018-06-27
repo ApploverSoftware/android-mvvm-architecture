@@ -2,8 +2,8 @@ package pl.applover.android.mvvmtest.util.ui
 
 import android.view.View
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import pl.applover.android.mvvmtest.util.other.MyScheduler
 import java.util.concurrent.TimeUnit
 
 
@@ -23,7 +23,7 @@ class OnViewTurnedVisibleListener() {
      */
     fun startListening(view: View, listener: OnViewTurnVisibleCallback) {
         stopListening()
-        disposable = Observable.timer(50, TimeUnit.MILLISECONDS).subscribeOn(MyScheduler.getMainThreadScheduler()).subscribe {
+        disposable = Observable.timer(50, TimeUnit.MILLISECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe {
             if (!view.getRect().isEmpty) {
                 disposable?.dispose()
                 listener.onViewTurnedVisible()

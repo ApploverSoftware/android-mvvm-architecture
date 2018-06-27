@@ -12,14 +12,16 @@ import pl.applover.android.mvvmtest.util.architecture.liveData.Event
 import pl.applover.android.mvvmtest.util.architecture.liveData.ObservableListMutableLiveData
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
-import pl.applover.android.mvvmtest.util.other.MyScheduler
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import retrofit2.Response
 import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleListViewModel(private val router: ExampleListFragmentRouter, private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
+class ExampleListViewModel(private val router: ExampleListFragmentRouter,
+                           private val schedulerProvider: SchedulerProvider,
+                           private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -57,8 +59,8 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
         mldNetworkState.value = NetworkState.LOADING
 
         val disposable = citiesRepository.citiesFromNetwork()
-                .subscribeOn(MyScheduler.getScheduler())
-                .observeOn(MyScheduler.getMainThreadScheduler())
+                .subscribeOn(schedulerProvider.subscribeOn)
+                .observeOn(schedulerProvider.observeOn)
                 .subscribe({ response: Response<List<ExampleCityModel>> ->
                     mldCitiesFromLocal.value = false
                     if (response.isSuccessful) {
@@ -86,8 +88,8 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
         mldNetworkState.value = NetworkState.LOADING
 
         val disposable = citiesRepository.citiesFromDatabase()
-                .subscribeOn(MyScheduler.getScheduler())
-                .observeOn(MyScheduler.getMainThreadScheduler())
+                .subscribeOn(schedulerProvider.subscribeOn)
+                .observeOn(schedulerProvider.observeOn)
                 .subscribe({
                     cities.addAll(it)
                     mldNetworkState.value = NetworkState.LOADED
@@ -104,11 +106,11 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter, privat
 
     fun saveCitiesToDb() {
         citiesRepository.deleteAllCitiesFromDatabase()
-                .subscribeOn(MyScheduler.getScheduler())
+                .subscribeOn(schedulerProvider.subscribeOn)
                 .subscribe({
                     citiesRepository.saveAllCitiesToDatabase(cities)
-                            .subscribeOn(MyScheduler.getScheduler())
-                            .observeOn(MyScheduler.getMainThreadScheduler())
+                            .subscribeOn(schedulerProvider.subscribeOn)
+                            .observeOn(schedulerProvider.observeOn)
                             .subscribe()
                 }, {
                     Timber.e(it)

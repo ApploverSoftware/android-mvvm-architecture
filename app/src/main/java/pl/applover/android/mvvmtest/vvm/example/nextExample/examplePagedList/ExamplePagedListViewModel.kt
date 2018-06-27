@@ -9,13 +9,15 @@ import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.other.MyScheduler
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRouter, private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
+class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRouter,
+                                private val schedulerProvider: SchedulerProvider,
+                                private val citiesRepository: ExampleCitiesRepository) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
@@ -38,11 +40,11 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     init {
 
         compositeDisposable.add(citiesRepository.citiesInitialStateBehaviourSubject(dataSourceFactory)
-                .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
+                .observeOn(schedulerProvider.observeOn).subscribe {
                     mldInitialNetworkState.value = it
                 })
         compositeDisposable.add(citiesRepository.citiesNetworkStateBehaviorSubject(dataSourceFactory)
-                .observeOn(MyScheduler.getMainThreadScheduler()).subscribe {
+                .observeOn(schedulerProvider.observeOn).subscribe {
                     mldNetworkState.value = it
                 })
     }
@@ -73,11 +75,11 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     fun saveCitiesToDb() {
         pagedList.value?.let { cities ->
             citiesRepository.deleteAllCitiesFromDatabase()
-                    .subscribeOn(MyScheduler.getScheduler())
+                    .subscribeOn(schedulerProvider.subscribeOn)
                     .subscribe({
                         citiesRepository.saveAllCitiesToDatabase(cities)
-                                .subscribeOn(MyScheduler.getScheduler())
-                                .observeOn(MyScheduler.getMainThreadScheduler())
+                                .subscribeOn(schedulerProvider.subscribeOn)
+                                .observeOn(schedulerProvider.observeOn)
                                 .subscribe()
                     }, {
                         Timber.e(it)

@@ -3,6 +3,7 @@ package pl.applover.android.mvvmtest.dependencyInjection.activities.example.next
 import dagger.Module
 import dagger.Provides
 import pl.applover.android.mvvmtest.util.architecture.dependencyInjection.ActivityScope
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleActivityRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.NextExampleViewModelFactory
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
@@ -11,14 +12,14 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.Exa
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-@Module(includes = [NextExampleActivityModule.RoutersModule::class])
+@Module(includes = [NextExampleActivityModule.ChildRoutersModule::class])
 class NextExampleActivityModule {
 
     /**
      * Module with all routers that belong to activity router
      */
     @Module
-    class RoutersModule {
+    class ChildRoutersModule {
 
         @Provides
         @ActivityScope
@@ -38,6 +39,8 @@ class NextExampleActivityModule {
 
     @Provides
     @ActivityScope
-    fun provideViewModelFactory(router: NextExampleActivityRouter) = NextExampleViewModelFactory(router)
+    fun provideViewModelFactory(router: NextExampleActivityRouter,
+                                schedulerProvider: SchedulerProvider) =
+            NextExampleViewModelFactory(router, schedulerProvider)
 
 }

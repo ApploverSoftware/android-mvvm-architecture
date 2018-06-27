@@ -28,10 +28,10 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
     fun citiesInitialStateBehaviourSubject(citiesDataSourceFactory: CitiesDataSourceFactory) = citiesDataSourceFactory.subjectCitiesDataSource.switchMap { it.initialStateSubject }
 
     //fun citiesFromNetwork() =
-     //       apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
+    //       apiCities.getCitiesList().map { MappedResponse(it.raw(), it.body()?.map { ExampleCityModel(it) }, it.errorBody()) }
 
 
-    fun citiesFromNetwork()=
+    fun citiesFromNetwork() =
             apiCities.getCitiesList().mapResponse(mapper = { ExampleCityModel(it) })
 
     fun pagedCitiesFromDatabase() = daoCities.citiesPagedById().map { ExampleCityModel(it) }

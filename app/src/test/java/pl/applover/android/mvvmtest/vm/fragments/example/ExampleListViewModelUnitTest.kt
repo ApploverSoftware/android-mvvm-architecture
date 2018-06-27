@@ -5,6 +5,8 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import com.nhaarman.mockitokotlin2.*
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import junit.framework.Assert.*
 import org.junit.Before
@@ -15,10 +17,14 @@ import org.mockito.MockitoAnnotations
 import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.lambdaMock
+import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.liveData.Event
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListViewModel
+import retrofit2.Response
+import java.util.concurrent.atomic.AtomicBoolean
 
 class ExampleListViewModelUnitTest {
 
@@ -46,6 +52,8 @@ class ExampleListViewModelUnitTest {
     @Mock
     private lateinit var mockedFragmentClickedSubject: PublishSubject<EmptyEvent>
 
+    private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
+
 
     @Before
     fun setUp() {
@@ -53,7 +61,7 @@ class ExampleListViewModelUnitTest {
 
         setUpMocksForRouter()
 
-        exampleListViewModel = ExampleListViewModel(spiedRouter, mockRepository)
+        exampleListViewModel = ExampleListViewModel(spiedRouter, schedulerProvider, mockRepository)
     }
 
     private fun setUpMocksForRouter() {
@@ -168,5 +176,25 @@ class ExampleListViewModelUnitTest {
 
         //Verify that new event was sent again after onStart in Fragment after subscribing livedata again
         verify(liveDataUnit, times(2)).invoke(any())
+    }
+
+    @Test
+    fun testLoadCities() {
+        whenever(mockRepository.citiesFromNetwork()).thenReturn(Single.just(Response.success(
+                listOf(
+                        ExampleCityModel(id = "02mstvd091", name = "Warsaw", country = "Poland", lat = 52.22977, lng = 21.01178),
+                        ExampleCityModel(id = "0dg2ykpttl", name = "Lodz", country = "Poland", lat = 51.75, lng = 19.46667)
+                ))))
+
+        val isInitialValue = AtomicBoolean(true)
+
+        exampleListViewModel.mldCitiesLiveData.observeForever {
+            if (!isInitialValue.get()) {
+                assertEquals(2, it?.size)
+            }
+            isInitialValue.set(false)
+        }
+
+        exampleListViewModel.loadCities()
     }
 }

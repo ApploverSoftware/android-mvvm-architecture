@@ -89,13 +89,12 @@ class ExampleListFragment : DaggerFragment() {
         })
 
         viewModel.mldCitiesFromLocal.observe(this, Observer {
-            if(it == true){
+            if (it == true) {
                 buttonDataFromDb.text = "Show online data"
                 buttonDataFromDb.setOnClickListener {
                     viewModel.loadCities()
                 }
-            }
-            else{
+            } else {
                 buttonDataFromDb.text = "Show db data"
                 buttonDataFromDb.setOnClickListener {
                     viewModel.loadCitiesFromDb()

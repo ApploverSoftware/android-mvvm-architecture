@@ -1,9 +1,7 @@
 package pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList
 
-import io.reactivex.subjects.PublishSubject
-import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
-import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Receiver
-import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Sender
+import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter.Receiver
+import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter.Sender
 
 /**
  * Created by Janusz Hain on 2018-06-11.

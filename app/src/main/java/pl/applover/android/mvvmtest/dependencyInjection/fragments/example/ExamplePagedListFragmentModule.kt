@@ -3,6 +3,7 @@ package pl.applover.android.mvvmtest.dependencyInjection.fragments.example
 import dagger.Module
 import dagger.Provides
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
 import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListViewModelFactory
 
@@ -12,5 +13,8 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.Exa
 @Module
 class ExamplePagedListFragmentModule {
     @Provides
-    fun provideViewModelFactory(router: ExamplePagedListFragmentRouter, repository: ExampleCitiesRepository) = ExamplePagedListViewModelFactory(router, repository)
+    fun provideViewModelFactory(router: ExamplePagedListFragmentRouter,
+                                schedulerProvider: SchedulerProvider,
+                                repository: ExampleCitiesRepository) =
+            ExamplePagedListViewModelFactory(router, schedulerProvider, repository)
 }

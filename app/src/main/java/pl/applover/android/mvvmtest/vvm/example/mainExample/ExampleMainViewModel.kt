@@ -5,11 +5,13 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
+import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 
 /**
  * Created by Janusz Hain on 2018-06-06.
  */
-class ExampleMainViewModel(private val router: ExampleActivityRouter) : ViewModel() {
+class ExampleMainViewModel(private val router: ExampleActivityRouter,
+                           private val schedulerProvider: SchedulerProvider) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 

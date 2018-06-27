@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier
 /**
  * Created by Janusz Hain on 2018-06-26.
  */
-fun Field.toPublicVar(){
+fun Field.toPublicVar() {
     isAccessible = true
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
     modifiersField.isAccessible = true

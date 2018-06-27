@@ -8,7 +8,6 @@ import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.ui.hide
 import pl.applover.android.mvvmtest.util.ui.show
-import timber.log.Timber
 
 /**
  * Created by Janusz Hain on 2018-06-20.
