@@ -17,6 +17,11 @@ android {
         }
     }
 
+    sourceSets {
+        androidTest.java.srcDirs += "src/commonTest/java"
+        test.java.srcDirs += "src/commonTest/java"
+    }
+
     //Used in architecture
     dataBinding {
         enabled = true
