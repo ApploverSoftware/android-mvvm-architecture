@@ -8,8 +8,8 @@ import io.reactivex.disposables.Disposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import pl.applover.android.mvvmtest.util.architecture.liveData.Event
 import pl.applover.android.mvvmtest.util.architecture.liveData.ObservableListMutableLiveData
+import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
@@ -25,7 +25,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter,
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    val mldSomeToast = MutableLiveData<Event<String>>()
+    val mldSomeToast = MutableLiveData<SingleEvent<String>>()
 
     val mldNetworkState = MutableLiveData<NetworkState>()
 
@@ -46,7 +46,7 @@ class ExampleListViewModel(private val router: ExampleListFragmentRouter,
     }
 
     fun showSomeToast() {
-        mldSomeToast.value = Event("mldSomeToast")
+        mldSomeToast.value = SingleEvent("mldSomeToast")
     }
 
     fun fragmentClicked() {

@@ -6,12 +6,12 @@ import java.util.*
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  * This Event is intended to be used when several classes have to listen to single event.
- * Otherwise use [Event]
  */
 open class SingleEvent<out T>(private val content: T) {
 
     private val classesThatHandledTheEvent = HashSet<String>(0)
     private val classesThatHandledTheEventWeakRef = HashSet<WeakReference<Class<Any>>>()
+
 
     /**
      * Returns the content and prevents its use again from the given class.
@@ -30,6 +30,11 @@ open class SingleEvent<out T>(private val content: T) {
         } ?: return null
     }
 
+    fun hasBeenHandled(classThatMaybeUsedEvent: Any): Boolean {
+        val canonicalName = classThatMaybeUsedEvent::javaClass.get().canonicalName
+        return classesThatHandledTheEvent.contains(canonicalName)
+    }
+
     /**
      * Returns the content and prevents its use again with the given tag.
      * Tag is stored in hashset to check if given tag have used event already
@@ -41,6 +46,10 @@ open class SingleEvent<out T>(private val content: T) {
         } else {
             null
         }
+    }
+
+    fun hasBeenHandled(tag: String): Boolean {
+        return classesThatHandledTheEvent.contains(tag)
     }
 
     /**
@@ -59,4 +68,26 @@ open class SingleEvent<out T>(private val content: T) {
             }
         } ?: return null
     }
+
+    fun hasBeenHandledWeakRef(classThatMaybeUsedEvent: Any): Boolean {
+        val classWantingToUseEvent = classThatMaybeUsedEvent::javaClass.get()
+        return classesThatHandledTheEventWeakRef.contains(WeakReference(classWantingToUseEvent))
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SingleEvent<*>
+
+        if (content != other.content) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return content?.hashCode() ?: 0
+    }
+
+
 }

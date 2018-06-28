@@ -83,7 +83,7 @@ class ExampleListFragment : DaggerFragment() {
 
     private fun setViewModelListeners() {
         viewModel.mldSomeToast.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
+            it?.getContentIfNotHandled(this)?.let {
                 showToast(it)
             }
         })
