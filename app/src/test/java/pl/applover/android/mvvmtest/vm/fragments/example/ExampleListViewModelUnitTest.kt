@@ -198,14 +198,16 @@ class ExampleListViewModelUnitTest {
     @Test
     fun testLoadCities() {
         whenever(mockRepository.citiesFromNetwork()).thenReturn(Single.just(Response.success(
-                exampleCityModelTestFactory.createList(10))))
+                exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
 
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
-            if (!isInitialValue.get()) {
-                assertEquals(2, it?.size)
+            if(!isInitialValue.get()) {
+                it?.let {
+                    assertEquals(25, it.size)
+                }
             }
             isInitialValue.set(false)
         }

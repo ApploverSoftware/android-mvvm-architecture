@@ -12,17 +12,13 @@ class ExampleCityModelTestFactory {
     fun create(countryId: Int? = null): ExampleCityModel {
         val id = counter.incrementAndGet()
         val countryString = if (countryId != null) "country_$countryId" else "country_$id"
-        return ExampleCityModel(id = "id_$id", name = "city_$id", country = countryString, _numberOfClicks = 0, lat = id.toDouble()*2/3+2, lng = id.toDouble()*3/4+5)
+        return ExampleCityModel(id = "id_$id", name = "city_$id", country = countryString, _numberOfClicks = 0, lat = id.toDouble() * 2 / 3 + 2, lng = id.toDouble() * 3 / 4 + 5)
     }
 
-    fun create(countryId: Int) {
-        val id = counter.incrementAndGet()
-    }
-
-    fun createList(size: Int): List<ExampleCityModel> {
+    fun createList(size: Int, countryId: Int? = null): List<ExampleCityModel> {
         val arrayList: ArrayList<ExampleCityModel> = ArrayList(size)
-        for (i in 0..size) {
-            arrayList.add(create())
+        for (i in 0 until size) {
+            arrayList.add(create(countryId))
         }
 
         return arrayList
