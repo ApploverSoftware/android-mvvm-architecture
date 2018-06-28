@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
-import pl.applover.android.mvvmtest.util.architecture.liveData.Event
+import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import timber.log.Timber
 
@@ -16,7 +16,7 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter,
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    val someEvent = MutableLiveData<Event<String>>()
+    val someEvent = MutableLiveData<SingleEvent<String>>()
     val title = MutableLiveData<String>()
 
     init {
@@ -28,7 +28,7 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter,
     }
 
     fun activityOnResume() {
-        someEvent.value = Event("Next Activity on Resume!")
+        someEvent.value = SingleEvent("Next Activity on Resume!")
         title.value = "Next Activity resumed"
     }
 
