@@ -19,6 +19,7 @@ import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepos
 import pl.applover.android.mvvmtest.lambdaMock
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
@@ -100,13 +101,13 @@ class ExampleListViewModelUnitTest {
 
         exampleListViewModel.showSomeToast()
 
-        //Assert that sent Event wasn't handled
+        //assert sent Event wasn't handled
         assertEquals(false, exampleListViewModel.mldSomeToast.value?.hasBeenHandled(this))
 
-        //Verify that no liveData event is sent when Fragment is created
+        //verify no liveData event is sent when Fragment is created
         verify(observer, times(0)).invoke(any())
 
-        //Verify that liveData event is sent after Fragment can manipulate UI
+        //verify liveData event is sent after Fragment can manipulate UI
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
@@ -116,17 +117,17 @@ class ExampleListViewModelUnitTest {
 
         verify(observer, times(1)).invoke(any())
 
-        //Assert that sent Event was handled
+        //assert sent Event was handled
         assertEquals(true, exampleListViewModel.mldSomeToast.value?.hasBeenHandled(this))
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
-        //Verify that no new event wasn't sent after onStop in Fragment
+        //verify no new event wasn't sent after onStop in Fragment
         verify(observer, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
-        //Verify that new event wasn't sent again after onResume Fragment
+        //verify new event wasn't sent again after onResume Fragment
         verify(observer, times(1)).invoke(any())
     }
 
@@ -143,16 +144,16 @@ class ExampleListViewModelUnitTest {
 
         exampleListViewModel.showSomeToast()
 
-        //Verify that no liveData event is sent when Fragment is created
+        //verify no liveData event is sent when Fragment is created
         verify(liveDataUnit, times(0)).invoke(any())
 
-        //Verify that liveData event is sent after Fragment can manipulate UI
+        //verify liveData event is sent after Fragment can manipulate UI
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
             liveDataUnit(it)
 
-            //Assert that event is not null and content wasn't handled
+            //assert event is not null and content wasn't handled
             assertNotNull(it?.getContentIfNotHandled(this))
         }
 
@@ -160,29 +161,29 @@ class ExampleListViewModelUnitTest {
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
-        //Verify that no new event wasn't sent after onStop in Fragment
+        //verify no new event wasn't sent after onStop in Fragment
         verify(liveDataUnit, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
 
-        //Verify that new event wasn't sent again after onStop Fragment
+        //verify new event wasn't sent again after onStop Fragment
         verify(liveDataUnit, times(1)).invoke(any())
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
-        //Verify that new event wasn't sent again after onStart in Fragment without subscribing again
+        //verify new event wasn't sent again after onStart in Fragment without subscribing again
         verify(liveDataUnit, times(1)).invoke(any())
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
             liveDataUnit(it)
 
-            //Assert that event is not null
+            //assert event is not null
             assertNotNull(it)
-            //Assert content was handled already
+            //assert content was handled already
             assertNull(it!!.getContentIfNotHandled(this))
         }
 
-        //Verify that new event was sent again after onStart in Fragment after subscribing livedata again
+        //verify new event was sent again after onStart in Fragment after subscribing livedata again
         verify(liveDataUnit, times(2)).invoke(any())
     }
 
@@ -199,11 +200,31 @@ class ExampleListViewModelUnitTest {
 
         val isInitialValue = AtomicBoolean(true)
 
+        //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
             if (!isInitialValue.get()) {
                 assertEquals(2, it?.size)
             }
             isInitialValue.set(false)
+        }
+
+        var networkStateChangedCount = 0
+
+        //assert network status is changed correctly
+        exampleListViewModel.mldNetworkState.observeForever {
+            it?.let {
+                when (networkStateChangedCount) {
+                    0 -> {
+                        assert(it.networkStatus == NetworkStatus.RUNNING)
+                        networkStateChangedCount++
+                    }
+                    1 -> {
+                        assert(it.networkStatus == NetworkStatus.SUCCESS)
+                    }
+                    else -> {
+                    }
+                }
+            }
         }
 
         exampleListViewModel.loadCities()
