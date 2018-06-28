@@ -84,7 +84,7 @@ class ExamplePagedListFragment : DaggerFragment() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.mldCitiesFromLocal.observe(this, Observer {
+        viewModel.mldCities.observe(this, Observer {
             if (it == true) {
                 buttonDataFromDb.text = "Show online data"
                 buttonDataFromDb.setOnClickListener {

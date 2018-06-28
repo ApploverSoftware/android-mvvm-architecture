@@ -27,6 +27,9 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleL
 import retrofit2.Response
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * Created by Janusz Hain on 2018-06-27.
+ */
 class ExampleListViewModelUnitTest {
 
     /**

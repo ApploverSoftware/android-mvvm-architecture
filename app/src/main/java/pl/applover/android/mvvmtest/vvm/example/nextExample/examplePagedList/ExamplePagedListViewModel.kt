@@ -23,7 +23,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     val mldNetworkState = MutableLiveData<NetworkState>()
     val mldInitialNetworkState = MutableLiveData<NetworkState>()
-    val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
+    val mldCities: MutableLiveData<Boolean> = MutableLiveData()
 
     private val myPagingConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -50,24 +50,24 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun retry() {
-        if (mldCitiesFromLocal.value == false)
+        if (mldCities.value == false)
             dataSourceFactory.subjectCitiesDataSource.value.retry()
     }
 
     fun refresh() {
-        if (mldCitiesFromLocal.value == false)
+        if (mldCities.value == false)
             dataSourceFactory.subjectCitiesDataSource.value.resetData()
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
         pagedList.removeObservers(lifecycleOwner)
-        mldCitiesFromLocal.value = true
+        mldCities.value = true
         pagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
         pagedList.removeObservers(lifecycleOwner)
-        mldCitiesFromLocal.value = false
+        mldCities.value = false
         pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     }
