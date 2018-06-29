@@ -59,6 +59,8 @@ class ExamplePagedListViewModelUnitTest {
     private val maxCities = 25
     private val citiesForPaging = ArrayList(exampleCityModelTestFactory.createList(maxCities))
 
+    private var networkStateRunningCount = 0
+
     @Mock
     private lateinit var dataSourceFactory: CitiesDataSourceFactory
 
@@ -108,16 +110,23 @@ class ExamplePagedListViewModelUnitTest {
     @Test
     fun checkNetworkStateForSuccessfulCalls() {
 
+
         //When datasource have to load initial data then return new cities page
         whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
             dataSource.initialStateSubject.onNext(NetworkState.LOADING)
+            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
+            networkStateRunningCount++
+            
             captorInitialLoad.value.onResult(getCities())
             dataSource.initialStateSubject.onNext(NetworkState.LOADED)
+            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
         }
 
         //When datasource have to load after data then return new cities page
         whenever(dataSource.loadAfter(any(), capture(captorLoad))).then {
             dataSource.networkStateSubject.onNext(NetworkState.LOADING)
+            networkStateRunningCount++
+
             captorLoad.value.onResult(getCities())
             dataSource.networkStateSubject.onNext(NetworkState.LOADED)
         }
@@ -149,6 +158,8 @@ class ExamplePagedListViewModelUnitTest {
 
                 it.loadAround(it.size - 1)
                 assertEquals(25, it.size)
+
+                assertEquals(4, networkStateRunningCount)
             }
         }
     }
