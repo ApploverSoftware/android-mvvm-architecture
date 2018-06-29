@@ -115,8 +115,6 @@ class ExamplePagedListViewModelUnitTest {
         whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
             dataSource.initialStateSubject.onNext(NetworkState.LOADING)
             dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-            networkStateRunningCount++
-            
             captorInitialLoad.value.onResult(getCities())
             dataSource.initialStateSubject.onNext(NetworkState.LOADED)
             dataSource.networkStateSubject.onNext(NetworkState.LOADED)
@@ -125,7 +123,6 @@ class ExamplePagedListViewModelUnitTest {
         //When datasource have to load after data then return new cities page
         whenever(dataSource.loadAfter(any(), capture(captorLoad))).then {
             dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-            networkStateRunningCount++
 
             captorLoad.value.onResult(getCities())
             dataSource.networkStateSubject.onNext(NetworkState.LOADED)
@@ -159,7 +156,7 @@ class ExamplePagedListViewModelUnitTest {
                 it.loadAround(it.size - 1)
                 assertEquals(25, it.size)
 
-                assertEquals(4, networkStateRunningCount)
+                assertEquals(5, networkStateRunningCount)
             }
         }
     }
@@ -171,6 +168,7 @@ class ExamplePagedListViewModelUnitTest {
             }
             previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
                 assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
+                networkStateRunningCount++
             }
             else -> fail()
         }
