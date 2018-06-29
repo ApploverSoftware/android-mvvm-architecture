@@ -35,7 +35,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
     private val databaseDataSourceFactory = citiesRepository.pagedCitiesFromDatabase()
 
-    var pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+    var ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     init {
 
@@ -60,20 +60,20 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
-        pagedList.removeObservers(lifecycleOwner)
+        ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = true
-        pagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
-        pagedList.removeObservers(lifecycleOwner)
+        ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = false
-        pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     }
 
     fun saveCitiesToDb() {
-        pagedList.value?.let { cities ->
+        ldCitiesPagedList.value?.let { cities ->
             citiesRepository.deleteAllCitiesFromDatabase()
                     .subscribeOn(schedulerProvider.subscribeOn)
                     .subscribe({

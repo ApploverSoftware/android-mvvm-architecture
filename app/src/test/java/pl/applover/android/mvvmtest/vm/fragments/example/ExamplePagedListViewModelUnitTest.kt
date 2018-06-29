@@ -106,7 +106,7 @@ class ExamplePagedListViewModelUnitTest {
     }
 
     @Test
-    fun successfulyLoadCitiesFromOnlineSource() {
+    fun checkNetworkStateForSuccessfulCalls() {
 
         //When datasource have to load initial data then return new cities page
         whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
@@ -136,7 +136,8 @@ class ExamplePagedListViewModelUnitTest {
             previousNetworkState = it
         }
 
-        examplePagedListViewModel.pagedList.observeForever {
+        //Not really needed to assert sizes of the list as dataSource is mocked
+        examplePagedListViewModel.ldCitiesPagedList.observeForever {
             it?.let {
                 assertEquals(10, it.size)
 
