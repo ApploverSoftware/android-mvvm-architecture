@@ -8,8 +8,7 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.fail
+import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,8 +57,6 @@ class ExamplePagedListViewModelUnitTest {
     private val cityCountPerPage = 10
     private val maxCities = 25
     private val citiesForPaging = ArrayList(exampleCityModelTestFactory.createList(maxCities))
-
-    private var networkStateRunningCount = 0
 
     @Mock
     private lateinit var dataSourceFactory: CitiesDataSourceFactory
@@ -145,8 +142,10 @@ class ExamplePagedListViewModelUnitTest {
         //Not really needed to assert sizes of the list as dataSource is mocked
         examplePagedListViewModel.ldCitiesPagedList.observeForever {
             it?.let {
+                assertNotNull(previousInitialNetworkState)
                 assertEquals(10, it.size)
 
+                assertNotNull(previousNetworkState)
                 it.loadAround(it.size - 1)
                 assertEquals(20, it.size)
 
@@ -155,10 +154,10 @@ class ExamplePagedListViewModelUnitTest {
 
                 it.loadAround(it.size - 1)
                 assertEquals(25, it.size)
-
-                assertEquals(5, networkStateRunningCount)
             }
         }
+
+
     }
 
     private fun checkNetworkStatusForSuccessfulRun(previousNetworkState: NetworkState?, currentNetworkState: NetworkState?) {
@@ -168,7 +167,6 @@ class ExamplePagedListViewModelUnitTest {
             }
             previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
                 assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
-                networkStateRunningCount++
             }
             else -> fail()
         }
