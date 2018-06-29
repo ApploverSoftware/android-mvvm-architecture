@@ -1,6 +1,7 @@
 package pl.applover.android.mvvmtest.util.extensions
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Janusz Hain on 2018-01-08.
@@ -36,4 +37,14 @@ fun <K : Any, V : Any> HashMap<K, V>.putIfNotExists(key: K, value: V): V? {
     } else {
         return valueUnderKey
     }
+}
+
+/**
+ * Removes last n elements from list
+ */
+fun <T> MutableList<T>.removeLastItems(n: Int): List<T> {
+    val sublist = subList(maxOf(0, size - n), maxOf(0, size))
+    val arrayList = ArrayList(sublist)
+    sublist.clear()
+    return arrayList
 }

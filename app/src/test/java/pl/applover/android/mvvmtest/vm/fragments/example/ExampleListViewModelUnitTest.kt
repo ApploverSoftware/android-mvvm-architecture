@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.lambdaMock
-import pl.applover.android.mvvmtest.models.example.ExampleCityModel
+import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
 import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
@@ -27,6 +27,9 @@ import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleL
 import retrofit2.Response
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * Created by Janusz Hain on 2018-06-27.
+ */
 class ExampleListViewModelUnitTest {
 
     /**
@@ -54,6 +57,8 @@ class ExampleListViewModelUnitTest {
     private lateinit var mockedFragmentClickedSubject: PublishSubject<EmptyEvent>
 
     private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
+
+    private val exampleCityModelTestFactory: ExampleCityModelTestFactory = ExampleCityModelTestFactory()
 
 
     @Before
@@ -193,17 +198,16 @@ class ExampleListViewModelUnitTest {
     @Test
     fun testLoadCities() {
         whenever(mockRepository.citiesFromNetwork()).thenReturn(Single.just(Response.success(
-                listOf(
-                        ExampleCityModel(id = "02mstvd091", name = "Warsaw", country = "Poland", lat = 52.22977, lng = 21.01178),
-                        ExampleCityModel(id = "0dg2ykpttl", name = "Lodz", country = "Poland", lat = 51.75, lng = 19.46667)
-                ))))
+                exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
 
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
-            if (!isInitialValue.get()) {
-                assertEquals(2, it?.size)
+            if(!isInitialValue.get()) {
+                it?.let {
+                    assertEquals(25, it.size)
+                }
             }
             isInitialValue.set(false)
         }

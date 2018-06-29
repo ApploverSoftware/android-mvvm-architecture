@@ -44,7 +44,7 @@ class ExamplePagedListFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerViewCities.adapter = adapter
-        viewModel.pagedList.observe(this, Observer { adapter.submitList(it) })
+        viewModel.ldCitiesPagedList.observe(this, Observer { adapter.submitList(it) })
         setViewListeners()
         setViewModelObservers()
     }
@@ -84,12 +84,12 @@ class ExamplePagedListFragment : DaggerFragment() {
     }
 
     private fun setViewModelListeners() {
-        viewModel.mldCitiesFromLocal.observe(this, Observer {
+        viewModel.mldCities.observe(this, Observer {
             if (it == true) {
                 buttonDataFromDb.text = "Show online data"
                 buttonDataFromDb.setOnClickListener {
                     viewModel.loadCitiesFromOnlineSource(this)
-                    viewModel.pagedList.observe(this, Observer {
+                    viewModel.ldCitiesPagedList.observe(this, Observer {
                         adapter.submitList(it)
                     })
                 }
@@ -118,7 +118,7 @@ class ExamplePagedListFragment : DaggerFragment() {
 
     private fun setOnCitiesDbClicked() {
         viewModel.loadCitiesFromDb(this)
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.ldCitiesPagedList.observe(this, Observer {
             adapter.submitList(it)
         })
     }

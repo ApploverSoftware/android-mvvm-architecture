@@ -23,7 +23,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     val mldNetworkState = MutableLiveData<NetworkState>()
     val mldInitialNetworkState = MutableLiveData<NetworkState>()
-    val mldCitiesFromLocal: MutableLiveData<Boolean> = MutableLiveData()
+    val mldCities: MutableLiveData<Boolean> = MutableLiveData()
 
     private val myPagingConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -35,7 +35,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
     private val databaseDataSourceFactory = citiesRepository.pagedCitiesFromDatabase()
 
-    var pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+    var ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     init {
 
@@ -50,30 +50,30 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun retry() {
-        if (mldCitiesFromLocal.value == false)
+        if (mldCities.value == false)
             dataSourceFactory.subjectCitiesDataSource.value.retry()
     }
 
     fun refresh() {
-        if (mldCitiesFromLocal.value == false)
+        if (mldCities.value == false)
             dataSourceFactory.subjectCitiesDataSource.value.resetData()
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
-        pagedList.removeObservers(lifecycleOwner)
-        mldCitiesFromLocal.value = true
-        pagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList.removeObservers(lifecycleOwner)
+        mldCities.value = true
+        ldCitiesPagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
-        pagedList.removeObservers(lifecycleOwner)
-        mldCitiesFromLocal.value = false
-        pagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList.removeObservers(lifecycleOwner)
+        mldCities.value = false
+        ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
 
     }
 
     fun saveCitiesToDb() {
-        pagedList.value?.let { cities ->
+        ldCitiesPagedList.value?.let { cities ->
             citiesRepository.deleteAllCitiesFromDatabase()
                     .subscribeOn(schedulerProvider.subscribeOn)
                     .subscribe({
