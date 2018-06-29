@@ -26,7 +26,7 @@ class NextExampleActivityRouterUnitTest {
     }
 
     @Test
-    fun testRouterSubjectPipes() {
+    fun testRouting() {
 
         var fragmentClicked = false
 
