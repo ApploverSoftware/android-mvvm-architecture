@@ -107,7 +107,7 @@ class ExamplePagedListViewModelUnitTest {
 
 
     @Test
-    fun loadCitiesFromOnlineSource() {
+    fun successfulyLoadCitiesFromOnlineSource() {
         examplePagedListViewModel.pagedList.observeForever {
             it?.let {
 
