@@ -4,10 +4,12 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.paging.ItemKeyedDataSource
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.capture
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -18,6 +20,7 @@ import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceF
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.extensions.removeLastItems
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
@@ -62,15 +65,16 @@ class ExamplePagedListViewModelUnitTest {
     @Mock
     private lateinit var dataSource: CitiesDataSource
 
-    @Spy
-    private lateinit var observable: Observable<NetworkState>
-
     @Captor
     private lateinit var captorInitialLoad: ArgumentCaptor<ItemKeyedDataSource.LoadInitialCallback<ExampleCityModel>>
 
     @Captor
     private lateinit var captorLoad: ArgumentCaptor<ItemKeyedDataSource.LoadCallback<ExampleCityModel>>
 
+    private val subjectCitiesDataSource: BehaviorSubject<CitiesDataSource> = BehaviorSubject.create()
+
+    private val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
+    private val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
 
     @Before
     fun setUp() {
@@ -78,39 +82,62 @@ class ExamplePagedListViewModelUnitTest {
 
         createStubsBeforeViewModel()
         examplePagedListViewModel = ExamplePagedListViewModel(spiedRouter, schedulerProvider, mockedRepository)
-
-        createStubsAfterViewModel()
-
     }
 
     private fun createStubsBeforeViewModel() {
-        whenever(dataSourceFactory.create()).thenReturn(dataSource)
+
+        //Before returning dataSource, pass it to our new subject
+        doAnswer {
+            subjectCitiesDataSource.onNext(dataSource)
+            return@doAnswer dataSource
+        }.whenever(dataSourceFactory).create()
+
         whenever(mockedRepository.citiesDataSourceFactory(any())).thenReturn(dataSourceFactory)
 
-        whenever(mockedRepository.citiesInitialStateBehaviourSubject(any())).thenReturn(observable)
-        whenever(mockedRepository.citiesNetworkStateBehaviorSubject(any())).thenReturn(observable)
-    }
+        whenever(dataSource.initialStateSubject).thenReturn(initialStateSubject)
+        whenever(dataSource.networkStateSubject).thenReturn(networkStateSubject)
 
-    private fun createStubsAfterViewModel() {
-        whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
-            captorInitialLoad.value.onResult(getCities())
-        }
-
-        whenever(dataSource.loadAfter(any(), capture(captorLoad))).then {
-            captorLoad.value.onResult(getCities())
-        }
+        whenever(mockedRepository.citiesInitialStateBehaviourSubject(any())).thenReturn(subjectCitiesDataSource.switchMap { it.initialStateSubject })
+        whenever(mockedRepository.citiesNetworkStateBehaviorSubject(any())).thenReturn(subjectCitiesDataSource.switchMap { it.networkStateSubject })
     }
 
     private fun getCities(): MutableList<ExampleCityModel> {
         return ArrayList(citiesForPaging.removeLastItems(cityCountPerPage))
     }
 
-
     @Test
     fun successfulyLoadCitiesFromOnlineSource() {
+
+        //When datasource have to load initial data then return new cities page
+        whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
+            dataSource.initialStateSubject.onNext(NetworkState.LOADING)
+            captorInitialLoad.value.onResult(getCities())
+            dataSource.initialStateSubject.onNext(NetworkState.LOADED)
+        }
+
+        //When datasource have to load after data then return new cities page
+        whenever(dataSource.loadAfter(any(), capture(captorLoad))).then {
+            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
+            captorLoad.value.onResult(getCities())
+            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
+        }
+
+        var previousInitialNetworkState: NetworkState? = null
+
+        examplePagedListViewModel.mldInitialNetworkState.observeForever {
+            checkNetworkStatusForSuccessfulRun(previousInitialNetworkState, it)
+            previousInitialNetworkState = it
+        }
+
+        var previousNetworkState: NetworkState? = null
+
+        examplePagedListViewModel.mldNetworkState.observeForever {
+            checkNetworkStatusForSuccessfulRun(previousNetworkState, it)
+            previousNetworkState = it
+        }
+
         examplePagedListViewModel.pagedList.observeForever {
             it?.let {
-
                 assertEquals(10, it.size)
 
                 it.loadAround(it.size - 1)
@@ -122,6 +149,18 @@ class ExamplePagedListViewModelUnitTest {
                 it.loadAround(it.size - 1)
                 assertEquals(25, it.size)
             }
+        }
+    }
+
+    private fun checkNetworkStatusForSuccessfulRun(previousNetworkState: NetworkState?, currentNetworkState: NetworkState?) {
+        when {
+            previousNetworkState?.networkStatus == NetworkStatus.RUNNING -> {
+                assertEquals(NetworkStatus.SUCCESS, currentNetworkState?.networkStatus)
+            }
+            previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
+                assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
+            }
+            else -> fail()
         }
     }
 }
