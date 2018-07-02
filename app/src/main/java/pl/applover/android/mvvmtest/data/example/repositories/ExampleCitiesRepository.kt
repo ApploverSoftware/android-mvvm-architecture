@@ -1,5 +1,6 @@
 package pl.applover.android.mvvmtest.data.example.repositories
 
+import android.arch.paging.PagedList
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
@@ -7,6 +8,7 @@ import pl.applover.android.mvvmtest.data.example.database.models.ExampleCityDbMo
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
+import pl.applover.android.mvvmtest.util.architecture.paging.ListingFactoryItemKeyed
 import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponse
 import javax.inject.Inject
 
@@ -41,6 +43,9 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
     fun saveAllCitiesToDatabase(cities: Collection<ExampleCityModel>) = Single.fromCallable { daoCities.insertOrReplaceAll(cities.map { ExampleCityDbModel(it) }) }
 
     fun deleteAllCitiesFromDatabase() = Single.fromCallable { daoCities.deleteAll() }
+
+    fun citiesListingFactory(compositeDisposable: CompositeDisposable, config: PagedList.Config) =
+            ListingFactoryItemKeyed(citiesDataSourceFactory(compositeDisposable), config)
 
 
 }
