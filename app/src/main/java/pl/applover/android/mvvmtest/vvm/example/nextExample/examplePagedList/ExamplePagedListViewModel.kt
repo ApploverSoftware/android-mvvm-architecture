@@ -32,18 +32,18 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
             .setPrefetchDistance(2)
             .build()
 
-    private val dataSourceFactory = citiesRepository.citiesDataSourceFactory(compositeDisposable)
-    private val databaseDataSourceFactory = citiesRepository.pagedCitiesFromDatabase()
+    private val listingFactoryOnline = citiesRepository.citiesOnlineListingFactory(compositeDisposable, myPagingConfig)
 
-    var ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+    var ldCitiesPagedList = listingFactoryOnline.build()
+
 
     init {
 
-        compositeDisposable.add(citiesRepository.citiesInitialStateBehaviourSubject(dataSourceFactory)
+        compositeDisposable.add(listingFactoryOnline.initialStateBehaviourSubject
                 .observeOn(schedulerProvider.observeOn).subscribe {
                     mldInitialNetworkState.value = it
                 })
-        compositeDisposable.add(citiesRepository.citiesNetworkStateBehaviorSubject(dataSourceFactory)
+        compositeDisposable.add(listingFactoryOnline.networkStateBehaviorSubject
                 .observeOn(schedulerProvider.observeOn).subscribe {
                     mldNetworkState.value = it
                 })
@@ -51,24 +51,24 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     fun retry() {
         if (mldCities.value == false)
-            dataSourceFactory.subjectCitiesDataSource.value.retry()
+            listingFactoryOnline.retry()
     }
 
     fun refresh() {
         if (mldCities.value == false)
-            dataSourceFactory.subjectCitiesDataSource.value.resetData()
+            listingFactoryOnline.refresh()
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
         ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = true
-        ldCitiesPagedList = LivePagedListBuilder(databaseDataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList = LivePagedListBuilder(citiesRepository.pagedCitiesFromDatabase(), myPagingConfig).build()
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
         ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = false
-        ldCitiesPagedList = LivePagedListBuilder(dataSourceFactory, myPagingConfig).build()
+        ldCitiesPagedList = listingFactoryOnline.build()
 
     }
 
