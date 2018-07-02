@@ -142,13 +142,13 @@ class ExamplePagedListViewModelUnitTest {
             Assert.assertEquals(10, it.size)
 
             Assert.assertNotNull(previousNetworkState)
-            it.loadAround(it.size - 1)
+            it.loadAround(it.lastIndex)
             Assert.assertEquals(20, it.size)
 
-            it.loadAround(it.size - 1)
+            it.loadAround(it.lastIndex)
             Assert.assertEquals(25, it.size)
 
-            it.loadAround(it.size - 1)
+            it.loadAround(it.lastIndex)
             Assert.assertEquals(25, it.size)
         }
 

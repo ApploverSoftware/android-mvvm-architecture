@@ -1,31 +1,22 @@
 package pl.applover.android.mvvmtest.repositories.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.paging.ItemKeyedDataSource
-import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
+import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.AdditionalAnswers.answer
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
-import org.mockito.stubbing.Answer
-import pl.applover.android.mvvmtest.data.example.database.dao.ExampleCityDao
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
-import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSource
-import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityResponseTestFactory
-import pl.applover.android.mvvmtest.models.example.ExampleCityModel
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.extensions.removeLastItems
 import retrofit2.Response
 
@@ -44,32 +35,21 @@ class ExampleCitiesRepositoryUnitTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var mockedRepository: ExampleCitiesRepository
+    private lateinit var repository: ExampleCitiesRepository
+
+    @Mock
+    private lateinit var exampleCitiesApiEndpointsInterface: ExampleCitiesApiEndpointsInterface
+
+    //City list for testing
 
     private val exampleCityResponseTestFactory = ExampleCityResponseTestFactory()
 
-    //City list for testing
     private val cityCountPerPage = 10
     private val maxCities = 25
     private val citiesForPaging = ArrayList(exampleCityResponseTestFactory.createList(maxCities))
     private val lastCitiesFromPage = ArrayList<ExampleCityResponse>()
 
     private var lastItemId: String = "null"
-
-    @Mock
-    private lateinit var dao: ExampleCityDao
-
-    @Mock
-    private lateinit var exampleCitiesApiEndpointsInterface: ExampleCitiesApiEndpointsInterface
-
-    private val subjectCitiesDataSource: BehaviorSubject<CitiesDataSource> = BehaviorSubject.create()
-
-    private val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
-    private val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
-
-    private lateinit var dataSource: CitiesDataSource
-
-    private lateinit var dataSourceFactory: CitiesDataSourceFactory
 
     private val myPagingConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -78,13 +58,17 @@ class ExampleCitiesRepositoryUnitTest {
             .setPrefetchDistance(2)
             .build()
 
-    @Captor
-    private lateinit var captorLastKey: ArgumentCaptor<ItemKeyedDataSource.LoadParams<String>>
-
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        createStubsBeforeRepository()
+        repository = ExampleCitiesRepository(exampleCitiesApiEndpointsInterface, mock())
+    }
 
+    private fun createStubsBeforeRepository() {
+        whenever(exampleCitiesApiEndpointsInterface.getCitiesList(any())).thenReturn(getCitiesListApi())
+
+        whenever(exampleCitiesApiEndpointsInterface.getPagedCitiesList(any(), any())).thenReturn(getCitiesPagedCities())
     }
 
     private fun getCitiesListApi() =
@@ -92,11 +76,12 @@ class ExampleCitiesRepositoryUnitTest {
                     exampleCityResponseTestFactory.createList(25)))
 
     private fun getCitiesPagedCities(): Single<Response<List<ExampleCityResponse>>> {
-
-        return Single.just(Response.success(getAndRepmoveCities() as List<ExampleCityResponse>))
+        return Single.create<Response<List<ExampleCityResponse>>> {
+            it.onSuccess(Response.success(getAndRemoveCities() as List<ExampleCityResponse>))
+        }
     }
 
-    private fun getAndRepmoveCities(): ArrayList<ExampleCityResponse> {
+    private fun getAndRemoveCities(): ArrayList<ExampleCityResponse> {
         lastItemId = if (lastCitiesFromPage.size > 0)
             lastCitiesFromPage[lastCitiesFromPage.lastIndex].id
         else "null"
@@ -107,12 +92,37 @@ class ExampleCitiesRepositoryUnitTest {
         return lastCitiesFromPage
     }
 
+    /**
+     * Verify if networkState is correctly propagated, in right order etc.
+     *
+     * Verify if data is correctly loaded in data source
+     */
     @Test
-    fun something() {
-    }
+    fun verifyDataLoading() {
 
-    private fun loadAroundLast(pagedList: PagedList<ExampleCityModel>) {
-        pagedList.loadAround(pagedList.lastIndex)
+        val listingFactory = repository.citiesOnlineListingFactory(spy(), myPagingConfig)
+
+        listingFactory.initialStateBehaviourSubject.subscribe {
+
+        }
+
+        listingFactory.networkStateBehaviorSubject.subscribe {
+
+        }
+
+        listingFactory.build().observeForever {
+            it!!
+            Assert.assertEquals(10, it.size)
+
+            it.loadAround(it.lastIndex)
+            Assert.assertEquals(20, it.size)
+
+            it.loadAround(it.lastIndex)
+            Assert.assertEquals(25, it.size)
+
+            it.loadAround(it.lastIndex)
+            Assert.assertEquals(25, it.size)
+        }
     }
 
 }
