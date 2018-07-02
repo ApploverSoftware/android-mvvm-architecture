@@ -17,6 +17,8 @@ import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleC
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityResponseTestFactory
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.extensions.removeLastItems
 import retrofit2.Response
 
@@ -96,18 +98,24 @@ class ExampleCitiesRepositoryUnitTest {
      * Verify if networkState is correctly propagated, in right order etc.
      *
      * Verify if data is correctly loaded in data source
+     *
      */
     @Test
     fun verifyDataLoading() {
-
         val listingFactory = repository.citiesOnlineListingFactory(spy(), myPagingConfig)
 
-        listingFactory.initialStateBehaviourSubject.subscribe {
+        var previousInitialNetworkState: NetworkState? = null
 
+        listingFactory.initialStateBehaviourSubject.subscribe {
+            checkNetworkStatusForSuccessfulRun(previousInitialNetworkState, it)
+            previousInitialNetworkState = it
         }
 
-        listingFactory.networkStateBehaviorSubject.subscribe {
+        var previousNetworkState: NetworkState? = null
 
+        listingFactory.networkStateBehaviorSubject.subscribe {
+            checkNetworkStatusForSuccessfulRun(previousNetworkState, it)
+            previousNetworkState = it
         }
 
         listingFactory.build().observeForever {
@@ -122,6 +130,18 @@ class ExampleCitiesRepositoryUnitTest {
 
             it.loadAround(it.lastIndex)
             Assert.assertEquals(25, it.size)
+        }
+    }
+
+    private fun checkNetworkStatusForSuccessfulRun(previousNetworkState: NetworkState?, currentNetworkState: NetworkState?) {
+        when {
+            previousNetworkState?.networkStatus == NetworkStatus.RUNNING -> {
+                Assert.assertEquals(NetworkStatus.SUCCESS, currentNetworkState?.networkStatus)
+            }
+            previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
+                Assert.assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
+            }
+            else -> Assert.fail()
         }
     }
 
