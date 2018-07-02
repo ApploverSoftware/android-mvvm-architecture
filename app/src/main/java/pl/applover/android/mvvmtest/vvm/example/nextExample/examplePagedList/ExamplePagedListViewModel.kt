@@ -32,18 +32,18 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
             .setPrefetchDistance(2)
             .build()
 
-    private val listingFactory = citiesRepository.citiesListingFactory(compositeDisposable, myPagingConfig)
+    private val listingFactoryOnline = citiesRepository.citiesOnlineListingFactory(compositeDisposable, myPagingConfig)
 
-    var ldCitiesPagedList = listingFactory.build()
+    var ldCitiesPagedList = listingFactoryOnline.build()
 
 
     init {
 
-        compositeDisposable.add(listingFactory.initialStateBehaviourSubject
+        compositeDisposable.add(listingFactoryOnline.initialStateBehaviourSubject
                 .observeOn(schedulerProvider.observeOn).subscribe {
                     mldInitialNetworkState.value = it
                 })
-        compositeDisposable.add(listingFactory.networkStateBehaviorSubject
+        compositeDisposable.add(listingFactoryOnline.networkStateBehaviorSubject
                 .observeOn(schedulerProvider.observeOn).subscribe {
                     mldNetworkState.value = it
                 })
@@ -51,12 +51,12 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
 
     fun retry() {
         if (mldCities.value == false)
-            listingFactory.retry()
+            listingFactoryOnline.retry()
     }
 
     fun refresh() {
         if (mldCities.value == false)
-            listingFactory.refresh()
+            listingFactoryOnline.refresh()
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
@@ -68,7 +68,7 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
         ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = false
-        ldCitiesPagedList = listingFactory.build()
+        ldCitiesPagedList = listingFactoryOnline.build()
 
     }
 

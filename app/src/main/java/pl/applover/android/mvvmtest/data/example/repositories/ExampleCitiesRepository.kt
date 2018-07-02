@@ -44,7 +44,7 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
     fun deleteAllCitiesFromDatabase() = Single.fromCallable { daoCities.deleteAll() }
 
-    fun citiesListingFactory(compositeDisposable: CompositeDisposable, config: PagedList.Config) =
+    fun citiesOnlineListingFactory(compositeDisposable: CompositeDisposable, config: PagedList.Config) =
             ListingFactoryItemKeyed(citiesDataSourceFactory(compositeDisposable), config)
 
 }

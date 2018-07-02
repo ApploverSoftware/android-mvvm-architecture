@@ -84,7 +84,7 @@ class ExamplePagedListViewModelUnitTest {
         whenever(dataSource.initialStateSubject).thenReturn(initialStateSubject)
         whenever(dataSource.networkStateSubject).thenReturn(networkStateSubject)
 
-        whenever(repository.citiesListingFactory(any(), any())).thenAnswer {
+        whenever(repository.citiesOnlineListingFactory(any(), any())).thenAnswer {
             return@thenAnswer ListingFactoryItemKeyed(dataSourceFactory, it.getArgument(1))
         }
 
@@ -115,7 +115,9 @@ class ExamplePagedListViewModelUnitTest {
     }
 
     /**
-     * Verifies if listing gets network states and new pages correctly
+     * Verify if network states were called, this test doesn't verify if network states are called in right order etc.
+     *
+     * Verify if new pages are loaded into PagedList
      */
     @Test
     fun verifyListingCreatedCorrectly() {
