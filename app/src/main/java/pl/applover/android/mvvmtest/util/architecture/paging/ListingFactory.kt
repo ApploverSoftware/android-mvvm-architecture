@@ -11,20 +11,17 @@ import io.reactivex.subjects.BehaviorSubject
 class ListingFactoryItemKeyed<K : Any, V : Any>(private var dataSourceFactory: ItemKeyedDataSourceFactory<K, V>, private val config: PagedList.Config) {
 
     private val subjectCitiesDataSourceFactory: BehaviorSubject<ItemKeyedDataSourceFactory<K, V>> = BehaviorSubject.create()
+    var liveData: LiveData<PagedList<V>>? = null
 
     fun build(): LiveData<PagedList<V>> {
         subjectCitiesDataSourceFactory.onNext(dataSourceFactory)
-        return LivePagedListBuilder(dataSourceFactory, config).build()
+        liveData = LivePagedListBuilder(dataSourceFactory, config).build()
+        return liveData!!
     }
 
     val networkStateBehaviorSubject = subjectCitiesDataSourceFactory.switchMap { it.subjectCitiesDataSource.switchMap { it.networkStateSubject } }
 
     val initialStateBehaviourSubject = subjectCitiesDataSourceFactory.switchMap { it.subjectCitiesDataSource.switchMap { it.initialStateSubject } }
-
-    fun swapDataSource(dataSourceFactory: ItemKeyedDataSourceFactory<K, V>): LiveData<PagedList<V>> {
-        this.dataSourceFactory = dataSourceFactory
-        return build()
-    }
 
     fun retry() {
         dataSourceFactory.subjectCitiesDataSource.value.retry()

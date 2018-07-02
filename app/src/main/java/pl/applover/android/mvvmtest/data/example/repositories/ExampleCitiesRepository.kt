@@ -47,5 +47,4 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
     fun citiesListingFactory(compositeDisposable: CompositeDisposable, config: PagedList.Config) =
             ListingFactoryItemKeyed(citiesDataSourceFactory(compositeDisposable), config)
 
-
 }
