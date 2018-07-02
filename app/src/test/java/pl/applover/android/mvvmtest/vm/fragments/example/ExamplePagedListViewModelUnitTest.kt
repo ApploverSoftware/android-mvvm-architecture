@@ -3,16 +3,17 @@ package pl.applover.android.mvvmtest.vm.fragments.example
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.paging.ItemKeyedDataSource
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.capture
-import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import junit.framework.Assert.*
+import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.*
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSource
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
@@ -20,6 +21,7 @@ import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestF
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
+import pl.applover.android.mvvmtest.util.architecture.paging.ListingFactoryItemKeyed
 import pl.applover.android.mvvmtest.util.extensions.removeLastItems
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
@@ -41,15 +43,23 @@ class ExamplePagedListViewModelUnitTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    @Mock
-    private lateinit var mockedRepository: ExampleCitiesRepository
+    private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
 
+    @Mock
+    private lateinit var repository: ExampleCitiesRepository
     private lateinit var examplePagedListViewModel: ExamplePagedListViewModel
 
     @Spy
-    private lateinit var spiedRouter: ExamplePagedListFragmentRouter
+    private lateinit var router: ExamplePagedListFragmentRouter
 
-    private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
+    @Spy
+    private val dataSourceFactory: CitiesDataSourceFactory = CitiesDataSourceFactory(spy(), spy())
+
+    @Mock
+    private lateinit var dataSource: CitiesDataSource
+
+
+    //Data Generator
 
     private val exampleCityModelTestFactory = ExampleCityModelTestFactory()
 
@@ -57,20 +67,6 @@ class ExamplePagedListViewModelUnitTest {
     private val cityCountPerPage = 10
     private val maxCities = 25
     private val citiesForPaging = ArrayList(exampleCityModelTestFactory.createList(maxCities))
-
-    @Mock
-    private lateinit var dataSourceFactory: CitiesDataSourceFactory
-
-    @Mock
-    private lateinit var dataSource: CitiesDataSource
-
-    @Captor
-    private lateinit var captorInitialLoad: ArgumentCaptor<ItemKeyedDataSource.LoadInitialCallback<ExampleCityModel>>
-
-    @Captor
-    private lateinit var captorLoad: ArgumentCaptor<ItemKeyedDataSource.LoadCallback<ExampleCityModel>>
-
-    private val subjectCitiesDataSource: BehaviorSubject<CitiesDataSource> = BehaviorSubject.create()
 
     private val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
     private val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
@@ -80,51 +76,49 @@ class ExamplePagedListViewModelUnitTest {
         MockitoAnnotations.initMocks(this)
 
         createStubsBeforeViewModel()
-        examplePagedListViewModel = ExamplePagedListViewModel(spiedRouter, schedulerProvider, mockedRepository)
+        examplePagedListViewModel = ExamplePagedListViewModel(router, schedulerProvider, repository)
     }
 
     private fun createStubsBeforeViewModel() {
 
-        //Before returning dataSource, pass it to our new subject
-        doAnswer {
-            subjectCitiesDataSource.onNext(dataSource)
-            return@doAnswer dataSource
-        }.whenever(dataSourceFactory).create()
-
-        whenever(mockedRepository.citiesDataSourceFactory(any())).thenReturn(dataSourceFactory)
-
         whenever(dataSource.initialStateSubject).thenReturn(initialStateSubject)
         whenever(dataSource.networkStateSubject).thenReturn(networkStateSubject)
 
-        whenever(mockedRepository.citiesInitialStateBehaviourSubject(any())).thenReturn(subjectCitiesDataSource.switchMap { it.initialStateSubject })
-        whenever(mockedRepository.citiesNetworkStateBehaviorSubject(any())).thenReturn(subjectCitiesDataSource.switchMap { it.networkStateSubject })
+        whenever(repository.citiesListingFactory(any(), any())).thenAnswer {
+            return@thenAnswer ListingFactoryItemKeyed(dataSourceFactory, it.getArgument(1))
+        }
+
+        whenever(dataSourceFactory.create()).thenAnswer {
+            dataSourceFactory.subjectCitiesDataSource.onNext(dataSource)
+            return@thenAnswer dataSource
+        }
+
+        whenever(dataSource.loadInitial(any(), any())).then {
+            val callback = it.getArgument<ItemKeyedDataSource.LoadInitialCallback<ExampleCityModel>>(1)
+            dataSource.initialStateSubject.onNext(NetworkState.LOADING)
+            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
+            callback!!.onResult(getCities())
+            dataSource.initialStateSubject.onNext(NetworkState.LOADED)
+            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
+        }
+
+        whenever(dataSource.loadAfter(any(), any())).then {
+            val callback = it.getArgument<ItemKeyedDataSource.LoadCallback<ExampleCityModel>>(1)
+            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
+            callback!!.onResult(getCities())
+            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
+        }
     }
 
     private fun getCities(): MutableList<ExampleCityModel> {
         return ArrayList(citiesForPaging.removeLastItems(cityCountPerPage))
     }
 
+    /**
+     * Verifies if listing gets network states and new pages correctly
+     */
     @Test
-    fun checkNetworkStateForSuccessfulCalls() {
-
-
-        //When datasource have to load initial data then return new cities page
-        whenever(dataSource.loadInitial(any(), capture(captorInitialLoad))).then {
-            dataSource.initialStateSubject.onNext(NetworkState.LOADING)
-            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-            captorInitialLoad.value.onResult(getCities())
-            dataSource.initialStateSubject.onNext(NetworkState.LOADED)
-            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
-        }
-
-        //When datasource have to load after data then return new cities page
-        whenever(dataSource.loadAfter(any(), capture(captorLoad))).then {
-            dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-
-            captorLoad.value.onResult(getCities())
-            dataSource.networkStateSubject.onNext(NetworkState.LOADED)
-        }
-
+    fun verifyListingCreatedCorrectly() {
         var previousInitialNetworkState: NetworkState? = null
 
         examplePagedListViewModel.mldInitialNetworkState.observeForever {
@@ -139,36 +133,34 @@ class ExamplePagedListViewModelUnitTest {
             previousNetworkState = it
         }
 
-        //Not really needed to assert sizes of the list as dataSource is mocked
         examplePagedListViewModel.ldCitiesPagedList.observeForever {
-            it?.let {
-                assertNotNull(previousInitialNetworkState)
-                assertEquals(10, it.size)
+            it!!
 
-                assertNotNull(previousNetworkState)
-                it.loadAround(it.size - 1)
-                assertEquals(20, it.size)
+            Assert.assertNotNull(previousInitialNetworkState)
+            Assert.assertEquals(10, it.size)
 
-                it.loadAround(it.size - 1)
-                assertEquals(25, it.size)
+            Assert.assertNotNull(previousNetworkState)
+            it.loadAround(it.size - 1)
+            Assert.assertEquals(20, it.size)
 
-                it.loadAround(it.size - 1)
-                assertEquals(25, it.size)
-            }
+            it.loadAround(it.size - 1)
+            Assert.assertEquals(25, it.size)
+
+            it.loadAround(it.size - 1)
+            Assert.assertEquals(25, it.size)
         }
-
 
     }
 
     private fun checkNetworkStatusForSuccessfulRun(previousNetworkState: NetworkState?, currentNetworkState: NetworkState?) {
         when {
             previousNetworkState?.networkStatus == NetworkStatus.RUNNING -> {
-                assertEquals(NetworkStatus.SUCCESS, currentNetworkState?.networkStatus)
+                Assert.assertEquals(NetworkStatus.SUCCESS, currentNetworkState?.networkStatus)
             }
             previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
-                assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
+                Assert.assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
             }
-            else -> fail()
+            else -> Assert.fail()
         }
     }
 }
