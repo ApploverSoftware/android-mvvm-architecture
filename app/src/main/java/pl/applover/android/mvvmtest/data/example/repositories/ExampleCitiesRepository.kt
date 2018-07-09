@@ -9,7 +9,7 @@ import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleC
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.paging.ListingFactoryItemKeyed
-import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponse
+import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponseList
 import javax.inject.Inject
 
 /**
@@ -34,7 +34,7 @@ class ExampleCitiesRepository @Inject constructor(private val apiCities: Example
 
 
     fun citiesFromNetwork() =
-            apiCities.getCitiesList().mapResponse(mapper = { ExampleCityModel(it) })
+            apiCities.getCitiesList().mapResponseList(mapper = { ExampleCityModel(it) })
 
     fun pagedCitiesFromDatabase() = daoCities.citiesPagedById().map { ExampleCityModel(it) }
 

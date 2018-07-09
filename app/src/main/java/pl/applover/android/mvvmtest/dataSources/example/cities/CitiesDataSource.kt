@@ -6,7 +6,7 @@ import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleC
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.dataSource.ItemKeyedDataSourceWithState
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponse
+import pl.applover.android.mvvmtest.util.architecture.retrofit.mapResponseList
 import retrofit2.Response
 import timber.log.Timber
 
@@ -43,7 +43,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         )
     }
 
-    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList("null").mapResponse({ ExampleCityModel(it) })
+    private fun initialPagedCitiesFromNetwork() = apiCities.getPagedCitiesList("null").mapResponseList({ ExampleCityModel(it) })
 
     /**
      * Loading next pages after the first load
@@ -68,7 +68,7 @@ class CitiesDataSource(private val apiCities: ExampleCitiesApiEndpointsInterface
         )
     }
 
-    private fun afterPagedCitiesFromNetwork(lastId: String) = apiCities.getPagedCitiesList(lastId).mapResponse({ ExampleCityModel(it) })
+    private fun afterPagedCitiesFromNetwork(lastId: String) = apiCities.getPagedCitiesList(lastId).mapResponseList({ ExampleCityModel(it) })
 
     /**
      * Loading previous pages after the first load
