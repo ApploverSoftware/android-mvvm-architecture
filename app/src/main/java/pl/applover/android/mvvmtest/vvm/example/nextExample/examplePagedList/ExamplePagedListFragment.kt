@@ -24,9 +24,9 @@ class ExamplePagedListFragment : DaggerFragment() {
     internal lateinit var viewModelFactory: ExamplePagedListViewModelFactory
     private lateinit var viewModel: ExamplePagedListViewModel
 
-    private val adapter = ExamplePagedLibCityAdapter({
+    private val adapter = ExamplePagedLibCityAdapter {
         viewModel.retry()
-    })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

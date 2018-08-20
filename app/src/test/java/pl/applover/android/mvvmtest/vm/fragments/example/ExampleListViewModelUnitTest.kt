@@ -19,7 +19,7 @@ import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepos
 import pl.applover.android.mvvmtest.lambdaMock
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
 import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
+import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
 import pl.applover.android.mvvmtest.util.architecture.rx.EmptyEvent
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
@@ -206,7 +206,7 @@ class ExampleListViewModelUnitTest {
         exampleListViewModel.mldCitiesLiveData.observeForever {
             if(!isInitialValue.get()) {
                 it?.let {
-                    assertEquals(25, it.size-1) //fix this
+                    assertEquals(25, it.size) //todo fix this - make it fail if sizes are not equal (currently prints error only)
                 }
             }
             isInitialValue.set(false)
@@ -219,11 +219,11 @@ class ExampleListViewModelUnitTest {
             it?.let {
                 when (networkStateChangedCount) {
                     0 -> {
-                        assert(it.networkStatus == NetworkStatus.RUNNING)
+                        assert(it.networkStatus == NetworkState.State.RUNNING)
                         networkStateChangedCount++
                     }
                     1 -> {
-                        assert(it.networkStatus == NetworkStatus.SUCCESS)
+                        assert(it.networkStatus == NetworkState.State.SUCCESS)
                     }
                     else -> {
                     }
