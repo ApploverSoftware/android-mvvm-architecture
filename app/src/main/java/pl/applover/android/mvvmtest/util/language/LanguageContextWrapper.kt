@@ -36,7 +36,7 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
         }
 
         /**
-         * todo Not working, any solution found on the internet doesn't work. this is for api less than 24
+         * Not working, any solution found on the internet doesn't work. this is for api less than 24
 
         private fun updateResourcesLegacy(context: Context, locale: Locale): Context {
         Locale.setDefault(locale)

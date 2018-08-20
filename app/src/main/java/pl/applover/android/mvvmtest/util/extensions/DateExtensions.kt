@@ -59,22 +59,55 @@ fun dateToString(date: Date?, simpleDateFormat: SimpleDateFormat): String? {
     return simpleDateFormat.format(date)
 }
 
-fun rubyOnRailsFormat(): SimpleDateFormat {
+fun rubyOnRailsFormat(timeZone: TimeZone? = TimeZone.getTimeZone("UTC")): SimpleDateFormat {
     //2017-11-16T00:00:00.000Z
     val format = "yyyy-MM-dd'T'HH:mm:ss.SSS"
     val sdf = SimpleDateFormat(format)
-    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    timeZone?.let {
+        sdf.timeZone = it
+    }
+    return sdf
+}
+
+fun defaultSimpleDateFormat(timeZone: TimeZone? = TimeZone.getTimeZone("UTC")): SimpleDateFormat {
+    //2018-06-14 00:00:00
+    val format = "yyyy-MM-dd HH:mm:ss"
+    val sdf = SimpleDateFormat(format)
+    timeZone?.let {
+        sdf.timeZone = it
+    }
     return sdf
 }
 
 @SuppressLint("SimpleDateFormat")
-fun polishDataFormat(longDate: Boolean = false): SimpleDateFormat {
-    if (longDate) {
-        val format = "EEE, dd.MM.yyyy HH:mm"
-        return SimpleDateFormat(format, getPolishLocale())
-    } else {
-        val format = "dd.MM.yyyy HH:mm"
-        return SimpleDateFormat(format)
+fun polishDataFormat(longDate: Boolean = false, withTime: Boolean = true, withSeconds: Boolean = true): SimpleDateFormat {
+    when {
+        longDate && withTime -> {
+            return if (withSeconds) {
+                val format = "EEE, dd.MM.yyyy HH:mm"
+                SimpleDateFormat(format, getPolishLocale())
+            } else {
+                val format = "EEE, dd.MM.yyyy HH:mm:ss"
+                SimpleDateFormat(format, getPolishLocale())
+            }
+        }
+        longDate -> {
+            val format = "EEE, dd.MM.yyyy"
+            return SimpleDateFormat(format, getPolishLocale())
+        }
+        withTime -> {
+            return if (withSeconds) {
+                val format = "dd.MM.yyyy HH:mm:ss"
+                SimpleDateFormat(format)
+            } else {
+                val format = "dd.MM.yyyy HH:mm"
+                SimpleDateFormat(format)
+            }
+        }
+        else -> {
+            val format = "dd.MM.yyyy"
+            return SimpleDateFormat(format)
+        }
     }
 }
 
