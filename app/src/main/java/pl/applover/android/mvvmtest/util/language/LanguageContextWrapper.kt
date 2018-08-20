@@ -16,8 +16,8 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
 
         @TargetApi(Build.VERSION_CODES.N)
         fun wrap(context: Context, newLocale: Locale): ContextWrapper {
-            var context = context
-            val res = context.resources
+            var ctx = context
+            val res = ctx.resources
             val configuration = res.configuration
 
             if (Build.VERSION.SDK_INT >= 24) {
@@ -28,11 +28,11 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
                 LocaleList.setDefault(localeList)
                 configuration.locales = localeList
                 configuration.setLocale(newLocale)
-                context = context.createConfigurationContext(configuration)
+                ctx = ctx.createConfigurationContext(configuration)
 
             }
 
-            return ContextWrapper(context)
+            return ContextWrapper(ctx)
         }
 
         /**
