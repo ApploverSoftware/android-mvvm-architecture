@@ -16,8 +16,8 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
 
         @TargetApi(Build.VERSION_CODES.N)
         fun wrap(context: Context, newLocale: Locale): ContextWrapper {
-            var context = context
-            val res = context.resources
+            var ctx = context
+            val res = ctx.resources
             val configuration = res.configuration
 
             if (Build.VERSION.SDK_INT >= 24) {
@@ -28,15 +28,15 @@ class LanguageContextWrapper(base: Context) : ContextWrapper(base) {
                 LocaleList.setDefault(localeList)
                 configuration.locales = localeList
                 configuration.setLocale(newLocale)
-                context = context.createConfigurationContext(configuration)
+                ctx = ctx.createConfigurationContext(configuration)
 
             }
 
-            return ContextWrapper(context)
+            return ContextWrapper(ctx)
         }
 
         /**
-         * todo Not working, any solution found on the internet doesn't work. this is for api less than 24
+         * Not working, any solution found on the internet doesn't work. this is for api less than 24
 
         private fun updateResourcesLegacy(context: Context, locale: Locale): Context {
         Locale.setDefault(locale)

@@ -20,8 +20,6 @@ import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceF
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
 import pl.applover.android.mvvmtest.models.example.ExampleCityModel
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
-import pl.applover.android.mvvmtest.util.architecture.paging.ListingFactoryItemKeyed
 import pl.applover.android.mvvmtest.util.extensions.removeLastItems
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import pl.applover.android.mvvmtest.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
@@ -84,12 +82,12 @@ class ExamplePagedListViewModelUnitTest {
         whenever(dataSource.initialStateSubject).thenReturn(initialStateSubject)
         whenever(dataSource.networkStateSubject).thenReturn(networkStateSubject)
 
-        whenever(repository.citiesOnlineListingFactory(any(), any())).thenAnswer {
-            return@thenAnswer ListingFactoryItemKeyed(dataSourceFactory, it.getArgument(1))
+        whenever(repository.citiesDataSourceFactory(any())).thenAnswer {
+            return@thenAnswer dataSourceFactory
         }
 
         whenever(dataSourceFactory.create()).thenAnswer {
-            dataSourceFactory.subjectCitiesDataSource.onNext(dataSource)
+            dataSourceFactory.subjectDataSource.onNext(dataSource)
             return@thenAnswer dataSource
         }
 
@@ -156,11 +154,11 @@ class ExamplePagedListViewModelUnitTest {
 
     private fun checkNetworkStatusForSuccessfulRun(previousNetworkState: NetworkState?, currentNetworkState: NetworkState?) {
         when {
-            previousNetworkState?.networkStatus == NetworkStatus.RUNNING -> {
-                Assert.assertEquals(NetworkStatus.SUCCESS, currentNetworkState?.networkStatus)
+            previousNetworkState?.networkStatus == NetworkState.State.RUNNING -> {
+                Assert.assertEquals(NetworkState.State.SUCCESS, currentNetworkState?.networkStatus)
             }
-            previousNetworkState?.networkStatus == NetworkStatus.SUCCESS || previousNetworkState?.networkStatus == null -> {
-                Assert.assertEquals(NetworkStatus.RUNNING, currentNetworkState?.networkStatus)
+            previousNetworkState?.networkStatus == NetworkState.State.SUCCESS || previousNetworkState?.networkStatus == null -> {
+                Assert.assertEquals(NetworkState.State.RUNNING, currentNetworkState?.networkStatus)
             }
             else -> Assert.fail()
         }

@@ -14,7 +14,6 @@ import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.adapters.cities.ExamplePagedLibCityAdapter
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.ui.hide
 import pl.applover.android.mvvmtest.util.ui.show
 import javax.inject.Inject
@@ -25,9 +24,9 @@ class ExamplePagedListFragment : DaggerFragment() {
     internal lateinit var viewModelFactory: ExamplePagedListViewModelFactory
     private lateinit var viewModel: ExamplePagedListViewModel
 
-    private val adapter = ExamplePagedLibCityAdapter({
+    private val adapter = ExamplePagedLibCityAdapter {
         viewModel.retry()
-    })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,17 +66,17 @@ class ExamplePagedListFragment : DaggerFragment() {
         textViewNetworkState.text = networkState.networkStatus.name
 
         when (networkState.networkStatus) {
-            NetworkStatus.FAILED -> {
+            NetworkState.State.FAILED -> {
                 layoutExampleItemNetworkState.show()
                 progressBarNetwork.hide()
                 buttonRetry.show()
             }
-            NetworkStatus.RUNNING -> {
+            NetworkState.State.RUNNING -> {
                 layoutExampleItemNetworkState.show()
                 progressBarNetwork.show()
                 buttonRetry.hide()
             }
-            NetworkStatus.SUCCESS -> {
+            NetworkState.State.SUCCESS -> {
                 layoutExampleItemNetworkState.hide()
             }
         }

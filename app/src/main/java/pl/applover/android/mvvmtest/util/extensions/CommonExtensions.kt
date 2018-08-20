@@ -14,13 +14,20 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
 import pl.applover.android.mvvmtest.App
-import pl.applover.android.mvvmtest.R
 import java.util.concurrent.TimeUnit
 
 
 /**
  * Created by Janusz Hain on 2018-01-08.
  */
+
+fun Any.equalsAnyOf(vararg args: Any?): Boolean {
+    args.forEach {
+        if (this == it)
+            return true
+    }
+    return false
+}
 
 fun showToast(rId: Int, isLong: Boolean = true, context: Context = App.instance) {
     Toast.makeText(context, rId, if (isLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
@@ -37,8 +44,13 @@ fun showToast(text: String, isLong: Boolean = true, context: Context = App.insta
  */
 fun getString(resId: Int, context: Context = App.instance) = context.getString(resId)
 
+fun getString(resId: Int, vararg formatArgs: Any, context: Context = App.instance) = context.getString(resId, *formatArgs)
+
 fun getColor(resId: Int, context: Context = App.instance) = ContextCompat.getColor(context, resId)
 
+fun getInteger(resId: Int, context: Context = App.instance) = context.resources.getInteger(resId)
+
+fun getDrawable(resId: Int, context: Context = App.instance) = ContextCompat.getDrawable(context, resId)
 
 fun TimeUnit.delayed(delay: Long, closure: () -> Unit) {
     Handler(Looper.getMainLooper()).postDelayed(closure, this.toMillis(delay))
@@ -95,29 +107,6 @@ fun AppCompatActivity.showFragment(fragment: Fragment, into: Int, push: Boolean 
     }
 }
 
-/**
- * Note that it shouldn't be called when fragment gets detached
- */
-fun Fragment.replaceDialogFragment(dialogFragment: DialogFragment, tag: String? = null) {
-
-    tag?.let {
-        val currentDialogFragment = fragmentManager?.findFragmentByTag(tag) as DialogFragment?
-        currentDialogFragment?.dismiss()
-    }
-
-    dialogFragment.show(fragmentManager, getString(R.string.key_single_dialog))
-}
-
-fun AppCompatActivity.replaceDialogFragment(dialogFragment: DialogFragment, tag: String? = null) {
-
-    tag?.let {
-        val currentDialogFragment = fragmentManager.findFragmentByTag(tag) as DialogFragment?
-        currentDialogFragment?.dismiss()
-    }
-
-    dialogFragment.show(supportFragmentManager, getString(R.string.key_single_dialog))
-}
-
 fun Fragment.showNestedFragment(fragment: Fragment, into: Int, push: Boolean = true, animIn: Int? = android.R.anim.fade_in, animOut: Int? = android.R.anim.fade_out, tag: String? = null) {
     if (push) {
         childFragmentManager.beginTransaction()
@@ -153,6 +142,7 @@ fun AppCompatActivity.removeWorkerFragment(tag: String) {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T : Fragment> FragmentManager.onStackTop(closure: T.() -> Unit, onFailure: (() -> Unit)? = null) {
     (peekBackStack() as? T)?.closure() ?: onFailure?.invoke()
 }
@@ -193,6 +183,13 @@ fun FragmentManager.popFragment(): Boolean {
     }
 
     return false
+}
+
+fun DialogFragment.showSingle(fragmentManager: FragmentManager?, tag: String) {
+    fragmentManager?.findFragmentByTag(tag)?.let {
+        return
+    }
+    show(fragmentManager, tag)
 }
 
 fun isEmailValid(target: CharSequence): Boolean {

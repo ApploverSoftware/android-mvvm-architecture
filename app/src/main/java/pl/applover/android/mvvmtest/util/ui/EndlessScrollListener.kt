@@ -48,7 +48,7 @@ class EndlessScrollListener() {
         return visibleItemCount + pastVisibleItems >= totalItemCount - minimumItemsToStartLoading
     }
 
-    fun setEndlessScrollingListener(recyclerView: RecyclerView, onEndlessScrollCallback: () -> Unit, minimumItemsToStartLoading: Int = 10) {
+    fun setEndlessScrollingListener(recyclerView: RecyclerView?, onEndlessScrollCallback: () -> Unit, minimumItemsToStartLoading: Int = 10) {
         removeEndlessScrollingListener()
 
         this.recyclerView = recyclerView
@@ -56,7 +56,7 @@ class EndlessScrollListener() {
         this.recyclerView!!.addOnScrollListener(scrollListener)
         this.onEndlessScrollCallback = onEndlessScrollCallback
 
-        when (recyclerView.layoutManager) {
+        when (recyclerView?.layoutManager) {
             is LinearLayoutManager -> {
                 linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
             }

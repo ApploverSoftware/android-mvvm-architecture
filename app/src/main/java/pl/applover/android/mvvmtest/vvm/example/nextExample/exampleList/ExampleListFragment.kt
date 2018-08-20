@@ -14,7 +14,6 @@ import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.R
 import pl.applover.android.mvvmtest.adapters.cities.ExampleCityAdapter
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.extensions.showToast
 import pl.applover.android.mvvmtest.util.ui.hide
 import pl.applover.android.mvvmtest.util.ui.show
@@ -65,17 +64,17 @@ class ExampleListFragment : DaggerFragment() {
         textViewNetworkState.text = networkState.networkStatus.name
 
         when (networkState.networkStatus) {
-            NetworkStatus.FAILED -> {
+            NetworkState.State.FAILED -> {
                 layoutExampleItemNetworkState.show()
                 progressBarNetwork.hide()
                 buttonRetry.show()
             }
-            NetworkStatus.RUNNING -> {
+            NetworkState.State.RUNNING -> {
                 layoutExampleItemNetworkState.show()
                 progressBarNetwork.show()
                 buttonRetry.hide()
             }
-            NetworkStatus.SUCCESS -> {
+            NetworkState.State.SUCCESS -> {
                 layoutExampleItemNetworkState.hide()
             }
         }
