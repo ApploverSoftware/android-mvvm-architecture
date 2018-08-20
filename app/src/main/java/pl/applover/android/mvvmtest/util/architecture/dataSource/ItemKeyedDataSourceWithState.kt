@@ -29,6 +29,9 @@ abstract class ItemKeyedDataSourceWithState<Key, Value>(private val compositeDis
      */
     private var retryCompletable: Completable? = null
 
+    override fun networkStateSubject(): BehaviorSubject<NetworkState> = networkStateSubject
+
+    override fun initialStateSubject(): BehaviorSubject<NetworkState> = initialStateSubject
 
     override fun retry() {
         if (retryCompletable != null) {

@@ -5,7 +5,6 @@ import android.view.View
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.example_item_network_state.*
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
-import pl.applover.android.mvvmtest.util.architecture.network.NetworkStatus
 import pl.applover.android.mvvmtest.util.ui.hide
 import pl.applover.android.mvvmtest.util.ui.show
 
@@ -25,11 +24,11 @@ class ExampleNetworkStateViewHolder(override val containerView: View, private va
         }
 
         when (networkState.networkStatus) {
-            NetworkStatus.RUNNING -> {
+            NetworkState.State.RUNNING -> {
                 progressBarNetwork.show()
                 buttonRetry.hide()
             }
-            NetworkStatus.FAILED -> {
+            NetworkState.State.FAILED -> {
                 progressBarNetwork.hide()
                 buttonRetry.show()
             }

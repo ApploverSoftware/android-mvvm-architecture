@@ -8,7 +8,10 @@ import android.arch.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.android.mvvmtest.App
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
+import pl.applover.android.mvvmtest.models.example.ExampleCityModel
+import pl.applover.android.mvvmtest.util.architecture.liveData.switchMap
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
+import pl.applover.android.mvvmtest.util.architecture.paging.ListingFactory
 import pl.applover.android.mvvmtest.util.other.SchedulerProvider
 import timber.log.Timber
 
@@ -32,9 +35,9 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
             .setPrefetchDistance(2)
             .build()
 
-    private val listingFactoryOnline = citiesRepository.citiesOnlineListingFactory(compositeDisposable, myPagingConfig)
+    private var listingFactoryOnline: ListingFactory<String, ExampleCityModel> = ListingFactory(myPagingConfig)
 
-    var ldCitiesPagedList = listingFactoryOnline.build()
+    val ldCitiesPagedList: MutableLiveData<PagedList<ExampleCityModel>> = MutableLiveData()
 
 
     init {
@@ -60,16 +63,16 @@ class ExamplePagedListViewModel(private val router: ExamplePagedListFragmentRout
     }
 
     fun loadCitiesFromDb(lifecycleOwner: LifecycleOwner) {
-        ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = true
-        ldCitiesPagedList = LivePagedListBuilder(citiesRepository.pagedCitiesFromDatabase(), myPagingConfig).build()
+        val liveData = LivePagedListBuilder(citiesRepository.pagedCitiesFromDatabase(), myPagingConfig).build()
+        ldCitiesPagedList.switchMap(liveData, lifecycleOwner)
     }
 
     fun loadCitiesFromOnlineSource(lifecycleOwner: LifecycleOwner) {
-        ldCitiesPagedList.removeObservers(lifecycleOwner)
         mldCities.value = false
-        ldCitiesPagedList = listingFactoryOnline.build()
-
+        listingFactoryOnline.build(citiesRepository.citiesDataSourceFactory(compositeDisposable)).let { liveData ->
+            ldCitiesPagedList.switchMap(liveData, lifecycleOwner)
+        }
     }
 
     fun saveCitiesToDb() {
