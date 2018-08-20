@@ -19,15 +19,11 @@ import kotlin.properties.Delegates
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class ExampleCityModel(
-        @get:Bindable
         val id: String,
-        @get:Bindable
         val name: String,
-        @get:Bindable
         val lat: Double,
-        @get:Bindable
         val lng: Double,
-        @get:Bindable
+        //@get:Bindable - it is val, so bindable is useless. For var it would be okay, for example numberOfClicks
         val country: String,
         private var _numberOfClicks: Int = 0 //needed to save number of clicks for Parcelable
 ) : BaseObservable(), Parcelable {
@@ -54,7 +50,4 @@ data class ExampleCityModel(
             exampleCityDbModel.lng,
             exampleCityDbModel.country
     )
-
-    fun getInfoAboutCity() = "City $name in country $country with coordinates: $lat lat and $lng lng"
-
 }
