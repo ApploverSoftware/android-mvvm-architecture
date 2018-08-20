@@ -1,6 +1,7 @@
 package pl.applover.android.mvvmtest.util.architecture.dataSource
 
 import android.arch.paging.ItemKeyedDataSource
+import android.arch.paging.PageKeyedDataSource
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -18,8 +19,10 @@ import timber.log.Timber
 /**
  * [ItemKeyedDataSource] with [NetworkState], [CompositeDisposable], retry and resetData support.
  * After failed load use [setRetry] passing function to be repeated when calling [retry]
+ *
+ * callback.onResult(..., params.key + 1) to add page number
  */
-abstract class ItemKeyedDataSourceWithState<Key, Value>(private val compositeDisposable: CompositeDisposable) : ItemKeyedDataSource<Key, Value>(), NetworkStateDataSource {
+abstract class PageKeyedDataSourceWithState<Key, Value>(private val compositeDisposable: CompositeDisposable) : PageKeyedDataSource<Key, Value>(), NetworkStateDataSource {
 
     val networkStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
     val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
@@ -29,6 +32,9 @@ abstract class ItemKeyedDataSourceWithState<Key, Value>(private val compositeDis
      */
     private var retryCompletable: Completable? = null
 
+    override fun networkStateSubject(): BehaviorSubject<NetworkState> = networkStateSubject
+
+    override fun initialStateSubject(): BehaviorSubject<NetworkState> = initialStateSubject
 
     override fun retry() {
         if (retryCompletable != null) {

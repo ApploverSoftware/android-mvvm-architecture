@@ -59,14 +59,14 @@ open class SingleEvent<out T>(private val content: T) {
     fun getContentIfNotHandledWeakRef(classThatWantToUseEvent: Any): T? {
         val classWantingToUseEvent = classThatWantToUseEvent::javaClass.get()
 
-        classWantingToUseEvent?.let {
+        classWantingToUseEvent.let {
             return if (!classesThatHandledTheEventWeakRef.contains(WeakReference(it))) {
                 classesThatHandledTheEventWeakRef.add(WeakReference(it))
                 content
             } else {
                 null
             }
-        } ?: return null
+        }
     }
 
     fun hasBeenHandledWeakRef(classThatMaybeUsedEvent: Any): Boolean {

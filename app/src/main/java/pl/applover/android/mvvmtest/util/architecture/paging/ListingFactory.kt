@@ -4,30 +4,45 @@ import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import io.reactivex.subjects.BehaviorSubject
+import pl.applover.labplus.util.architecture.paging.DataSourceFactoryWithNetworkState
 
 /**
  * Created by Janusz Hain on 2018-07-02.
  */
-class ListingFactoryItemKeyed<K : Any, V : Any>(private var dataSourceFactory: ItemKeyedDataSourceFactory<K, V>, private val config: PagedList.Config) {
+class ListingFactory<K : Any, V : Any>(private val config: PagedList.Config) {
 
-    private val subjectCitiesDataSourceFactory: BehaviorSubject<ItemKeyedDataSourceFactory<K, V>> = BehaviorSubject.create()
-    var liveData: LiveData<PagedList<V>>? = null
+    private val subjectDataSourceFactory: BehaviorSubject<DataSourceFactoryWithNetworkState<K, V>> = BehaviorSubject.create()
+    private var dataSourceFactory: DataSourceFactoryWithNetworkState<K, V>? = null
 
-    fun build(): LiveData<PagedList<V>> {
-        subjectCitiesDataSourceFactory.onNext(dataSourceFactory)
-        liveData = LivePagedListBuilder(dataSourceFactory, config).build()
-        return liveData!!
+    /**
+     * @return [LiveData] with [PagedList]. Use [LiveData.switchMap()] (from extension) to another liveData to keep single liveData in viewModel without changing ref to this liveData
+     */
+    fun build(dataSourceFactory: DataSourceFactoryWithNetworkState<K, V>): LiveData<PagedList<V>> {
+        this.dataSourceFactory = dataSourceFactory
+        subjectDataSourceFactory.onNext(dataSourceFactory)
+        return LivePagedListBuilder(dataSourceFactory, config).build()
     }
 
-    val networkStateBehaviorSubject = subjectCitiesDataSourceFactory.switchMap { it.subjectCitiesDataSource.switchMap { it.networkStateSubject } }
+    /**
+     * Always returns ref to the correct subject from new dataSourceFactory
+     */
+    val networkStateBehaviorSubject = subjectDataSourceFactory.switchMap { it.subjectDataSource.switchMap { it.networkStateSubject() } }!!
 
-    val initialStateBehaviourSubject = subjectCitiesDataSourceFactory.switchMap { it.subjectCitiesDataSource.switchMap { it.initialStateSubject } }
+    /**
+     * Always returns ref to the correct subject from new dataSourceFactory
+     */
+    val initialStateBehaviourSubject = subjectDataSourceFactory.switchMap { it.subjectDataSource.switchMap { it.initialStateSubject() } }!!
+
 
     fun retry() {
-        dataSourceFactory.subjectCitiesDataSource.value.retry()
+        dataSourceFactory?.let {
+            it.subjectDataSource.value.retry()
+        }
     }
 
     fun refresh() {
-        dataSourceFactory.subjectCitiesDataSource.value.resetData()
+        dataSourceFactory?.let {
+            it.subjectDataSource.value.resetData()
+        }
     }
 }

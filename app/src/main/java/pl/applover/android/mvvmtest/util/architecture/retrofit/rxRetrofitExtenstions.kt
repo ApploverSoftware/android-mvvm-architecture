@@ -39,6 +39,7 @@ fun <T : Any, V : Any> Observable<Response<List<T>>>.mapResponseList(mapper: (T)
     }
 }
 
+
 fun <T : Any, V : Any> Flowable<Response<List<T>>>.mapResponseList(mapper: (T) -> V, mediaTypeForError: MediaType? = null): Flowable<Response<List<V>>> {
     return this.map {
 
@@ -52,6 +53,7 @@ fun <T : Any, V : Any> Flowable<Response<List<T>>>.mapResponseList(mapper: (T) -
         }
     }
 }
+
 
 fun <T : Any, V : Any> Single<Response<T>>.mapResponse(mapper: (T) -> V, mediaTypeForError: MediaType? = null): Single<Response<V>> {
     return this.map {
