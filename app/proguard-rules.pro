@@ -77,4 +77,11 @@
     <init>(java.lang.Throwable);
 }
 
+#Guava
+-dontwarn afu.org.checkerframework.**
+-dontwarn org.checkerframework.**
+-dontwarn com.google.errorprone.**
+-dontwarn sun.misc.Unsafe
+-dontwarn java.lang.ClassValue
+
 
