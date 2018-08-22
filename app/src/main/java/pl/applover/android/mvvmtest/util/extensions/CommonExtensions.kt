@@ -42,9 +42,16 @@ fun showToast(text: String, isLong: Boolean = true, context: Context = App.insta
  * If you change language in the app (not using language defined by system) in the activity, then you have to use activity context,
  * otherwise this will not return correct language strings!
  */
-fun getString(resId: Int, context: Context = App.instance) = context.getString(resId)
+fun getString(resId: Int, context: Context = App.instance) = context.getString(resId)!!
 
-fun getString(resId: Int, vararg formatArgs: Any, context: Context = App.instance) = context.getString(resId, *formatArgs)
+/**
+ * Important for apps with changing language!!!
+ * If you change language in the app (not using language defined by system) in the activity, then you have to use activity context,
+ * otherwise this will not return correct language strings!
+ *
+ * Put %s in string resource for string placeholder etc
+ */
+fun getString(resId: Int, vararg formatArgs: Any, context: Context = App.instance) = context.getString(resId, *formatArgs)!!
 
 fun getColor(resId: Int, context: Context = App.instance) = ContextCompat.getColor(context, resId)
 
