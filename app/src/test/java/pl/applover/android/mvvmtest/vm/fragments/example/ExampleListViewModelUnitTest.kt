@@ -2,19 +2,19 @@ package pl.applover.android.mvvmtest.vm.fragments.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
-import com.nhaarman.mockitokotlin2.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import io.reactivex.Single
+import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.lambdaMock
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
@@ -42,19 +42,15 @@ class ExampleListViewModelUnitTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    @Mock
-    private lateinit var mockRepository: ExampleCitiesRepository
+    private val mockRepository: ExampleCitiesRepository = mockk()
 
     private lateinit var exampleListViewModel: ExampleListViewModel
 
-    @Spy
-    private val spiedRouter: ExampleListFragmentRouter = ExampleListFragmentRouter()
+    private val spiedRouter: ExampleListFragmentRouter = spyk()
 
-    @Mock
-    private lateinit var mockedSender: ExampleListFragmentRouter.Sender
+    private val mockedSender: ExampleListFragmentRouter.Sender = mockk()
 
-    @Mock
-    private lateinit var mockedFragmentClickedSubject: PublishSubject<EmptyEvent>
+    private val fragmentClickedSubject: PublishSubject<EmptyEvent> = PublishSubject.create()
 
     private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
 
@@ -63,16 +59,10 @@ class ExampleListViewModelUnitTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
-        setUpMocksForRouter()
+        every { spiedRouter.sender }.returns(mockedSender)
+        every { mockedSender.fragmentClicked }.returns(fragmentClickedSubject)
 
         exampleListViewModel = ExampleListViewModel(spiedRouter, schedulerProvider, mockRepository)
-    }
-
-    private fun setUpMocksForRouter() {
-        whenever(spiedRouter.sender).thenReturn(mockedSender)
-        whenever(mockedSender.fragmentClicked).thenReturn(mockedFragmentClickedSubject)
     }
 
     /**
@@ -80,8 +70,12 @@ class ExampleListViewModelUnitTest {
      */
     @Test
     fun testFragmentClicked() {
+        val observer: TestObserver<EmptyEvent> = spyk()
+        fragmentClickedSubject.subscribe(observer)
         exampleListViewModel.fragmentClicked()
-        verify(spiedRouter.sender.fragmentClicked, times(1)).onNext(any())
+
+        observer.assertNoErrors()
+        verify { observer.onNext(any()) }
     }
 
 
@@ -99,7 +93,7 @@ class ExampleListViewModelUnitTest {
      */
     @Test
     fun testShowSomeToastForFragmentPaused() {
-        val lifecycle = LifecycleRegistry(mock<LifecycleOwner>())
+        val lifecycle = LifecycleRegistry(mockk())
         val observer = lambdaMock<(SingleEvent<String>?) -> Unit>()
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -110,7 +104,7 @@ class ExampleListViewModelUnitTest {
         assertEquals(false, exampleListViewModel.mldSomeToast.value?.hasBeenHandled(this))
 
         //verify no liveData event is sent when Fragment is created
-        verify(observer, times(0)).invoke(any())
+        verify(exactly = 0) { observer.invoke(any()) }
 
         //verify liveData event is sent after Fragment can manipulate UI
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
@@ -120,7 +114,7 @@ class ExampleListViewModelUnitTest {
             it?.getContentIfNotHandled(this)
         }
 
-        verify(observer, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         //assert sent Event was handled
         assertEquals(true, exampleListViewModel.mldSomeToast.value?.hasBeenHandled(this))
@@ -128,12 +122,12 @@ class ExampleListViewModelUnitTest {
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
         //verify no new event wasn't sent after onStop in Fragment
-        verify(observer, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         //verify new event wasn't sent again after onResume Fragment
-        verify(observer, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
     }
 
 
@@ -142,45 +136,45 @@ class ExampleListViewModelUnitTest {
      */
     @Test
     fun testShowSomeToastForFragmentRecreated() {
-        val lifecycle = LifecycleRegistry(mock<LifecycleOwner>())
-        val liveDataUnit = lambdaMock<(SingleEvent<String>?) -> Unit>()
+        val lifecycle = LifecycleRegistry(mockk())
+        val observer = lambdaMock<(SingleEvent<String>?) -> Unit>()
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         exampleListViewModel.showSomeToast()
 
         //verify no liveData event is sent when Fragment is created
-        verify(liveDataUnit, times(0)).invoke(any())
+        verify(exactly = 0) { observer.invoke(any()) }
 
         //verify liveData event is sent after Fragment can manipulate UI
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
-            liveDataUnit(it)
+            observer(it)
 
             //assert event is not null and content wasn't handled
             assertNotNull(it?.getContentIfNotHandled(this))
         }
 
-        verify(liveDataUnit, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
         //verify no new event wasn't sent after onStop in Fragment
-        verify(liveDataUnit, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
 
         //verify new event wasn't sent again after onStop Fragment
-        verify(liveDataUnit, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         //verify new event wasn't sent again after onStart in Fragment without subscribing again
-        verify(liveDataUnit, times(1)).invoke(any())
+        verify(exactly = 1) { observer.invoke(any()) }
 
         exampleListViewModel.mldSomeToast.observe({ lifecycle }) {
-            liveDataUnit(it)
+            observer(it)
 
             //assert event is not null
             assertNotNull(it)
@@ -189,7 +183,7 @@ class ExampleListViewModelUnitTest {
         }
 
         //verify new event was sent again after onStart in Fragment after subscribing livedata again
-        verify(liveDataUnit, times(2)).invoke(any())
+        verify(exactly = 2) { observer.invoke(any()) }
     }
 
     /**
@@ -197,14 +191,16 @@ class ExampleListViewModelUnitTest {
      */
     @Test
     fun testLoadCities() {
-        whenever(mockRepository.citiesFromNetwork()).thenReturn(Single.just(Response.success(
+        every {
+            mockRepository.citiesFromNetwork()
+        }.returns(Single.just(Response.success(
                 exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
 
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
-            if(!isInitialValue.get()) {
+            if (!isInitialValue.get()) {
                 it?.let {
                     assertEquals(25, it.size) //todo fix this - make it fail if sizes are not equal (currently prints error only)
                 }
