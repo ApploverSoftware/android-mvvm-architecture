@@ -16,7 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
-import pl.applover.android.mvvmtest.lambdaMock
 import pl.applover.android.mvvmtest.modelFactories.example.ExampleCityModelTestFactory
 import pl.applover.android.mvvmtest.util.architecture.liveData.SingleEvent
 import pl.applover.android.mvvmtest.util.architecture.network.NetworkState
@@ -94,7 +93,7 @@ class ExampleListViewModelUnitTest {
     @Test
     fun testShowSomeToastForFragmentPaused() {
         val lifecycle = LifecycleRegistry(mockk())
-        val observer = lambdaMock<(SingleEvent<String>?) -> Unit>()
+        val observer = spyk<(SingleEvent<String>?) -> Unit>()
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
@@ -137,7 +136,7 @@ class ExampleListViewModelUnitTest {
     @Test
     fun testShowSomeToastForFragmentRecreated() {
         val lifecycle = LifecycleRegistry(mockk())
-        val observer = lambdaMock<(SingleEvent<String>?) -> Unit>()
+        val observer = spyk<(SingleEvent<String>?) -> Unit>()
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
@@ -197,7 +196,7 @@ class ExampleListViewModelUnitTest {
                 exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
-
+        
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
             if (!isInitialValue.get()) {
