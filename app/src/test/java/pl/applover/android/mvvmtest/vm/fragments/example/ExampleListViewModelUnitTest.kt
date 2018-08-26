@@ -196,12 +196,14 @@ class ExampleListViewModelUnitTest {
                 exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
-        
+
+
+
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
             if (!isInitialValue.get()) {
                 it?.let {
-                    assertEquals(25, it.size) //todo fix this - make it fail if sizes are not equal (currently prints error only)
+                    assertEquals(25, it.size) //todo something catches error here, that's why test can pass with failed assert
                 }
             }
             isInitialValue.set(false)
