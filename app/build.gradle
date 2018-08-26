@@ -10,8 +10,14 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -114,7 +120,7 @@ dependencies {
 
 
     //Timber - Used in architecture
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
@@ -130,10 +136,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
     //Paging
-    implementation "android.arch.paging:runtime:1.0.0"
+    implementation "android.arch.paging:runtime:1.0.1"
 
     //Room
-    def room_version = "1.1.1-rc1"
+    def room_version = "1.1.1"
 
     implementation "android.arch.persistence.room:runtime:$room_version"
     implementation "android.arch.persistence.room:rxjava2:$room_version"
