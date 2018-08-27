@@ -1,19 +1,17 @@
-package pl.applover.android.mvvmtest.vm.fragments.example
+package pl.applover.android.mvvmtest.example.vm.fragments.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.paging.ItemKeyedDataSource
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import org.mockito.Spy
 import pl.applover.android.mvvmtest.data.example.repositories.ExampleCitiesRepository
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSource
 import pl.applover.android.mvvmtest.dataSources.example.cities.CitiesDataSourceFactory
@@ -43,18 +41,14 @@ class ExamplePagedListViewModelUnitTest {
 
     private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
 
-    @Mock
-    private lateinit var repository: ExampleCitiesRepository
+    private val repository: ExampleCitiesRepository = mockk()
     private lateinit var examplePagedListViewModel: ExamplePagedListViewModel
 
-    @Spy
-    private lateinit var router: ExamplePagedListFragmentRouter
+    private val router: ExamplePagedListFragmentRouter = spyk()
 
-    @Spy
-    private val dataSourceFactory: CitiesDataSourceFactory = CitiesDataSourceFactory(spy(), spy())
+    private val dataSourceFactory: CitiesDataSourceFactory = spyk(CitiesDataSourceFactory(spyk(), spyk()))
 
-    @Mock
-    private lateinit var dataSource: CitiesDataSource
+    private val dataSource: CitiesDataSource = mockk()
 
 
     //Data Generator
@@ -79,31 +73,29 @@ class ExamplePagedListViewModelUnitTest {
 
     private fun createStubsBeforeViewModel() {
 
-        whenever(dataSource.initialStateSubject).thenReturn(initialStateSubject)
-        whenever(dataSource.networkStateSubject).thenReturn(networkStateSubject)
+        every { dataSource.initialStateSubject }.returns(initialStateSubject)
+        every { dataSource.networkStateSubject }.returns(networkStateSubject)
 
-        whenever(repository.citiesDataSourceFactory(any())).thenAnswer {
-            return@thenAnswer dataSourceFactory
-        }
+        every { repository.citiesDataSourceFactory(any()) }.returns(dataSourceFactory)
 
-        whenever(dataSourceFactory.create()).thenAnswer {
+        every { dataSourceFactory.create() }.answers {
             dataSourceFactory.subjectDataSource.onNext(dataSource)
-            return@thenAnswer dataSource
+            return@answers dataSource
         }
 
-        whenever(dataSource.loadInitial(any(), any())).then {
-            val callback = it.getArgument<ItemKeyedDataSource.LoadInitialCallback<ExampleCityModel>>(1)
+        every { dataSource.loadInitial(any(), any()) }.answers {
+            val callback = arg<ItemKeyedDataSource.LoadInitialCallback<ExampleCityModel>>(1)
             dataSource.initialStateSubject.onNext(NetworkState.LOADING)
             dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-            callback!!.onResult(getCities())
+            callback.onResult(getCities())
             dataSource.initialStateSubject.onNext(NetworkState.LOADED)
             dataSource.networkStateSubject.onNext(NetworkState.LOADED)
         }
 
-        whenever(dataSource.loadAfter(any(), any())).then {
-            val callback = it.getArgument<ItemKeyedDataSource.LoadCallback<ExampleCityModel>>(1)
+        every { dataSource.loadAfter(any(), any()) }.answers {
+            val callback = arg<ItemKeyedDataSource.LoadCallback<ExampleCityModel>>(1)
             dataSource.networkStateSubject.onNext(NetworkState.LOADING)
-            callback!!.onResult(getCities())
+            callback.onResult(getCities())
             dataSource.networkStateSubject.onNext(NetworkState.LOADED)
         }
     }

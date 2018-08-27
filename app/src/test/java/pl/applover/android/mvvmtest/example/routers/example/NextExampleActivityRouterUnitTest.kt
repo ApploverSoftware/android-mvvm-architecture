@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.routers.example
+package pl.applover.android.mvvmtest.example.routers.example
 
 import org.junit.Before
 import org.junit.Test

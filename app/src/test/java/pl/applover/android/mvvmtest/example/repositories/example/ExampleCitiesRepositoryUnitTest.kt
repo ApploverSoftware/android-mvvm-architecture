@@ -1,17 +1,15 @@
-package pl.applover.android.mvvmtest.repositories.example
+package pl.applover.android.mvvmtest.example.repositories.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.paging.PagedList
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
 import io.reactivex.Single
 import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import pl.applover.android.mvvmtest.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.android.mvvmtest.data.example.internet.response.ExampleCityResponse
@@ -40,8 +38,7 @@ class ExampleCitiesRepositoryUnitTest {
 
     private lateinit var repository: ExampleCitiesRepository
 
-    @Mock
-    private lateinit var exampleCitiesApiEndpointsInterface: ExampleCitiesApiEndpointsInterface
+    private val exampleCitiesApiEndpointsInterface: ExampleCitiesApiEndpointsInterface = mockk()
 
     //City list for testing
 
@@ -65,13 +62,13 @@ class ExampleCitiesRepositoryUnitTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         createStubsBeforeRepository()
-        repository = ExampleCitiesRepository(exampleCitiesApiEndpointsInterface, mock())
+        repository = ExampleCitiesRepository(exampleCitiesApiEndpointsInterface, mockk())
     }
 
     private fun createStubsBeforeRepository() {
-        whenever(exampleCitiesApiEndpointsInterface.getCitiesList(any())).thenReturn(getCitiesListApi())
+        every { exampleCitiesApiEndpointsInterface.getCitiesList(any()) }.returns(getCitiesListApi())
 
-        whenever(exampleCitiesApiEndpointsInterface.getPagedCitiesList(any(), any())).thenReturn(getCitiesPagedCities())
+        every { exampleCitiesApiEndpointsInterface.getPagedCitiesList(any(), any()) }.returns(getCitiesPagedCities())
     }
 
     private fun getCitiesListApi() =
@@ -119,7 +116,7 @@ class ExampleCitiesRepositoryUnitTest {
             previousNetworkState = it
         }
 
-        listingFactory.build(repository.citiesDataSourceFactory(spy())).observeForever {
+        listingFactory.build(repository.citiesDataSourceFactory(spyk())).observeForever {
             it!!
             Assert.assertEquals(10, it.size)
 

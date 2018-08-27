@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest
+package pl.applover.android.mvvmtest.example
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
