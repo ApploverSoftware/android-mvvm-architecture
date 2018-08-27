@@ -1,4 +1,4 @@
-package pl.applover.labplus.staticclasses
+package pl.applover.android.mvvmtest.staticclasses
 
 import io.mockk.every
 import io.mockk.mockk
