@@ -1,4 +1,4 @@
-package pl.applover.android.mvvmtest.repositories.example
+package pl.applover.android.mvvmtest.example.repositories.example
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.paging.PagedList
