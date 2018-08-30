@@ -68,7 +68,7 @@ Doing the above will utilize the .gitignore file instead of Settings > Version C
 
 ## Possible improvements in the future:
 - Detailed documentation
-- Android Studio's plugin for generating some parts of architecture to make working with it a lot faster (architecture is created to make it easier to write generator for it)
+- Android Studio's plugin for generating some parts of architecture to make working with it a lot faster (architecture is designed to make it easier to write generator for it)
 - Some utils extracted to libraries
 
 
