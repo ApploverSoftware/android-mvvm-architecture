@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.applover.android.mvvmtest">
+    package="pl.applover.architecture.mvvm">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".vvm.example.mainExample.ExampleMainActivity">
+        <activity android:name=".vvm.example.mainexample.ExampleMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".vvm.example.nextExample.NextExampleActivity" />
+        <activity android:name=".vvm.example.nextexample.NextExampleActivity" />
     </application>
 
 </manifest>

@@ -6,11 +6,11 @@
 
         <variable
             name="city"
-            type="pl.applover.android.mvvmtest.models.example.ExampleCityModel" />
+            type="pl.applover.architecture.mvvm.models.example.ExampleCityModel" />
 
         <variable
             name="holder"
-            type="pl.applover.android.mvvmtest.adapters.cities.ExampleCityViewHolder" />
+            type="pl.applover.architecture.mvvm.adapters.cities.ExampleCityViewHolder" />
     </data>
 
     <LinearLayout
