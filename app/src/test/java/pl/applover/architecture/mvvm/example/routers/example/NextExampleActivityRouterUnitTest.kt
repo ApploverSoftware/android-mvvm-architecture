@@ -1,5 +1,8 @@
 package pl.applover.architecture.mvvm.example.routers.example
 
+import io.mockk.spyk
+import io.mockk.verify
+import io.reactivex.Observer
 import org.junit.Test
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.vvm.example.nextexample.NextExampleActivityRouter
@@ -19,15 +22,9 @@ class NextExampleActivityRouterUnitTest {
 
     @Test
     fun `fragment clicked event sent`() {
-
-        var fragmentClicked = false
-
-        nextExampleActivityRouter.receiver.fragmentClicked.subscribe {
-            fragmentClicked = true
-        }
-
+        val observer: Observer<EmptyEvent> = spyk()
+        nextExampleActivityRouter.receiver.fragmentClicked.subscribe(observer)
         exampleListFragmentRouter.sender.fragmentClicked.onNext(EmptyEvent())
-
-        assert(fragmentClicked)
+        verify { observer.onNext(any()) }
     }
 }
