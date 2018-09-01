@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.util.ui.google_map
+package pl.applover.architecture.mvvm.vvm.googlemap
 
 import android.content.Context
 import com.google.android.gms.maps.GoogleMap
@@ -18,7 +18,7 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer
  * If [colorRid] is null, then default colors will be displayed
  */
 open class GoogleMapClusterRenderer(googleMap: GoogleMap,
-                                    val clusterManager: ClusterManager<ClusterMarker>,
+                                    clusterManager: ClusterManager<ClusterMarker>,
                                     context: Context,
                                     private val colorRid: Int? = null) : DefaultClusterRenderer<GoogleMapClusterRenderer.ClusterMarker>(context, googleMap, clusterManager) {
 
@@ -33,7 +33,7 @@ open class GoogleMapClusterRenderer(googleMap: GoogleMap,
      * To change number of items to render the cluster, change in "other"
      */
     override fun shouldRenderAsCluster(cluster: Cluster<ClusterMarker>?): Boolean {
-        return cluster?.size?.compareTo(3) == 1
+        return cluster?.size?.compareTo(2) == 1
     }
 
     override fun getColor(clusterSize: Int): Int = super.getColor(colorRid ?: clusterSize)

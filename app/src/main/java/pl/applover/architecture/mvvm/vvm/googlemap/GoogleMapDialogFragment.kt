@@ -1,37 +1,36 @@
-package pl.applover.architecture.mvvm.util.ui.google_map
+package pl.applover.architecture.mvvm.vvm.googlemap
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.UiSettings
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.fragment_google_map.*
-import org.greenrobot.eventbus.EventBus
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.R
+import pl.applover.architecture.mvvm.util.architecture.dependencyinjection.DaggerFullscreenDialogFragment
+import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.util.extensions.isGPSPermissionGranted
+import javax.inject.Inject
 
 
 /**
  * Created by Janusz Hain on 2018-02-02.
- *
- *  GoogleMap sends event about being ready to use as [GoogleMapReadyEvent] using [EventBus]
- */
-open class GoogleMapFragment : Fragment() {
+ * */
+class GoogleMapDialogFragment : DaggerFullscreenDialogFragment() {
 
     protected lateinit var googleMap: GoogleMap
     protected var googleMapClusterManager: ClusterManager<GoogleMapClusterRenderer.ClusterMarker>? = null
     protected lateinit var mapView: MapView
 
+
+    @Inject
+    protected lateinit var router: GoogleMapDialogFragmentRouter
 
     var googleMapPadding: GoogleMapPadding? = null
         set(value) {
@@ -41,8 +40,8 @@ open class GoogleMapFragment : Fragment() {
         }
 
     companion object {
-        fun newInstance(): GoogleMapFragment {
-            return GoogleMapFragment()
+        fun newInstance(): GoogleMapDialogFragment {
+            return GoogleMapDialogFragment()
         }
     }
 
@@ -59,7 +58,7 @@ open class GoogleMapFragment : Fragment() {
         initializeMap(savedInstanceState, googleMapView)
     }
 
-    fun initializeMap(savedInstanceState: Bundle?, mMapView: MapView) {
+    private fun initializeMap(savedInstanceState: Bundle?, mMapView: MapView) {
         try {
             MapsInitializer.initialize(App.instance)
         } catch (e: Exception) {
@@ -68,15 +67,15 @@ open class GoogleMapFragment : Fragment() {
 
         mMapView.onCreate(savedInstanceState)
         mMapView.onResume() // needed to get the map to display immediately
-        mMapView.getMapAsync({ mMap ->
+        mMapView.getMapAsync { mMap ->
             googleMap = mMap
             onMapViewReady()
-        })
+        }
     }
 
     private fun onMapViewReady() {
         setupGoogleMapClusterManager()
-        EventBus.getDefault().post(GoogleMapReadyEvent(googleMap, googleMapClusterManager!!))
+        router.sender.onMapReady.onNext(EmptyEvent())
     }
 
     private fun setupGoogleMapClusterManager() {
@@ -99,6 +98,11 @@ open class GoogleMapFragment : Fragment() {
     fun setMarker(latLng: LatLng, iconResId: Int?, title: String?, snippet: String?): Marker {
         return googleMap.setMarker(latLng, iconResId, title, snippet)
     }
+
+    fun findMarkerFromClusterManager(latLng: LatLng): Marker? = googleMapClusterManager?.markerCollection?.markers?.find { it.position == latLng }
+
+    fun findLastMarkerFromClusterManager(latLng: LatLng): Marker? = googleMapClusterManager?.markerCollection?.markers?.findLast { it.position == latLng }
+
 
     fun setMarkerForClusterManager(latLng: LatLng, title: String, snippet: String, iconResId: Int?): GoogleMapClusterRenderer.ClusterMarker {
         val clusterItem = GoogleMapClusterRenderer.ClusterMarker(latLng, title, snippet, iconResId)
@@ -151,6 +155,10 @@ open class GoogleMapFragment : Fragment() {
         googleMap.animateMarker(marker, end)
     }
 
+    fun defaultMoveToMarker(marker: Marker) {
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(marker.position))
+    }
+
     fun setCameraPosition(latLng: LatLng, animateCamera: Boolean, zoom: Float = 12f) {
         googleMap.setCameraPosition(latLng, animateCamera, zoom)
     }
@@ -189,6 +197,10 @@ open class GoogleMapFragment : Fragment() {
 
     fun setRotationGestures(enabled: Boolean) {
         googleMap.uiSettings.isRotateGesturesEnabled = enabled
+    }
+
+    fun setStyle(style: String) {
+        googleMap.setMapStyle(MapStyleOptions(style))
     }
 
     fun getGoogleMapUiSettings(): UiSettings = googleMap.uiSettings

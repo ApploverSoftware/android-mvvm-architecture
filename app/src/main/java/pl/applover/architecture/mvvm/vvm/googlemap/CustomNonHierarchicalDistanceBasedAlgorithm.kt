@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pl.applover.architecture.mvvm.util.ui.google_map
+package pl.applover.architecture.mvvm.vvm.googlemap
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.Cluster

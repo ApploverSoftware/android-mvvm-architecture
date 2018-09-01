@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.util.ui.google_map
+package pl.applover.architecture.mvvm.vvm.googlemap
 
 import android.graphics.Rect
 
