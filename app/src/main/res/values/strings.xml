@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mvvm Test</string>
+    <string name="app_name">MVVM Architecture</string>
 
     <!-- Architecture strings -->
     <string name="key_single_dialog" translatable="false">KEY_SINGLE_DIALOG</string>
