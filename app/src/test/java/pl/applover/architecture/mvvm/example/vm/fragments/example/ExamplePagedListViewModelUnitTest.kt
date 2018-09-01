@@ -13,15 +13,15 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
-import pl.applover.architecture.mvvm.dataSources.example.cities.CitiesDataSource
-import pl.applover.architecture.mvvm.dataSources.example.cities.CitiesDataSourceFactory
-import pl.applover.architecture.mvvm.modelFactories.example.ExampleCityModelTestFactory
+import pl.applover.architecture.mvvm.datasources.example.cities.CitiesDataSource
+import pl.applover.architecture.mvvm.datasources.example.cities.CitiesDataSourceFactory
+import pl.applover.architecture.mvvm.modelfactories.example.ExampleCityModelTestFactory
 import pl.applover.architecture.mvvm.models.example.ExampleCityModel
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
 import pl.applover.architecture.mvvm.util.extensions.removeLastItems
 import pl.applover.architecture.mvvm.util.other.SchedulerProvider
-import pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
-import pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList.ExamplePagedListViewModel
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList.ExamplePagedListFragmentRouter
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList.ExamplePagedListViewModel
 
 
 /**

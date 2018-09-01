@@ -11,10 +11,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.MockitoAnnotations
-import pl.applover.architecture.mvvm.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
+import pl.applover.architecture.mvvm.data.example.internet.apiendpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.architecture.mvvm.data.example.internet.response.ExampleCityResponse
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
-import pl.applover.architecture.mvvm.modelFactories.example.ExampleCityResponseTestFactory
+import pl.applover.architecture.mvvm.modelfactories.example.ExampleCityResponseTestFactory
 import pl.applover.architecture.mvvm.models.example.ExampleCityModel
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
 import pl.applover.architecture.mvvm.util.architecture.paging.ListingFactory

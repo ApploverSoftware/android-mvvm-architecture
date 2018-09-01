@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".vvm.example.mainExample.ExampleMainActivity">
+        <activity android:name=".vvm.example.mainexample.ExampleMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".vvm.example.nextExample.NextExampleActivity" />
+        <activity android:name=".vvm.example.nextexample.NextExampleActivity" />
     </application>
 
 </manifest>

@@ -16,13 +16,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
-import pl.applover.architecture.mvvm.modelFactories.example.ExampleCityModelTestFactory
-import pl.applover.architecture.mvvm.util.architecture.liveData.SingleEvent
+import pl.applover.architecture.mvvm.modelfactories.example.ExampleCityModelTestFactory
+import pl.applover.architecture.mvvm.util.architecture.livedata.SingleEvent
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.util.other.SchedulerProvider
-import pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
-import pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList.ExampleListViewModel
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListFragmentRouter
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListViewModel
 import retrofit2.Response
 import java.util.concurrent.atomic.AtomicBoolean
 

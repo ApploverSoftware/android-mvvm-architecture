@@ -4,8 +4,8 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.architecture.mvvm.data.example.database.dao.ExampleCityDao
 import pl.applover.architecture.mvvm.data.example.database.models.ExampleCityDbModel
-import pl.applover.architecture.mvvm.data.example.internet.api_endpoints.ExampleCitiesApiEndpointsInterface
-import pl.applover.architecture.mvvm.dataSources.example.cities.CitiesDataSourceFactory
+import pl.applover.architecture.mvvm.data.example.internet.apiendpoints.ExampleCitiesApiEndpointsInterface
+import pl.applover.architecture.mvvm.datasources.example.cities.CitiesDataSourceFactory
 import pl.applover.architecture.mvvm.models.example.ExampleCityModel
 import pl.applover.architecture.mvvm.util.architecture.retrofit.mapResponseList
 import javax.inject.Inject

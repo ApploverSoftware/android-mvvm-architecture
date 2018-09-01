@@ -6,7 +6,7 @@ import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import pl.applover.architecture.mvvm.dependencyInjection.app.components.DaggerAppComponent
+import pl.applover.architecture.mvvm.dependencyinjection.app.components.DaggerAppComponent
 import pl.applover.architecture.mvvm.util.extensions.DelegatesExt
 import timber.log.Timber
 import javax.inject.Inject

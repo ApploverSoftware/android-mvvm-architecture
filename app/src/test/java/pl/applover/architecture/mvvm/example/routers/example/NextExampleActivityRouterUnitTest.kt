@@ -4,9 +4,9 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
-import pl.applover.architecture.mvvm.vvm.example.nextExample.NextExampleActivityRouter
-import pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList.ExampleListFragmentRouter
-import pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter
+import pl.applover.architecture.mvvm.vvm.example.nextexample.NextExampleActivityRouter
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListFragmentRouter
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList.ExamplePagedListFragmentRouter
 
 /**
  * Created by Janusz Hain on 2018-06-29.
