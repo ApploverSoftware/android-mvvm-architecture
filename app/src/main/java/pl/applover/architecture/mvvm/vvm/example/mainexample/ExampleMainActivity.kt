@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.example_activity_main.*
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.R
 import pl.applover.architecture.mvvm.util.extensions.goToActivity

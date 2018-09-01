@@ -8,10 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.example_fragment_paged_list.*
+import kotlinx.android.synthetic.main.example_item_network_state.*
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.R
 import pl.applover.architecture.mvvm.adapters.cities.ExamplePagedLibCityAdapter
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
+import pl.applover.architecture.mvvm.util.ui.hide
+import pl.applover.architecture.mvvm.util.ui.show
 import javax.inject.Inject
 
 class ExamplePagedListFragment : DaggerFragment() {
