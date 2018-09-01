@@ -198,6 +198,7 @@ class ExampleListViewModelUnitTest {
         val isInitialValue = AtomicBoolean(true)
 
 
+
         //assert cities are passed to live data correctly
         exampleListViewModel.mldCitiesLiveData.observeForever {
             if (!isInitialValue.get()) {

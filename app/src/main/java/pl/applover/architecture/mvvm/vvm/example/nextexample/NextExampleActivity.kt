@@ -38,7 +38,7 @@ class NextExampleActivity : DaggerAppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled(this)) })
+        viewModel.mldSomeEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled(this)) })
         viewModel.activityOnResume()
     }
 

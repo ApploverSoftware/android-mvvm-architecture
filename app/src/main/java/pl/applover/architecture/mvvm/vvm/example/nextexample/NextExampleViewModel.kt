@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.util.architecture.livedata.SingleEvent
+import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.util.other.SchedulerProvider
 import timber.log.Timber
 
@@ -16,20 +17,25 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter,
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    val someEvent = MutableLiveData<SingleEvent<String>>()
-    val title = MutableLiveData<String>()
+    val mldSomeEvent = MutableLiveData<SingleEvent<String>>()
+    val mldTitle = MutableLiveData<String>()
+    val mldFragmentClicked = MutableLiveData<SingleEvent<EmptyEvent>>()
+
 
     init {
         setRouterObservers()
     }
 
     private fun setRouterObservers() {
-        compositeDisposable.add(router.receiver.fragmentClicked.subscribe({ Timber.i("Router sent event about click in some fragment!") }))
+        compositeDisposable.add(router.receiver.fragmentClicked.subscribe {
+            mldFragmentClicked.value = SingleEvent(EmptyEvent())
+            Timber.i("Router sent event about click in some fragment!")
+        })
     }
 
     fun activityOnResume() {
-        someEvent.value = SingleEvent("Next Activity on Resume!")
-        title.value = "Next Activity resumed"
+        mldSomeEvent.value = SingleEvent("Next Activity on Resume!")
+        mldTitle.value = "Next Activity resumed"
     }
 
     override fun onCleared() {
@@ -40,8 +46,8 @@ class NextExampleViewModel(private val router: NextExampleActivityRouter,
 
     private fun watchForLeaks() {
         App.refWatcher.watch(this)
-        App.refWatcher.watch(someEvent)
-        App.refWatcher.watch(title)
+        App.refWatcher.watch(mldSomeEvent)
+        App.refWatcher.watch(mldTitle)
         App.refWatcher.watch(router)
     }
 }
