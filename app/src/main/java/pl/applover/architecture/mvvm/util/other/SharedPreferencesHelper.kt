@@ -8,7 +8,7 @@ import pl.applover.architecture.mvvm.App
  * Created by Janusz Hain on 05/07/2017.
  */
 
-object MySharedPreferencesUtil {
+object SharedPreferencesHelper {
 
     private val packageName: String by lazy { App.instance.packageName }
 

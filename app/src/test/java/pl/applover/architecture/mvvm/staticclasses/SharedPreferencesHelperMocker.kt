@@ -3,7 +3,7 @@ package pl.applover.architecture.mvvm.staticclasses
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import pl.applover.architecture.mvvm.util.other.MySharedPreferencesUtil
+import pl.applover.architecture.mvvm.util.other.SharedPreferencesHelper
 
 /**
  * Created by Janusz Hain on 2018-07-18.
@@ -13,9 +13,9 @@ import pl.applover.architecture.mvvm.util.other.MySharedPreferencesUtil
  * Create object to mockk MySharedPreferences
  * Mock every method that doesn't return anything
  */
-class MySharedPreferencesUtilMocker {
+class SharedPreferencesHelperMocker {
     init {
-        mockkObject(MySharedPreferencesUtil)
-        every { MySharedPreferencesUtil.setStringToSharedPreferences(any(), any()) }.returns(mockk())
+        mockkObject(SharedPreferencesHelper)
+        every { SharedPreferencesHelper.setStringToSharedPreferences(any(), any()) }.returns(mockk())
     }
 }

@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.dependencyInjection.activities.example.exampleMain
+package pl.applover.architecture.mvvm.dependencyinjection.activities.example.examplemain
 
 import dagger.Module
 

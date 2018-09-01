@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

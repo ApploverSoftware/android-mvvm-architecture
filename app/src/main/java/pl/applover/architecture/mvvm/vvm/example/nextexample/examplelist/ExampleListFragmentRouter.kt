@@ -1,9 +1,9 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist
 
 import io.reactivex.subjects.PublishSubject
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
-import pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Receiver
-import pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList.ExampleListFragmentRouter.Sender
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListFragmentRouter.Receiver
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListFragmentRouter.Sender
 
 /**
  * Created by Janusz Hain on 2018-06-11.

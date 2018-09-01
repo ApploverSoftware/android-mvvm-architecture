@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
 import pl.applover.architecture.mvvm.models.example.ExampleCityModel
-import pl.applover.architecture.mvvm.util.architecture.liveData.switchMap
+import pl.applover.architecture.mvvm.util.architecture.livedata.switchMap
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
 import pl.applover.architecture.mvvm.util.architecture.paging.ListingFactory
 import pl.applover.architecture.mvvm.util.other.SchedulerProvider

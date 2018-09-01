@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

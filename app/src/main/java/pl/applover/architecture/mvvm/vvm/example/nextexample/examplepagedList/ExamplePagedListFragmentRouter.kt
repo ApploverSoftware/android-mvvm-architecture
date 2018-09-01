@@ -1,7 +1,7 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList
 
-import pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter.Receiver
-import pl.applover.architecture.mvvm.vvm.example.nextExample.examplePagedList.ExamplePagedListFragmentRouter.Sender
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList.ExamplePagedListFragmentRouter.Receiver
+import pl.applover.architecture.mvvm.vvm.example.nextexample.examplepagedList.ExamplePagedListFragmentRouter.Sender
 
 /**
  * Created by Janusz Hain on 2018-06-11.

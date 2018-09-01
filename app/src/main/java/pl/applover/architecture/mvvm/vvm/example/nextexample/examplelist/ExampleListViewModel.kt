@@ -1,4 +1,4 @@
-package pl.applover.architecture.mvvm.vvm.example.nextExample.exampleList
+package pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
@@ -8,8 +8,8 @@ import io.reactivex.disposables.Disposable
 import pl.applover.architecture.mvvm.App
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
 import pl.applover.architecture.mvvm.models.example.ExampleCityModel
-import pl.applover.architecture.mvvm.util.architecture.liveData.ObservableListMutableLiveData
-import pl.applover.architecture.mvvm.util.architecture.liveData.SingleEvent
+import pl.applover.architecture.mvvm.util.architecture.livedata.ObservableListMutableLiveData
+import pl.applover.architecture.mvvm.util.architecture.livedata.SingleEvent
 import pl.applover.architecture.mvvm.util.architecture.network.NetworkState
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.util.other.SchedulerProvider
