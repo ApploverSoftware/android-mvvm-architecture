@@ -46,6 +46,7 @@ class ExamplePagedListFragment : DaggerFragment() {
         viewModel.ldCitiesPagedList.observe(this, Observer { adapter.submitList(it) })
         setViewListeners()
         setViewModelObservers()
+        viewModel.loadCitiesFromOnlineSource(this)
     }
 
     private fun setViewModelObservers() {

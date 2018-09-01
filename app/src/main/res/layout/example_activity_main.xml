@@ -10,4 +10,12 @@
         android:layout_centerInParent="true"
         android:text="Hello World!" />
 
+    <Button
+        android:id="@+id/buttonGoToNextExampleActivity"
+        android:text="Go to next example activity"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewHelloWorld" />
+
 </RelativeLayout>
