@@ -52,7 +52,8 @@ For me it is not so nice to create data binding in xml, it is faster to create c
 
 To use this architecture you can either create new project and then write or copy parts of the architecture or pull repository and change package and application names
 
-To change package name: right click on package, refactor and then rename. Manifest will change, but it is needed to change "application id" in gradle. More info: https://stackoverflow.com/questions/16804093/android-studio-rename-package
+To change package name: in manifest right click on package name, refactor and then rename. Then change "application id" in gradle. 
+More info: https://stackoverflow.com/questions/16804093/android-studio-rename-package
 
 Make sure to have gitignore plugin installed and Android Studio's gitignore turned off before pushing newly created project to git to avoid pushing local config and other unneeded files. If your Android's Studio's gitignore is working then architecture gitignore will be ignored. To make it working:
 
