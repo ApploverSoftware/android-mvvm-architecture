@@ -26,7 +26,7 @@ class ExampleMainActivity : DaggerAppCompatActivity() {
         viewModel.someEvent.observe(this, Observer { event -> println(event?.getContentIfNotHandled(this)) })
         viewModel.title.observe(this, Observer { title -> textViewHelloWorld.text = title })
 
-        textViewHelloWorld.setOnClickListener {
+        buttonGoToNextExampleActivity.setOnClickListener {
             println("Go to next Activity")
             goToNextActivity()
         }
