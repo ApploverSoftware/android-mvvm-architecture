@@ -1,8 +1,6 @@
 package pl.applover.architecture.mvvm.example.routers.example
 
-import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 import pl.applover.architecture.mvvm.util.architecture.rx.EmptyEvent
 import pl.applover.architecture.mvvm.vvm.example.nextexample.NextExampleActivityRouter
 import pl.applover.architecture.mvvm.vvm.example.nextexample.examplelist.ExampleListFragmentRouter
@@ -19,14 +17,8 @@ class NextExampleActivityRouterUnitTest {
 
     private var nextExampleActivityRouter = NextExampleActivityRouter(exampleListFragmentRouter, examplePagedListFragmentRouter)
 
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-    }
-
     @Test
-    fun testRouting() {
+    fun `fragment clicked event sent`() {
 
         var fragmentClicked = false
 

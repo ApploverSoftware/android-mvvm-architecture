@@ -10,7 +10,6 @@ import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 import pl.applover.architecture.mvvm.data.example.internet.apiendpoints.ExampleCitiesApiEndpointsInterface
 import pl.applover.architecture.mvvm.data.example.internet.response.ExampleCityResponse
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
@@ -59,8 +58,7 @@ class ExampleCitiesRepositoryUnitTest {
             .build()
 
     @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
+    fun setup() {
         createStubsBeforeRepository()
         repository = ExampleCitiesRepository(exampleCitiesApiEndpointsInterface, mockk())
     }

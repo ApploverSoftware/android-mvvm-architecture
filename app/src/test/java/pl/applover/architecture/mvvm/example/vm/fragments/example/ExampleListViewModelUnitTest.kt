@@ -57,7 +57,7 @@ class ExampleListViewModelUnitTest {
 
 
     @Before
-    fun setUp() {
+    fun setup() {
         every { spiedRouter.sender }.returns(mockedSender)
         every { mockedSender.fragmentClicked }.returns(fragmentClickedSubject)
 
@@ -196,7 +196,6 @@ class ExampleListViewModelUnitTest {
                 exampleCityModelTestFactory.createList(25))))
 
         val isInitialValue = AtomicBoolean(true)
-
 
 
         //assert cities are passed to live data correctly

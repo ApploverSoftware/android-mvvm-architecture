@@ -11,7 +11,6 @@ import junit.framework.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 import pl.applover.architecture.mvvm.data.example.repositories.ExampleCitiesRepository
 import pl.applover.architecture.mvvm.datasources.example.cities.CitiesDataSource
 import pl.applover.architecture.mvvm.datasources.example.cities.CitiesDataSourceFactory
@@ -64,9 +63,7 @@ class ExamplePagedListViewModelUnitTest {
     private val initialStateSubject: BehaviorSubject<NetworkState> = BehaviorSubject.create()
 
     @Before
-    fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
+    fun setup() {
         createStubsBeforeViewModel()
         examplePagedListViewModel = ExamplePagedListViewModel(router, schedulerProvider, repository)
     }
