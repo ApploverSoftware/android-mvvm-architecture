@@ -7,14 +7,14 @@ MVVM architecture with Utils and Android Architecture Components (Android Jetpac
 - Pagination library
 - Room
 - Google Map with ready to use clustering
-- Example unit tests as with MockK
+- Example unit tests with MockK
 - Dependency Injection using Dagger 2
 - DataBinding
 
 ## What is so nice about this architecture?
 
 The included Android Architecture Components are not alone! 
-Vanilla Android Architecture Components  sometimes doesn't work as we need too. I wrapped some of them to make it easier and faster to use.
+Vanilla Android Architecture Components  sometimes don't work as we need too. I wrapped some of them to make it easier and faster to use.
 
 ### Enhanced Android Architecture Components
 
