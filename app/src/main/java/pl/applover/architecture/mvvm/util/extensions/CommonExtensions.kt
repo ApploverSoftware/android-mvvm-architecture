@@ -193,6 +193,8 @@ fun FragmentManager.popFragment(): Boolean {
 }
 
 fun DialogFragment.showSingle(fragmentManager: FragmentManager?, tag: String) {
+    if (fragmentManager == null) return
+
     fragmentManager?.findFragmentByTag(tag)?.let {
         return
     }
